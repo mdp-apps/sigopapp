@@ -1,0 +1,154 @@
+import { StorageAdapter } from "@/config/adapters/storage.adapter";
+
+import * as UseCases from "@/core/auth/use-cases";
+import {
+  Driver,
+  DriverSession,
+  User,
+  UserSession,
+} from "@/infrastructure/entities";
+
+import { sigopApiFetcher } from "@/config/api/sigopApi";
+
+import { create } from "zustand";
+
+export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
+
+export interface AuthState {
+  status: AuthStatus;
+  user?: UserSession | DriverSession;
+
+  login: (email: string, password: string) => Promise<boolean>;
+  loginDriver: (rut: string) => Promise<boolean>;
+  checkStatus: () => Promise<void>;
+  logout: () => Promise<void>;
+
+  changeStatus: (
+    isSessionSaved: string,
+    user?: User | Driver
+  ) => Promise<boolean>;
+}
+
+const saveUserSession = async (
+  isSessionSaved: string,
+  user: User | Driver
+): Promise<UserSession | DriverSession> => {
+  const baseSession = {
+    code: user.code,
+    rut: user.rut,
+    name: user.name,
+    paternalLastname: user.paternalLastname,
+    maternalLastname: user.maternalLastname,
+    isDriver: isSessionSaved === "SI",
+  };
+
+  if ("emailLogin" in user) {
+    const userSession = {
+      ...baseSession,
+      companyCode: user.companyCode,
+      companyName: user.companyName,
+      emailLogin: user.emailLogin,
+      // companyCode 1 es "Muelles de Penco"
+      isCustomer: user.companyCode !== "1" && isSessionSaved === "SI",
+    };
+
+    await StorageAdapter.setItem("userSession", JSON.stringify(userSession));
+
+    return userSession;
+  } else {
+    const driverSession = {
+      ...baseSession,
+      isCustomer: false,
+    };
+
+    await StorageAdapter.setItem("userSession", JSON.stringify(driverSession));
+
+    return driverSession;
+  }
+};
+
+export const useAuthStore = create<AuthState>((set, get) => ({
+  status: "checking",
+  user: undefined,
+
+  changeStatus: async (isSessionSaved: string, user?: User | Driver) => {
+    if (isSessionSaved === "NO" || !user) {
+      set({ status: "unauthenticated", user: undefined });
+
+      get().logout();
+
+      return false;
+    }
+
+    const userSession = await saveUserSession(isSessionSaved, user);
+
+    set({ status: "authenticated", user: userSession });
+
+    return true;
+  },
+  login: async (email: string, password: string) => {
+    const res = await UseCases.userLoginUseCase(sigopApiFetcher, {
+      accion: "Validar inicio sesion",
+      email: email,
+      pwd: password,
+    });
+
+    if (res.isSessionSaved === "SI") {
+      await StorageAdapter.setItem("userEmail", email);
+      await StorageAdapter.setItem("userPassword", password);
+    }
+
+    return get().changeStatus(res.isSessionSaved, res.user);
+  },
+  loginDriver: async (rut: string) => {
+    const res = await UseCases.driverLoginUseCase(sigopApiFetcher, {
+      accion: "Validar inicio sesion conductor",
+      rut: rut.replaceAll(".", ""),
+    });
+
+    if (res.isSessionSaved === "SI") {
+      await StorageAdapter.setItem("userRut", rut);
+    }
+
+    return get().changeStatus(res.isSessionSaved, res.user);
+  },
+  checkStatus: async () => {
+    const email = await StorageAdapter.getItem("userEmail");
+    const password = await StorageAdapter.getItem("userPassword");
+    const rut = await StorageAdapter.getItem("userRut");
+    // console.log(JSON.stringify({ email, password, rut }, null, 2));
+
+    if (email && password) {
+      const res = await UseCases.userLoginUseCase(sigopApiFetcher, {
+        accion: "Validar inicio sesion",
+        email: email,
+        pwd: password,
+      });
+
+      get().changeStatus(res.isSessionSaved, res.user);
+
+      return;
+    }
+
+    if (rut) {
+      const res = await UseCases.driverLoginUseCase(sigopApiFetcher, {
+        accion: "Validar inicio sesion conductor",
+        rut: rut.replaceAll(".", ""),
+      });
+
+      get().changeStatus(res.isSessionSaved, res.user);
+
+      return;
+    }
+
+    set({ status: "unauthenticated", user: undefined });
+  },
+  logout: async () => {
+    await StorageAdapter.removeItem("userSession");
+    await StorageAdapter.removeItem("userEmail");
+    await StorageAdapter.removeItem("userPassword");
+    await StorageAdapter.removeItem("userRut");
+
+    set({ status: "unauthenticated", user: undefined });
+  },
+}));

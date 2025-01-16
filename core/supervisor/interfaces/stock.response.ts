@@ -1,0 +1,31 @@
+export interface StockResponse {
+  abreviacion_bodega: string;
+  bash: number;
+  cantidad_asociada: number;
+  cantidad: number;
+  codigo_bodega: number;
+  codigo_cliente: number;
+  codigo_detalle_requerimiento: number;
+  codigo_operacion: number;
+  codigo_papeleta: number;
+  codigo_planta: number;
+  codigo_producto: string;
+  codigo_requerimiento: number;
+  codigo_turno: number;
+  codigo_umed: number;
+  copiada: number;
+  id_di: number;
+  id_operacion: number;
+  kg_pallet: number;
+  kg_producto_nominal: number;
+  kg_producto_prorrateo: number;
+  kg_producto_real: number;
+  kg_producto: number;
+  kg_x_envase: number;
+  lote: number;
+  nombre_cliente: string;
+  nombre_operacion: string;
+  nombre_producto: string;
+  peso_real: number;
+  tamano_bash: number;
+}

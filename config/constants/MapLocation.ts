@@ -1,0 +1,2 @@
+export const TARGET_LATITUDE = -36.73853;
+export const TARGET_LONGITUDE = -73.00701;
