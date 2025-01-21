@@ -15,6 +15,9 @@ interface ThemedDataTableProps<T> {
   itemsPerPageOptions?: number[];
 }
 
+const initialPage = 0;
+const initialItemsPerPage = 10;
+
 export const ThemedDataTable = <T,>({
   data,
   columns,
@@ -25,8 +28,8 @@ export const ThemedDataTable = <T,>({
 }: ThemedDataTableProps<T>) => {
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
-   const [page, setPage] = useState(0);
-   const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[0]);
+   const [page, setPage] = useState(initialPage);
+   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => {

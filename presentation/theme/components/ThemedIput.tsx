@@ -1,59 +1,99 @@
-import { KeyboardTypeOptions, StyleSheet, TextStyle } from "react-native";
+import { KeyboardTypeOptions, StyleSheet, TextStyle,TextInput as NativeTextInput } from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { Colors } from "@/config/constants";
 
 interface ThemedInputProps {
-  label: string;
-  value?: string;
-  onChangeText?: (text: string) => void;
-  placeholder?: string;
-  keyboardType?: KeyboardTypeOptions;
-  autoCapitalize?: "none" | "sentences" | "words" | "characters";
-  mode?: "flat" | "outlined";
   activeOutlineColor?: string;
-  outlineColor?: string;
-  style?: TextStyle;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  keyboardType?: KeyboardTypeOptions;
   iconRight?: {
     icon: string;
     color?: string;
     onPress?: () => void;
   };
+  label?: string;
+  mode?: "flat" | "outlined";
   multiline?: boolean;
+  onBlur?: () => void;
+  onChangeText?: (text: string) => void;
+  onSubmitEditing?: () => void;
+  outlineColor?: string;
+  placeholder?: string;
+  placeholderTextColor?: string;
+  returnKeyType?: "done" | "go" | "next" | "search" | "send";
+  secureTextEntry?: boolean;
+  value?: string;
+  
+  className?: string;
+  isNative?: boolean;
+  style?: TextStyle;
 }
 
 const ThemedInput: React.FC<ThemedInputProps> = ({
-  label,
-  value,
-  onChangeText,
-  placeholder,
-  keyboardType = "default",
-  autoCapitalize = "none",
-  mode = "outlined",
   activeOutlineColor = Colors.light.darkBlue,
-  outlineColor = Colors.light.tertiary,
-  style,
+  autoCapitalize = "none",
   iconRight,
+  keyboardType = "default",
+  label,
+  mode = "outlined",
   multiline = false,
+  onBlur,
+  onChangeText,
+  onSubmitEditing,
+  outlineColor = Colors.light.tertiary,
+  placeholder,
+  placeholderTextColor = "#8b9cb5",
+  returnKeyType = "done",
+  secureTextEntry = false,
+  value,
+
+  className,
+  isNative = false,
+  style,
 }) => {
-  return (
+  return isNative ? (
+    <NativeTextInput
+      className={className}
+      multiline={multiline}
+      style={[
+        styles.input,
+        multiline ? { height: "auto" } : { height: 40 },
+        style,
+      ]}
+      keyboardType={keyboardType}
+      value={value}
+      onBlur={onBlur}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor}
+      secureTextEntry={secureTextEntry}
+      autoCapitalize={autoCapitalize}
+      returnKeyType={returnKeyType}
+      onSubmitEditing={onSubmitEditing}
+    />
+  ) : (
     <TextInput
       multiline={multiline}
       style={[
         styles.input,
-        { height: multiline ? "auto" : 40 },
-        style
+        style,
       ]}
       keyboardType={keyboardType}
       label={label}
       value={value}
+      onBlur={onBlur}
       onChangeText={onChangeText}
       placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor}
+      secureTextEntry={secureTextEntry}
       autoCapitalize={autoCapitalize}
       mode={mode}
       activeOutlineColor={activeOutlineColor}
       outlineColor={outlineColor}
       right={iconRight ? <TextInput.Icon {...iconRight} /> : null}
+      returnKeyType={returnKeyType}
+      onSubmitEditing={onSubmitEditing}
     />
   );
 };
@@ -61,7 +101,7 @@ const ThemedInput: React.FC<ThemedInputProps> = ({
 const styles = StyleSheet.create({
   input: {
     width: "100%",
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   multiline: {
     height: 100,

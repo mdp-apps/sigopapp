@@ -9,25 +9,53 @@ export interface ReqState {
   ticketDataEncode: string;
   ticketDataToShow: string;
 
+  isVisibleReqCards: boolean;
+  searchRequirements: (
+    filters: Record<string, string>,
+    callback: () => void
+  ) => void;
+  showReqCards: () => void;
+  hideReqCards: () => void;
+
   hideModalExitTicket: () => void;
   showModalExitTicket: (req: Req) => void;
   showObservationModal: (observacion: string) => void;
 }
 
-export const useReqStore = create<ReqState>((set, get) => ({
+export const useReqStore = create<ReqState>((set,get) => ({
+  isVisibleReqCards: false,
+  isVisibleModalTicket: false,
   ticketDataEncode: "",
   ticketDataToShow: "",
-  isVisibleModalTicket: false,
 
   hideModalExitTicket() {
     set({ isVisibleModalTicket: false });
   },
+  hideReqCards() {
+    set({ isVisibleReqCards: false });
+  },
+  async searchRequirements(filters: Record<string,string>, callback: () => void) {
+    const areThereFilters = Object.values(filters).every(
+      (filter) => filter === ""
+    );
 
+    if (areThereFilters) {
+      Alert.alert("Atención", "Debe seleccionar algún filtro.");
+      return;
+    }
+
+    callback();
+
+    get().showReqCards();
+  },
   showModalExitTicket(req: Req) {
+    const dataToEncode = `{"patente":"${req.vehiclePatent}","requerimiento":"${req.internalCode}"}`;
+    const dataToShow = `Requerimiento: ${req.internalCode}. Patente: ${req.vehiclePatent}.`;
+
     set({
       isVisibleModalTicket: true,
-      ticketDataEncode: `{"patente":"${req.vehiclePatent}","requerimiento":"${req.internalCode}"}`,
-      ticketDataToShow: `Requerimiento: ${req.internalCode}. Patente: ${req.vehiclePatent}. `,
+      ticketDataEncode: dataToEncode,
+      ticketDataToShow: dataToShow,
     });
   },
   showObservationModal: (observacion: string) => {
@@ -38,5 +66,8 @@ export const useReqStore = create<ReqState>((set, get) => ({
         style: "cancel",
       },
     ]);
+  },
+  showReqCards() {
+    set({ isVisibleReqCards: true });
   },
 }));

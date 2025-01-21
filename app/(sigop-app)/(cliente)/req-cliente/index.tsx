@@ -1,8 +1,4 @@
-import {
-  View,
-  FlatList,
-  Alert,
-} from "react-native";
+import { View, FlatList, Alert } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 import { Link } from "expo-router";
@@ -31,7 +27,6 @@ import { BarCodeReq, ReqCard } from "@/presentation/req/components";
 
 import { DateAdapter } from "@/config/adapters";
 import { Colors } from "@/config/constants";
-
 
 const FILTERS = {
   REQ: "req",
@@ -73,45 +68,19 @@ const ReqClienteScreen = () => {
   } = useFilters(initialFilterValues, FILTERS);
 
   const {
+    hideReqCards,
+    hideModalExitTicket,
+    isVisibleModalTicket,
+    isVisibleReqCards,
+    searchRequirements,
     ticketDataEncode,
     ticketDataToShow,
-    isVisibleModalTicket,
-    hideModalExitTicket,
   } = useReqStore();
-
-  const {
-    isVisible: isVisibleCards,
-    show: showCards,
-    hide: hideCards,
-  } = useVisibility();
-
 
   const { reqs, isLoadingReqs, getRequirements } = useReqs();
   const { dropdownTurns, isLoadingTurns } = useTurns();
   const { dropdownTypeReqs, isLoadingTypeReqs } = useTypeReqs();
   const { dropdownStatusReqs, isLoadingStatusReqs } = useStatusReqs();
-
-  const searchRequirements = async () => {
-    const areThereFilters = Object.values(filters).every(
-      (filter) => filter === ""
-    );
-
-    if (areThereFilters) {
-      Alert.alert("Atención", "Debe seleccionar algún filtro.");
-      return;
-    }
-
-    await getRequirements({
-      date: filters.date,
-      patent: filters.patent,
-      reqType: filters.reqType,
-      requirement: filters.req,
-      status: filters.reqStatus,
-      turn: filters.turn,
-    });
-
-    showCards();
-  };
 
   return (
     <ThemedView className="px-3">
@@ -134,7 +103,18 @@ const ReqClienteScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={searchRequirements}
+          onPress={() =>
+            searchRequirements(filters, () =>
+              getRequirements({
+                date: filters.date,
+                patent: filters.patent,
+                reqType: filters.reqType,
+                requirement: filters.req,
+                status: filters.reqStatus,
+                turn: filters.turn,
+              })
+            )
+          }
           disabled={isLoadingReqs}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
@@ -146,7 +126,7 @@ const ReqClienteScreen = () => {
           className="flex-1 bg-light-tomato rounded-md py-3"
           onPress={() => {
             clearFilter();
-            hideCards();
+            hideReqCards();
           }}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
@@ -164,14 +144,12 @@ const ReqClienteScreen = () => {
               color={Colors.light.blue}
             />
           </ThemedView>
-        ) : isVisibleCards ? (
+        ) : isVisibleReqCards ? (
           reqs.length > 0 ? (
             <FlatList
               data={reqs}
               renderItem={({ item }) => (
-                <ReqCard
-                  req={item}
-                >
+                <ReqCard req={item}>
                   <Link
                     className="bg-blue-800 px-6 py-3 rounded-full text-white"
                     href={{
@@ -292,7 +270,6 @@ const ReqClienteScreen = () => {
           </ThemedText>
         </ThemedButton>
       </ThemedModal>
-
     </ThemedView>
   );
 };

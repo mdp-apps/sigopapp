@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import { ActivityIndicator, Button, Text } from "react-native-paper";
 
 import { useVisibility } from "@/presentation/shared/hooks";
@@ -16,38 +16,65 @@ import {
 } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
 import { DriverReqCard } from "@/presentation/req/components";
+import { driverReqSchema } from "@/presentation/shared/validations";
 
 import { Colors, REQ_TYPE } from "@/config/constants";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
 const ReqConductorScreen = () => {
-  const [reqType, setReqType] = useState(0);
-  const [inputRutValue, setInputRutValue] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<z.infer<typeof driverReqSchema>>({
+    resolver: zodResolver(driverReqSchema),
+    defaultValues: {
+     rut: "",
+    },
+  });
 
   const { user } = useAuthStore();
 
   const {
-    isVisible: isDialogVisible,
+    isVisible: isVisibleDialog,
     show: showDialog,
     hide: hideDialog,
   } = useVisibility();
 
   const {
-    isVisible: isModalVisible,
+    isVisible: isVisibleModal,
     show: showModal,
     hide: hideModal,
   } = useVisibility();
 
-  const { isVisible: isCardVisible, show: showCard } = useVisibility();
+  const { isVisible: isVisibleCard, show: showCard } = useVisibility();
 
-  const { driverReqs, isLoadingDriverReqs } = useDriverReqsByRut(
-    user?.isDriver ? user?.rut : inputRutValue,
-    reqType
-  );
+  const {
+    driverReqs,
+    reqType,
+    isLoadingDriverReqs,
+    changeReqType
+  } = useDriverReqsByRut(user?.isDriver ? user?.rut : getValues("rut"));
+
+  useEffect(() => {
+    if (errors.rut) {
+      Alert.alert("Error", errors.rut.message);
+    }
+  }, [errors]);
 
   const handleReqType = (value: number) => {
-    setReqType(value);
+    changeReqType(value);
 
     user?.isDriver ? showCard() : showDialog();
+  };
+
+  const onSubmit = () => {
+    hideDialog();
+    showCard();
   };
 
   return (
@@ -91,7 +118,7 @@ const ReqConductorScreen = () => {
       {isLoadingDriverReqs ? (
         <ActivityIndicator animating={true} color={Colors.light.tomato} />
       ) : (
-        isCardVisible && (
+        isVisibleCard && (
           <ScrollView>
             {driverReqs.length > 0 ? (
               driverReqs.map((item, index) => (
@@ -111,7 +138,7 @@ const ReqConductorScreen = () => {
         )
       )}
 
-      <ThemedModal isVisible={isModalVisible} hideModal={hideModal}>
+      <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
         <Text variant="bodyLarge">
           * Revise que la patente coincida con su camión. {"\n"} {"\n"}
           Despacho: Carga de productos. {"\n"}
@@ -120,20 +147,16 @@ const ReqConductorScreen = () => {
       </ThemedModal>
 
       <ThemedDialog
-        isShowDialog={isDialogVisible}
+        isShowDialog={isVisibleDialog}
         title="Ingrese el RUT"
         description="Sin puntos y con guión"
         inputOptions={{
-          onChangeText: (text) => setInputRutValue(text),
-          value: inputRutValue,
+          control: control,
           placeholder: "RUT",
           keyboardType: "numbers-and-punctuation",
         }}
         handleDialogCancel={hideDialog}
-        handleDialogAccept={() => {
-          hideDialog();
-          showCard();
-        }}
+        handleDialogAccept={handleSubmit(onSubmit)}
       />
     </ImgBackgroundLayout>
   );

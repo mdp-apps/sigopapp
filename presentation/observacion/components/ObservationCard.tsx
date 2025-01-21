@@ -16,7 +16,7 @@ interface ObservationCardProps extends ObservationtextProps {
   showModal: () => void;
 }
 
-const ObservationCard = ({ observation, showModal }: ObservationCardProps) => {
+export const ObservationCard = ({ observation, showModal }: ObservationCardProps) => {
   const { getObservationImage } = useObservationImage();
 
   return (
@@ -61,5 +61,3 @@ const ObservationText = ({ observation }: ObservationtextProps) => {
     </>
   );
 };
-
-export default ObservationCard;

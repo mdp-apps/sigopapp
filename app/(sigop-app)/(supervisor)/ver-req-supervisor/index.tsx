@@ -77,17 +77,14 @@ const VerReqSupervisorScreen = () => {
   } = useFilters(initialFilterValues, FILTERS);
 
   const {
+    hideModalExitTicket,
+    hideReqCards,
+    isVisibleModalTicket,
+    isVisibleReqCards,
+    searchRequirements,
     ticketDataEncode,
     ticketDataToShow,
-    isVisibleModalTicket,
-    hideModalExitTicket,
   } = useReqStore();
-
-  const {
-    isVisible: isVisibleCards,
-    show: showCards,
-    hide: hideCards,
-  } = useVisibility();
 
   const { reqs, isLoadingReqs, getRequirements } = useReqs();
 
@@ -98,29 +95,6 @@ const VerReqSupervisorScreen = () => {
   const { dropdownOperations, isLoadingOperations } = useOperations();
   const { dropdownTypeReqs, isLoadingTypeReqs } = useTypeReqs();
   const { dropdownStatusReqs, isLoadingStatusReqs } = useStatusReqs();
-
-  const searchRequirements = async () => {
-    const areThereFilters = Object.values(filters).every(
-      (filter) => filter === ""
-    );
-
-    if (areThereFilters) {
-      Alert.alert("Atención", "Debe seleccionar algún filtro.");
-      return;
-    }
-
-    await getRequirements({
-      customer: filters.customer,
-      date: filters.date,
-      patent: filters.patent,
-      reqType: filters.reqType,
-      requirement: filters.req,
-      status: filters.reqStatus,
-      turn: filters.turn,
-    });
-
-    showCards();
-  };
 
   return (
     <ThemedView className="px-3">
@@ -143,7 +117,19 @@ const VerReqSupervisorScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={searchRequirements}
+          onPress={() =>
+            searchRequirements(filters, () =>
+              getRequirements({
+                customer: filters.customer,
+                date: filters.date,
+                patent: filters.patent,
+                reqType: filters.reqType,
+                requirement: filters.req,
+                status: filters.reqStatus,
+                turn: filters.turn,
+              })
+            )
+          }
           disabled={isLoadingReqs}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
@@ -155,7 +141,7 @@ const VerReqSupervisorScreen = () => {
           className="flex-1 bg-light-tomato rounded-md py-3"
           onPress={() => {
             clearFilter();
-            hideCards();
+            hideReqCards();
           }}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
@@ -173,7 +159,7 @@ const VerReqSupervisorScreen = () => {
               color={Colors.light.blue}
             />
           </ThemedView>
-        ) : isVisibleCards ? (
+        ) : isVisibleReqCards ? (
           reqs.length > 0 ? (
             <FlatList
               data={reqs}
@@ -324,7 +310,10 @@ const VerReqSupervisorScreen = () => {
         hideModal={hideModalExitTicket}
         supportedOrientations={["portrait", "landscape"]}
       >
-        <BarCodeReq dataToEncode={ticketDataEncode} dataToShow={ticketDataToShow} />
+        <BarCodeReq
+          dataToEncode={ticketDataEncode}
+          dataToShow={ticketDataToShow}
+        />
 
         <ThemedButton
           className=" bg-cyan-600 rounded-md py-3"

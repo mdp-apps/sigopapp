@@ -7,7 +7,8 @@ import { useAuthStore } from "@/presentation/auth/store";
 import { Colors } from "@/config/constants";
 
 const CheckAuthenticationLayout = () => {
-  const { status, checkStatus } = useAuthStore();
+  const { status, checkStatus, user } = useAuthStore();
+  // console.log(JSON.stringify({ status, user }, null, 2));
 
   useEffect(() => {
     checkStatus();
@@ -18,7 +19,7 @@ const CheckAuthenticationLayout = () => {
   }
 
   if (status === "unauthenticated") {
-    return <Redirect href="/auth/(login)" />;
+    return <Redirect href="/auth/(login-rut)" />;
   }
 
   return (

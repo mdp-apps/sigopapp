@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -9,6 +8,7 @@ import {
   Platform,
 } from "react-native";
 
+import { ThemedView } from "@/presentation/theme/components";
 interface AuthBaseLayoutProps {
   children: React.ReactNode;
 }
@@ -34,9 +34,9 @@ export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={styles.containerScrollView}
         >
-          <View style={{ alignItems: "center", marginTop: -75 }}>
+          <ThemedView className="items-center" margin>
             {children}
-          </View>
+          </ThemedView>
         </ScrollView>
       </View>
     </KeyboardAvoidingView>

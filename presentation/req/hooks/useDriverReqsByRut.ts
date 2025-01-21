@@ -5,8 +5,11 @@ import * as UseCases from "@/core/req/use-cases";
 import { DriverReq } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
-export const useDriverReqsByRut = (rut: string, reqType: number) => {
+const initialReqType = 0;
+
+export const useDriverReqsByRut = (rut: string) => {
   const [driverReqs, setDriverReqs] = useState<DriverReq[]>([]);
+   const [reqType, setReqType] = useState(initialReqType);
 
   const [isLoadingDriverReqs, setIsLoadingDriverReqs] = useState(false);
 
@@ -27,8 +30,14 @@ export const useDriverReqsByRut = (rut: string, reqType: number) => {
     })();
   }, [rut, reqType]);
 
+  const changeReqType = (value: number) => { 
+    setReqType(value);
+  }
+
   return {
     driverReqs,
+    reqType,
     isLoadingDriverReqs,
+    changeReqType,
   };
 };

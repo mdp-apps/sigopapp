@@ -27,7 +27,6 @@ const SupervisorScreen = () => {
         </>
       ) : (
           <>
-            {/* Quitar '!' */}
           {!user?.isDriver ? (
             <View className="flex w-full gap-4">
               <ThemedButton

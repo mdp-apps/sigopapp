@@ -16,25 +16,12 @@ const AuthLayout = () => {
       />
 
       <Stack.Screen
-        name="login-sigop/index"
+        name="login-user/index"
         options={{
           headerShown: false,
         }}
       />
 
-      <Stack.Screen
-        name="login-conductor/index"
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="biometria/index"
-        options={{
-          title: "Biometría",
-        }}
-      />
     </Stack>
   );
 };

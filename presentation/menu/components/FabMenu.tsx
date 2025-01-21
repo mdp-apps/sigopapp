@@ -4,90 +4,87 @@ import { FAB } from "react-native-paper";
 
 import { useAuthStore } from "@/presentation/auth/store";
 import { UserSession } from "@/infrastructure/entities";
+import { useVisibility } from "@/presentation/shared/hooks";
+import { useThemeColor } from "@/presentation/theme/hooks";
 
+type FabActions = {
+  icon?: string;
+  label?: string;
+  onPress?: () => void;
+};
 interface FabMenuProps {
   showModal: () => void;
 }
 
 export const FabMenu = ({ showModal }: FabMenuProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [dynamicActions, setDynamicActions] = useState([
-    { icon: "account-question", onPress: () => console.log("Pressed add") },
-  ]);
+  const [dynamicActions, setDynamicActions] = useState<FabActions[]>([]);
 
+  const primaryColor = useThemeColor({}, "primary");
+  const {isVisible: isVisibleFab, toggle: toggleFab} = useVisibility();
   const { user, logout } = useAuthStore();
 
   useEffect(() => {
     buildActions();
-  }, []);
-
-
-  const politicaPrivacidad = () => {
-    showModal();
-  };
+  }, [user]);
 
   const buildActions = () => {
-    const iconName = user?.name.substring(0, 1).toLocaleLowerCase() || "a";
+    setDynamicActions([]);
+
+    const iconName = user?.name.charAt(0).toLocaleLowerCase() || "a";
     const validIconName = iconName.match(/^[a-z]+$/) ? iconName : "a";
+    const userName = `${user?.name} ${user?.paternalLastname} ${
+      user?.maternalLastname.charAt(0) ?? ""
+    }.`;
 
-    const newActions = [];
-
-    if (!user?.isDriver) {
-      newActions.push({
-        icon: `alpha-${validIconName}-circle`,
-        label: `${user?.name} ${user?.paternalLastname} ${
-          user?.maternalLastname.substring(0, 1) ?? ""
-        }. [${(user as UserSession)?.companyName}]`,
-        onPress: () => console.log("Pressed name"),
-      });
-      newActions.push({
-        icon: `tooltip-text-outline`,
-        label: `Política de privacidad`,
-        onPress: () => politicaPrivacidad(),
-      });
-      newActions.push({
-        icon: "email",
-        label: (user as UserSession)?.emailLogin,
-        onPress: () => console.log("Pressed email"),
-      });
-      newActions.push({
-        icon: "account-key",
-        label: "Cambiar contraseña",
-        onPress: () => console.log("Pressed change password"),
-      });
+    if (user?.isDriver) {
+      setDynamicActions((prevActions) => [
+        ...prevActions,
+        {
+          icon: `alpha-${validIconName}-circle`,
+          label: `${userName} [Conductor]`,
+          onPress: () => console.log("Pressed email"),
+        },
+      ]);
     } else {
-      newActions.push({
-        icon: `alpha-${validIconName}-circle`,
-        label: `${user?.name} ${user?.paternalLastname} ${
-          user?.maternalLastname.substring(0, 1) ?? ""
-        }. [Conductor]`,
-        onPress: () => console.log("Pressed email"),
-      });
-      newActions.push({
-        icon: `tooltip-text-outline`,
-        label: `Política de privacidad`,
-        onPress: () => politicaPrivacidad(),
-      });
+      setDynamicActions((prevActions) => [
+        ...prevActions,
+        {
+          icon: `alpha-${validIconName}-circle`,
+          label: `${userName} [${(user as UserSession)?.companyName}]`,
+          onPress: () => console.log("Pressed name"),
+        },
+        {
+          icon: "email",
+          label: (user as UserSession)?.emailLogin,
+          onPress: () => console.log("Pressed email"),
+        },
+      ]);
     }
 
-    newActions.push({
-      icon: "logout",
-      label: "Cerrar sesión",
-      onPress: () => logout(),
-    });
-
-    setDynamicActions(newActions);
+     setDynamicActions((prevActions) => [
+       ...prevActions,
+       {
+         icon: `tooltip-text-outline`,
+         label: `Política de privacidad`,
+         onPress: () => showModal(),
+       },
+       {
+         icon: "logout",
+         label: "Cerrar sesión",
+         onPress: () => logout(),
+       },
+     ]);
   };
 
   return (
     <FAB.Group
-      open={isOpen}
+      open={isVisibleFab}
       visible
-      icon={isOpen ? "account-minus" : "account-details"}
+      icon={isVisibleFab ? "account-minus" : "account-details"}
       color="white"
-      fabStyle={{ backgroundColor: "#337AB7" }}
-      actions={dynamicActions}
-      onStateChange={({ open }) => setIsOpen(open)}
+      fabStyle={{ backgroundColor: primaryColor }}
+      actions={dynamicActions as any}
+      onStateChange={({ open }) => toggleFab(open)}
     />
   );
 };

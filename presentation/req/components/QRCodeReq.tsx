@@ -10,7 +10,9 @@ interface QRCodeReqProps {
   hideModal: () => void;
 }
 
-export const QRCodeReq = ({ reqCode,dataToEncode, hideModal }: QRCodeReqProps) => {
+export const QRCodeReq = ({ reqCode, dataToEncode, hideModal }: QRCodeReqProps) => {
+  console.log(JSON.stringify(dataToEncode, null, 2));
+
   return (
     <View className="flex-1 justify-center items-center">
       <ThemedButton
@@ -26,7 +28,7 @@ export const QRCodeReq = ({ reqCode,dataToEncode, hideModal }: QRCodeReqProps) =
         <View className="flex-1 justify-center items-center">
           <QRCodeStyled
             data={dataToEncode}
-            pieceSize={8}
+            pieceSize={9}
             padding={20}
             errorCorrectionLevel={"M"}
             color="black"

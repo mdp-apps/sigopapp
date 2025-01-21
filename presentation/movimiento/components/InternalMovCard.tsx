@@ -92,7 +92,7 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
 
         <Divider className="bg-black h-0.5 my-2" />
 
-        <View className="bg-light-white p-3 rounded-lg">
+        <View className="bg-light-white p-3 rounded-lg mb-3">
           <ThemedText variant="h6" className="mb-3 font-ruda">
             Datos de origen
           </ThemedText>

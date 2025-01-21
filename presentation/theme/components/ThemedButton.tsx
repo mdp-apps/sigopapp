@@ -1,24 +1,33 @@
-import React from "react";
 import { Text, Pressable, PressableProps } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
+import { Colors } from "@/config/constants";
 
 interface Props extends PressableProps {
-  text?: string;
   children?: React.ReactNode;
   className?: string;
+  iconColor?: string;
+  iconName?: keyof typeof Ionicons.glyphMap;
+  iconSize?: number;
+  text?: string;
   textClassName?: string;
-  variant?: "outline" | "default" | "rounded";
+  variant?: "outline" | "default" | "rounded" | "icon";
 }
 
 export const ThemedButton = ({
   children,
   className,
+  iconColor = Colors.light.gray,
+  iconName,
+  iconSize = 24,
   onPress,
   text,
   textClassName,
   variant = "default",
   ...rest
 }: Props) => {
-  const outlineStyle = variant === "outline" ? "border border-white bg-transparent" : "";
+  const outlineStyle =
+    variant === "outline" ? "border border-white bg-transparent" : "";
   const roundedStyle = variant === "rounded" ? "rounded-full" : "";
 
   return (
@@ -32,10 +41,14 @@ export const ThemedButton = ({
       ].join(" ")}
       {...rest}
     >
-      {children ? (
+      {variant === "icon" ? (
+        <Ionicons name={iconName} size={iconSize} color={iconColor} />
+      ) : children ? (
         children
       ) : (
-        <Text className={["text-white text-md", textClassName].join(" ")}>{text}</Text>
+        <Text className={["text-white text-md", textClassName].join(" ")}>
+          {text}
+        </Text>
       )}
     </Pressable>
   );

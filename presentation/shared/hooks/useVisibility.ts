@@ -5,7 +5,14 @@ export const useVisibility = () => {
 
   const show = () => setIsVisible(true);
   const hide = () => setIsVisible(false);
-  const toggle = () => setIsVisible((prev) => !prev);
+  const toggle = (state?: boolean) => {
+    if (state) {
+      setIsVisible(state);
+      return;
+    }
+
+    setIsVisible((prev) => !prev);
+  };
 
   return {
     isVisible,

@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 
-import {
-  View,
-  FlatList,
-  Alert,
-} from "react-native";
+import { View, FlatList, Alert } from "react-native";
 
 import { ActivityIndicator } from "react-native-paper";
 
@@ -41,10 +37,15 @@ import {
   BarCodeReq,
   DriverReqPalletizedCard,
 } from "@/presentation/req/components";
+import { palletSchema } from "@/presentation/shared/validations";
 
 import { Palletized, Req } from "@/infrastructure/entities";
 import { DateAdapter } from "@/config/adapters";
 import { Colors, REQ_TYPE_FORMAT } from "@/config/constants";
+
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const FILTERS = {
   REQ: "req",
@@ -73,7 +74,6 @@ const initialFilterValues = {
   reqType: "",
 };
 
-
 const VerReqConductorScreen = () => {
   const {
     filters,
@@ -88,17 +88,15 @@ const VerReqConductorScreen = () => {
 
   const { user } = useAuthStore();
   const {
+    hideModalExitTicket,
+    hideReqCards,
+    isVisibleModalTicket,
+    isVisibleReqCards,
+    searchRequirements,
     ticketDataEncode,
     ticketDataToShow,
-    isVisibleModalTicket,
-    hideModalExitTicket,
   } = useReqStore();
 
-  const {
-    isVisible: isVisibleCards,
-    show: showCards,
-    hide: hideCards,
-  } = useVisibility();
   const {
     isVisible: isVisibleModalPallets,
     show: showModalPallets,
@@ -117,126 +115,93 @@ const VerReqConductorScreen = () => {
     hide: hideSnackbar,
   } = useVisibility();
 
-  const [hasPallet, sethasPallet] = useState(false);
-  const [numPallet, setNumPallet] = useState(0);
-  const [pesoTotal, setPesoTotal] = useState(0);
-  const [cantMezcla, setCantMezcla] = useState(0);
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<z.infer<typeof palletSchema>>({
+    resolver: zodResolver(palletSchema),
+    defaultValues: {
+      hasPallets: false,
+      nroPallets: 0,
+      totalPalletWeight: 0,
+      quantityMix: 0,
+    },
+  });
 
-  const [clienteReq, setClienteReq] = useState(0);
-  const [tipoReq, setTipoReq] = useState(0);
-  const [requerimiento, setRequerimiento] = useState(0);
+  const [customerReq, setCustomerReq] = useState(0);
+  const [reqType, setReqType] = useState(0);
+  const [reqCode, setReqCode] = useState(0);
 
   const { dropdownPackaging, isLoadingPackaging } =
-    usePackagingByCustomer(clienteReq);
+    usePackagingByCustomer(customerReq);
   const { reqs, isLoadingReqs, getRequirements } = useReqs();
   const { configurePallets } = useConfigurePallets();
   const { dropdownTurns, isLoadingTurns } = useTurns();
   const { dropdownTypeReqs, isLoadingTypeReqs } = useTypeReqs();
   const { dropdownStatusReqs, isLoadingStatusReqs } = useStatusReqs();
 
-  const searchRequirements = async () => {
-    const areThereFilters = Object.values(filters).every(
-      (filter) => filter === ""
-    );
-
-    if (areThereFilters) {
-      Alert.alert("Atención", "Debe seleccionar algún filtro.");
-      return;
-    }
-
-    await getRequirements({
-      customer: filters.customer,
-      date: filters.date,
-      patent: filters.patent,
-      reqType: filters.reqType,
-      requirement: filters.req,
-      status: filters.reqStatus,
-      turn: filters.turn,
-    });
-
-    showCards();
-  };
-
   const handlePalletizedDataLoaded = (data: Palletized) => {
-    sethasPallet(data.hasPallet === 1);
-    setNumPallet(data.palletQuantity);
-    setPesoTotal(data.totalWeight);
-    setCantMezcla(data.mixQuantity);
+    setValue("hasPallets", data.hasPallet === 1);
+    setValue("nroPallets", data.palletQuantity);
+    setValue("totalPalletWeight", data.totalWeight);
+    setValue("quantityMix", data.mixQuantity);
   };
 
   const handleModalPallets = (item: Req) => {
     showModalPallets();
-    setTipoReq(+`${item.reqType}${item.formatType}`);
-    setRequerimiento(item.internalCode);
-    console.log(
-      `tipo de requerimiento seleccionado: ${item.reqType}${item.formatType}`
-    );
+    setReqType(+`${item.reqType}${item.formatType}`);
+    setReqCode(item.internalCode);
   };
 
   const handleModalPackaging = (item: Req) => {
-    setClienteReq(item.customerCode);
-
     showModalPackaging();
 
-    setTipoReq(+`${item.reqType}${item.formatType}`);
-    setRequerimiento(item.internalCode);
-    console.log(
-      `tipo de requerimiento seleccionado: ${item.reqType}${item.formatType}`
-    );
+    setCustomerReq(item.customerCode);
+    setReqType(+`${item.reqType}${item.formatType}`);
+    setReqCode(item.internalCode);
   };
 
-  const handleSubmit = async () => {
-    console.log(hasPallet ? "tiene pallet" : "no tiene pallet");
-    console.log("numPallet", numPallet);
-    console.log("pesoTotal", pesoTotal);
-    console.log("cantMezcla", cantMezcla);
+  const onSubmit = async (values: z.infer<typeof palletSchema>) => {
     console.log(
-      tipoReq === REQ_TYPE_FORMAT.despachoEnvasado ? "desp_env" : "otros"
+      reqType === REQ_TYPE_FORMAT.despachoEnvasado ? "desp_env" : "otros"
     );
-    let errorInputs = false;
 
-    if (tipoReq === REQ_TYPE_FORMAT.despachoEnvasado) {
-      if (numPallet === 0 || pesoTotal === 0) {
-        showSnackbar();
-        errorInputs = true;
-      }
-    } else {
-      if (numPallet === 0 || pesoTotal === 0 || cantMezcla === 0) {
-        showSnackbar();
-        errorInputs = true;
-      }
+    if (values.nroPallets === 0 || values.totalPalletWeight === 0) {
+      showSnackbar();
+      return;
     }
 
-    if (!errorInputs) {
-      const newData: ConfigurePalletBody = {
-        enterKiosk: 0,
-        hasPallet: hasPallet ? 1 : 0,
-        id: 0,
-        option: 1,
-        reqCode: requerimiento,
-        userCode: String(user?.code),
-      };
+    if (
+      reqType !== REQ_TYPE_FORMAT.despachoEnvasado &&
+      values.quantityMix === 0
+    ) {
+      showSnackbar();
+      return;
+    }
 
-      if (hasPallet) {
-        newData.palletQuantity = numPallet;
-        newData.totalWeight = pesoTotal;
-        newData.mixQuantity = cantMezcla;
-      }
+    const newData: ConfigurePalletBody = {
+      enterKiosk: 0,
+      hasPallet: values.hasPallets ? 1 : 0,
+      id: 0,
+      option: 1,
+      reqCode: reqCode,
+      userCode: String(user?.code),
+      palletQuantity: values.hasPallets ? values.nroPallets : undefined,
+      totalWeight: values.hasPallets ? values.totalPalletWeight : undefined,
+      mixQuantity:
+        reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 0 : values.quantityMix,
+      batch: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 1 : undefined,
+      mix: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? "" : undefined,
+    };
 
-      if (tipoReq === REQ_TYPE_FORMAT.despachoEnvasado) {
-        newData.batch = 1;
-        newData.mix = "";
-        newData.mixQuantity = 0;
-      } else {
-        newData.mixQuantity = cantMezcla;
-      }
+    const configurePalletsResponse = await configurePallets(newData);
 
-      const configurePalletsResponse = await configurePallets(newData);
-
-      if (configurePalletsResponse.result === "OK") {
-        Alert.alert("OK", "Datos actualizados.");
-      }
-
+    if (configurePalletsResponse.result === "OK") {
+      Alert.alert("OK", "Datos actualizados.");
+    } else {
       Alert.alert(
         "Error",
         "No se han encontrado requerimientos con estos datos."
@@ -265,7 +230,19 @@ const VerReqConductorScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={searchRequirements}
+          onPress={() =>
+            searchRequirements(filters, () =>
+              getRequirements({
+                customer: filters.customer,
+                date: filters.date,
+                patent: filters.patent,
+                reqType: filters.reqType,
+                requirement: filters.req,
+                status: filters.reqStatus,
+                turn: filters.turn,
+              })
+            )
+          }
           disabled={isLoadingReqs}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
@@ -277,7 +254,7 @@ const VerReqConductorScreen = () => {
           className="flex-1 bg-light-tomato rounded-md"
           onPress={() => {
             clearFilter();
-            hideCards();
+            hideReqCards();
           }}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
@@ -295,7 +272,7 @@ const VerReqConductorScreen = () => {
               color={Colors.light.blue}
             />
           </ThemedView>
-        ) : isVisibleCards ? (
+        ) : isVisibleReqCards ? (
           reqs.length > 0 ? (
             <FlatList
               data={reqs}
@@ -412,7 +389,7 @@ const VerReqConductorScreen = () => {
           Configurar pallets
         </ThemedText>
 
-        {tipoReq === REQ_TYPE_FORMAT.despachoEnvasado ? (
+        {reqType === REQ_TYPE_FORMAT.despachoEnvasado ? (
           <>
             <ThemedInput
               keyboardType="numeric"
@@ -428,37 +405,94 @@ const VerReqConductorScreen = () => {
           </>
         ) : (
           <>
-            <ThemedToggle
-              value={hasPallet}
-              onPress={(newState) => sethasPallet(newState!)}
-              leftTitle="No tiene pallet"
-              rightTitle="Tiene pallet"
+            <Controller
+              control={control}
+              name="hasPallets"
+              render={({ field: { onChange, value } }) => (
+                <ThemedToggle
+                  value={value}
+                  onPress={(newState) => onChange(newState)}
+                  leftTitle="No tiene pallet"
+                  rightTitle="Tiene pallet"
+                />
+              )}
             />
 
-            {hasPallet && (
+            {getValues("hasPallets") && (
               <>
-                <ThemedInput
-                  keyboardType="numeric"
-                  label="Núm. de Pallets (UN)"
-                  placeholder="Ingrese cant. de pallets"
-                  value={String(numPallet)}
-                  onChangeText={(text) => setNumPallet(Number(text))}
+                <Controller
+                  control={control}
+                  name="nroPallets"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                      <ThemedInput
+                        keyboardType="numeric"
+                        label="Núm. de Pallets (UN)"
+                        placeholder="Ingrese cant. de pallets"
+                        value={String(value)}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                      />
+                      {errors.nroPallets && (
+                        <ThemedText
+                          variant="h5"
+                          className="text-red-400 text-center mb-3"
+                        >
+                          {errors.nroPallets.message}
+                        </ThemedText>
+                      )}
+                    </>
+                  )}
                 />
 
-                <ThemedInput
-                  keyboardType="numeric"
-                  label="Peso total de Pallets (KG)"
-                  placeholder="Ingrese peso total de pallets"
-                  value={String(pesoTotal)}
-                  onChangeText={(text) => setPesoTotal(Number(text))}
+                <Controller
+                  control={control}
+                  name="totalPalletWeight"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                      <ThemedInput
+                        keyboardType="numeric"
+                        label="Peso total de Pallets (KG)"
+                        placeholder="Ingrese peso total de pallets"
+                        value={String(value)}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                      />
+                      {errors.totalPalletWeight && (
+                        <ThemedText
+                          variant="h5"
+                          className="text-red-400 text-center mb-3"
+                        >
+                          {errors.totalPalletWeight.message}
+                        </ThemedText>
+                      )}
+                    </>
+                  )}
                 />
 
-                <ThemedInput
-                  keyboardType="numeric"
-                  label="Cant. Mezcla Palletizada (KG)"
-                  placeholder="Ingrese cant. de mezcla palletizada"
-                  value={String(cantMezcla)}
-                  onChangeText={(text) => setCantMezcla(Number(text))}
+                <Controller
+                  control={control}
+                  name="quantityMix"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <>
+                      <ThemedInput
+                        keyboardType="numeric"
+                        label="Cant. Mezcla Palletizada (KG)"
+                        placeholder="Ingrese cant. de mezcla palletizada"
+                        value={String(value)}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                      />
+                      {errors.quantityMix && (
+                        <ThemedText
+                          variant="h5"
+                          className="text-red-400 text-center mb-3"
+                        >
+                          {errors.quantityMix.message}
+                        </ThemedText>
+                      )}
+                    </>
+                  )}
                 />
               </>
             )}
@@ -469,7 +503,7 @@ const VerReqConductorScreen = () => {
           <ThemedButton
             variant="rounded"
             className="bg-blue-800"
-            onPress={handleSubmit}
+            onPress={handleSubmit(onSubmit)}
             text="Guardar cambios"
           />
 
@@ -499,12 +533,29 @@ const VerReqConductorScreen = () => {
             isLoading={isLoadingPackaging}
           />
 
-          <ThemedInput
-            keyboardType="numeric"
-            label="Núm. de Envases (UN)"
-            placeholder="Ingrese cant. de envases"
-            value={String(numPallet)}
-            onChangeText={(text) => setNumPallet(Number(text))}
+          <Controller
+            control={control}
+            name="nroPallets"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <ThemedInput
+                  keyboardType="numeric"
+                  label="Núm. de Envases (UN)"
+                  placeholder="Ingrese cant. de envases"
+                  value={String(value)}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+                {errors.nroPallets && (
+                  <ThemedText
+                    variant="h5"
+                    className="text-red-400 text-center mb-3"
+                  >
+                    {errors.nroPallets.message}
+                  </ThemedText>
+                )}
+              </>
+            )}
           />
         </View>
 
@@ -512,7 +563,7 @@ const VerReqConductorScreen = () => {
           <ThemedButton
             variant="rounded"
             className="bg-blue-800"
-            onPress={handleSubmit}
+            onPress={handleSubmit(onSubmit)}
             text="Guardar cambios"
           />
 

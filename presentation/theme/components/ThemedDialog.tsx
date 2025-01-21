@@ -1,11 +1,16 @@
 import Dialog from "react-native-dialog";
 import { DialogInputProps } from "react-native-dialog/lib/Input";
+import { Control, Controller } from "react-hook-form";
+
+interface DialogInput extends DialogInputProps{
+  control: Control<any>;
+}
 
 interface ThemedDialogProps {
   isShowDialog: boolean;
   title: string;
   description: string;
-  inputOptions?: DialogInputProps;
+  inputOptions?: DialogInput;
   handleDialogCancel?: () => void;
   handleDialogAccept?: () => void;
 }
@@ -24,11 +29,18 @@ export const ThemedDialog = ({
       <Dialog.Description>{description}</Dialog.Description>
 
       {inputOptions && (
-        <Dialog.Input
-          onChangeText={inputOptions.onChangeText}
-          value={inputOptions.value}
-          placeholder={inputOptions.placeholder}
-          {...inputOptions}
+        <Controller
+          control={inputOptions.control}
+          name="rut"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Dialog.Input
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder={inputOptions.placeholder}
+              {...inputOptions}
+            />
+          )}
         />
       )}
 

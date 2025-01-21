@@ -11,11 +11,15 @@ import { FabMenu, MenuCard } from "@/presentation/menu/components";
 import { ThemedModal, ThemedText } from "@/presentation/theme/components";
 
 import { Formatter } from "@/config/helpers";
-import { Colors, PRIVACY_POLICY } from "@/config/constants";
+import { PRIVACY_POLICY } from "@/config/constants";
 import { STAGE } from "@/config/api/sigopApi";
 
 const MenuScreen = () => {
-  const { hide: hideModal, isVisible, show: showModal } = useVisibility();
+  const {
+    hide: hideModal,
+    isVisible: isVisibleModal,
+    show: showModal,
+  } = useVisibility();
 
   const { user } = useAuthStore();
 
@@ -80,27 +84,23 @@ const MenuScreen = () => {
                 route="/menu-supervisor"
                 iconSource="account-hard-hat"
               />
-            </View>
+              </View>
+              
+            {STAGE !== "prod" && (
+              <View className="flex-row my-2">
+                <View className="flex-1" />
 
-            <View className="flex-row my-2">
-              <MenuCard
-                text="Requerimientos"
-                route="/req-patente"
-                iconSource="format-list-numbered"
-              />
-
-              {STAGE !== "prod" && (
                 <MenuCard
                   text="Pruebas"
                   route="/prueba"
                   iconSource="test-tube"
                 />
-              )}
-            </View>
+              </View>
+            )}
           </>
         )}
 
-        <ThemedModal isVisible={isVisible} hideModal={hideModal}>
+        <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
           <ScrollView>
             <Text>{PRIVACY_POLICY}</Text>
 

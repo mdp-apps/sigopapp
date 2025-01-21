@@ -91,7 +91,7 @@ const MovInternosClienteScreen = () => {
   const { dropdownInternalMovStatus, isLoadingInternalMovStatus } =
     useInternalMovStatus();
 
-  const searchRequirements = async () => {
+  const searchInternalMovements = async () => {
     const areThereFilters = Object.values(filters).every(
       (filter) => filter === ""
     );
@@ -135,7 +135,7 @@ const MovInternosClienteScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={searchRequirements}
+          onPress={searchInternalMovements}
           disabled={isLoadingInternalMovements}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">

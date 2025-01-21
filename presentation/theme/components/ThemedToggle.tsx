@@ -1,5 +1,5 @@
 import { Dimensions } from "react-native";
-import { Colors } from "@/config/constants";
+import { useThemeColor } from "../hooks";
 import Toggle from "react-native-toggle-element";
 
 interface ThemedtoggleProps {
@@ -17,6 +17,9 @@ export const ThemedToggle = ({
   leftTitle,
   rightTitle,
 }: ThemedtoggleProps) => {
+  const primaryColor = useThemeColor({},"primary");
+  const lightGraycolor = useThemeColor({},"lightGray");
+
   return (
     <Toggle
       value={value}
@@ -32,8 +35,8 @@ export const ThemedToggle = ({
         width: 150,
         height: 40,
         radius: 10,
-        activeBackgroundColor: Colors.light.primary,
-        inActiveBackgroundColor: Colors.light.gray,
+        activeBackgroundColor: primaryColor,
+        inActiveBackgroundColor: lightGraycolor,
       }}
       trackBar={{
         width: width * 0.8,
