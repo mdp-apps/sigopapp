@@ -13,7 +13,6 @@ const SupervisorScreen = () => {
   return (
     <ImgBackgroundLayout
       className="justify-center"
-      source={require("../../../../assets/supervisor1.jpeg")}
     >
       {profile === UserProfile.customer && (
         <>

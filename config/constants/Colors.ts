@@ -13,7 +13,7 @@ export const Colors = {
 
     success: "#52d49b",
 
-    background: "#fff",
+    background: "#e2e8f0",
     text: "#000000",
 
     tomato: "#D9534F",

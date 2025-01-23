@@ -1,27 +1,34 @@
-import { View } from 'react-native'
+import { View } from "react-native";
 import { List, Divider } from "react-native-paper";
 
-import { Colors } from '@/config/constants';
+import { useThemeColor } from "@/presentation/theme/hooks";
 
-interface ProductoOtrosProps { 
+interface ProductoOtrosProps {
   children: React.ReactNode;
   accordionTitle: React.ReactNode;
 }
 
-export const AccordionProduct = ({children,accordionTitle}: ProductoOtrosProps) => {
+export const AccordionProduct = ({
+  children,
+  accordionTitle,
+}: ProductoOtrosProps) => {
+  const secondaryColor = useThemeColor({}, "secondary");
+  
   return (
     <View className="flex-1">
       <List.Accordion
         title={accordionTitle}
-        left={(props) => <List.Icon {...props} icon="format-list-group" />}
+        right={(props) => <List.Icon {...props} icon="format-list-bulleted" />}
         titleStyle={{
           fontSize: 16,
           fontFamily: "Ruda-Bold",
         }}
-        style={{ backgroundColor: Colors.light.quaternary, flex: 1 }}
+        style={{
+          backgroundColor: secondaryColor,
+        }}
       >
         <Divider />
-        
+
         {children}
       </List.Accordion>
 

@@ -46,14 +46,19 @@ export const PackagingDispatchProducts = ({
             <AccordionProduct
               key={batch}
               accordionTitle={
-                <View className="flex-row items-center gap-3">
+                <View className="flex-row justify-center items-center gap-3">
                   <ThemedChip
                     mode="outlined"
                     text={`Lote ${batch}`}
-                    style={{ backgroundColor: "white" }}
+                    style={{
+                      backgroundColor: "white",
+                      width: 70,
+                      marginBottom: 0,
+                    }}
+                    textStyle={{ fontSize: 12, textTransform: "uppercase" }}
                   />
 
-                  <ThemedText variant="h6" className="font-ruda w-5/6">
+                  <ThemedText className="font-ruda w-4/6">
                     {productsPerBatch[batch][0].mixName}
                   </ThemedText>
                 </View>

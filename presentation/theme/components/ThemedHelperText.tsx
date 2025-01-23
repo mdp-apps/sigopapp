@@ -1,13 +1,20 @@
+import React from "react";
 import { HelperText } from "react-native-paper";
 
 interface ThemedHelperText {
-  // isVisible: 
+  children: React.ReactNode;
+  isVisible: boolean;
+  type?: "error" | "info";
 }
 
-export const ThemedHelperText = ({}: ThemedHelperText) => {
+export const ThemedHelperText = ({
+  children,
+  isVisible,
+  type = "error",
+}: ThemedHelperText) => {
   return (
-    {/* <HelperText type="error" visible={}>
-      Email address is invalid!
-    </HelperText> */}
+    <HelperText variant="titleLarge" type={type} visible={isVisible}>
+      {children}
+    </HelperText>
   );
 };

@@ -1,18 +1,27 @@
 import { useEffect } from "react";
 
-import { Redirect, Stack } from "expo-router";
+import { useThemeColor } from "@/presentation/theme/hooks";
+
+import { Redirect, router, Stack } from "expo-router";
 
 import { GlobalLoader } from "@/presentation/shared/components";
 import { useAuthStore } from "@/presentation/auth/store";
-import { Colors } from "@/config/constants";
 
 const CheckAuthenticationLayout = () => {
-  const { status, checkStatus, user,profile } = useAuthStore();
-  console.log(JSON.stringify({ status, user, profile }, null, 2));
+  const backgrounColor = useThemeColor({}, "background");
+
+  const { status, checkStatus, user, profile } = useAuthStore();
+  // console.log(JSON.stringify({ status, user, profile }, null, 2));
 
   useEffect(() => {
     checkStatus();
   }, []);
+
+  useEffect(() => {
+    if (profile === "driver") {
+      router.replace("/req-conductor");
+    }
+  }, [profile]);
 
   if (status === "checking") {
     return <GlobalLoader />;
@@ -27,7 +36,7 @@ const CheckAuthenticationLayout = () => {
       screenOptions={{
         headerShadowVisible: false,
         headerShown: false,
-        contentStyle: { backgroundColor: Colors.light.background },
+        contentStyle: { backgroundColor: backgrounColor },
       }}
     >
       <Stack.Screen

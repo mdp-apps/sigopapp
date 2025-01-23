@@ -7,6 +7,7 @@ import { useAuthStore } from "@/presentation/auth/store";
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import {
   ThemedButton,
+  ThemedHelperText,
   ThemedInput,
   ThemedText,
 } from "@/presentation/theme/components";
@@ -38,7 +39,7 @@ const LoginSigopScreen = () => {
     const authSession = await login(values.email, values.password);
 
     if (authSession) {
-      router.push("/(sigop-app)/(home)");
+      router.replace("/(sigop-app)/(home)");
     } else {
       Alert.alert("Error", "Valide su email o su contraseña.");
     }
@@ -55,7 +56,7 @@ const LoginSigopScreen = () => {
         name="email"
         render={({ field: { onChange, onBlur, value } }) => (
           <ThemedInput
-            className="text-black px-4 py-2 border border-light-primary font-ruda rounded-full mb-3"
+            className="text-black px-4 py-2 border border-light-primary font-ruda rounded-full mb-2"
             style={{ height: 50 }}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -68,16 +69,17 @@ const LoginSigopScreen = () => {
         )}
       />
       {errors.email && (
-        <ThemedText variant="h5" className="text-red-400 text-center mb-3">
-          {errors.email.message}
-        </ThemedText>
+        <ThemedHelperText isVisible={Boolean(errors.email)}>
+          {errors.email?.message}
+        </ThemedHelperText>
       )}
 
       <PasswordInput control={control} />
+
       {errors.password && (
-        <ThemedText variant="h5" className="text-red-400 text-center mt-3">
-          {errors.password.message}
-        </ThemedText>
+        <ThemedHelperText isVisible={Boolean(errors.password)}>
+          {errors.password?.message}
+        </ThemedHelperText>
       )}
 
       <ThemedButton

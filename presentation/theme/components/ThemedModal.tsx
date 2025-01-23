@@ -1,7 +1,11 @@
-import { Dimensions } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
-import { ModalProps } from "react-native";
-import { StyleSheet, Modal as NativeModal, View } from "react-native";
+import {
+  Dimensions,
+  Modal as NativeModal,
+  ModalProps,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { Modal, Portal } from "react-native-paper";
 
 interface ThemedModalContentProps extends ModalProps {
@@ -41,14 +45,30 @@ export const ThemedModal = ({
     >
       {hasAutomaticClosing ? (
         <TouchableWithoutFeedback onPress={hideModal}>
-          <ThemedModalContent className={className} isFullModal={isFullModal}>
-            {children}
-          </ThemedModalContent>
+          <View className="flex-1 flex-row justify-center items-center bg-black/50">
+            <View
+              className={[
+                "flex-1 justify-center bg-white p-5 my-5 rounded-lg mx-3",
+                className,
+              ].join(" ")}
+              style={{ width: isFullModal ? width * 0.9 : width * 0.8 }}
+            >
+              {children}
+            </View>
+          </View>
         </TouchableWithoutFeedback>
       ) : (
-        <ThemedModalContent className={className} isFullModal={isFullModal}>
-          {children}
-        </ThemedModalContent>
+        <View className="flex-1 flex-row justify-center items-center bg-black/50">
+          <View
+            className={[
+              "flex-1 justify-center bg-white p-5 my-5 rounded-lg mx-3",
+              className,
+            ].join(" ")}
+            style={{ width: isFullModal ? width * 0.9 : width * 0.8 }}
+          >
+            {children}
+          </View>
+        </View>
       )}
     </NativeModal>
   ) : (
@@ -64,26 +84,6 @@ export const ThemedModal = ({
         </TouchableWithoutFeedback>
       </Modal>
     </Portal>
-  );
-};
-
-const ThemedModalContent = ({
-  children,
-  isFullModal,
-  className
-}: ThemedModalContentProps) => {
-  return (
-    <View className="flex-1 flex-row justify-center items-center bg-black/50">
-      <View
-        className={[
-          "flex-1 justify-center bg-white p-5 my-5 rounded-lg mx-3",
-          className,
-        ].join(" ")}
-        style={{ width: isFullModal ? width * 0.9 : width * 0.8 }}
-      >
-        {children}
-      </View>
-    </View>
   );
 };
 

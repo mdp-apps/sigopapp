@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import { View, ScrollView, Alert } from "react-native";
 import { ActivityIndicator, Button, Divider } from "react-native-paper";
+import { router } from "expo-router";
 
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useDriverReqsByRut } from "@/presentation/req/hooks";
@@ -15,10 +16,12 @@ import {
   ThemedText,
 } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
+import { FabMenu } from "@/presentation/menu/components";
 import { DriverReqCard } from "@/presentation/req/components";
 import { driverReqSchema } from "@/presentation/shared/validations";
 
 import { Colors, REQ_TYPE } from "@/config/constants";
+import { STAGE } from "@/config/api/sigopApi";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -76,10 +79,7 @@ const ReqConductorScreen = () => {
   };
 
   return (
-    <ImgBackgroundLayout
-      className="justify-center py-5"
-      source={require("../../../../assets/camion.jpg")}
-    >
+    <ImgBackgroundLayout className="justify-center py-5 mt-4">
       <Button
         style={{
           backgroundColor: Colors.light.tertiary,
@@ -113,6 +113,17 @@ const ReqConductorScreen = () => {
             Recepción
           </ThemedText>
         </ThemedButton>
+
+        {STAGE === "test" && (
+          <ThemedButton
+            className="bg-light-green text-white px-4 py-6 rounded-xl"
+            onPress={() => router.push("/menu-supervisor")}
+          >
+            <ThemedText variant="h3" className="font-ruda text-white">
+              Supervisor
+            </ThemedText>
+          </ThemedButton>
+        )}
       </View>
 
       {isLoadingDriverReqs ? (
@@ -120,7 +131,7 @@ const ReqConductorScreen = () => {
       ) : (
         isVisibleCard && (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View className="flex-col gap-5">
+            <View className="flex gap-5">
               {driverReqs.length > 0 ? (
                 driverReqs.map((item, index) => (
                   <DriverReqCard key={index} req={item} />
@@ -134,7 +145,8 @@ const ReqConductorScreen = () => {
                     REQ_TYPE.despacho === reqType ? "truck-minus" : "truck-plus"
                   }
                 />
-              )}
+                )}
+                
             </View>
           </ScrollView>
         )
@@ -180,6 +192,8 @@ const ReqConductorScreen = () => {
         handleDialogCancel={hideDialog}
         handleDialogAccept={handleSubmit(onSubmit)}
       />
+
+      <FabMenu />
     </ImgBackgroundLayout>
   );
 };

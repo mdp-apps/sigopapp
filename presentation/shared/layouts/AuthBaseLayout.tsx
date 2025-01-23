@@ -34,7 +34,7 @@ export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={styles.containerScrollView}
         >
-          <ThemedView className="items-center" margin>
+          <ThemedView className="items-center" bgColor="white" margin>
             {children}
           </ThemedView>
         </ScrollView>

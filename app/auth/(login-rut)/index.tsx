@@ -6,6 +6,7 @@ import { useAuthStore } from "@/presentation/auth/store";
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import {
   ThemedButton,
+  ThemedHelperText,
   ThemedInput,
   ThemedText,
 } from "@/presentation/theme/components";
@@ -54,7 +55,7 @@ const LoginConductorScreen = () => {
         name="rut"
         render={({ field: { onChange, onBlur, value } }) => (
           <ThemedInput
-            className="text-black px-4 py-2 border border-light-primary font-ruda rounded-full"
+            className="text-black px-4 py-2 border border-light-primary font-ruda rounded-full mb-2"
             style={{ height: 50 }}
             onBlur={onBlur}
             onChangeText={onChange}
@@ -67,16 +68,16 @@ const LoginConductorScreen = () => {
         )}
       />
       {errors.rut && (
-        <ThemedText variant="h4" className="text-red-400 text-center mt-1">
-          {errors.rut.message}
-        </ThemedText>
+        <ThemedHelperText isVisible={Boolean(errors.rut)}>
+          {errors.rut?.message}
+        </ThemedHelperText>
       )}
 
       <ThemedButton
         variant="rounded"
         onPress={handleSubmit(onSubmit)}
         text="INGRESAR"
-        className="bg-light-primary mt-4 w-5/6"
+        className="bg-light-primary w-5/6  mt-2"
       />
 
       <ThemedText

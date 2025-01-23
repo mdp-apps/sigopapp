@@ -22,7 +22,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   } = useVisibility();
 
   return (
-    <View className="flex-row items-center border border-light-primary rounded-full">
+    <View className="flex-row items-center border border-light-primary rounded-full my-2">
       <Controller
         control={control}
         name={name}

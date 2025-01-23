@@ -1,53 +1,23 @@
 import React from "react";
-import { View, Text, ScrollView } from 'react-native';
+import { View } from 'react-native';
 
-import { useVisibility } from "@/presentation/shared/hooks";
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
 import { ImgBackgroundLayout } from "@/presentation/shared/layouts";
 import { FabMenu, MenuCard } from "@/presentation/menu/components";
-import { ThemedButton, ThemedModal, ThemedText } from "@/presentation/theme/components";
 
-import { Formatter } from "@/config/helpers";
-import { PRIVACY_POLICY } from "@/config/constants";
 import { STAGE } from "@/config/api/sigopApi";
-import { useThemeColor } from "@/presentation/theme/hooks";
 
 const MenuScreen = () => {
-  const darkGrayColor = useThemeColor({},"darkGray")
-
-  const {
-    hide: hideModal,
-    isVisible: isVisibleModal,
-    show: showModal,
-  } = useVisibility();
-
-  const { user, profile } = useAuthStore();
+const { profile } = useAuthStore();
 
   return (
     <>
-      <ImgBackgroundLayout
-        source={require("../../../assets/muelle.jpg")}
-        className="justify-center"
-      >
-        <View className="py-2 px-4 mb-4 rounded-2xl bg-light-secondary">
-          <ThemedText variant="h3" className="text-center text-black font-ruda">
-            Hola, {Formatter.capitalize(user?.name!)}{" "}
-            {Formatter.capitalize(user?.paternalLastname!)}{" "}
-            {Formatter.initialLetter(user?.maternalLastname!)} 👋{" "}
-          </ThemedText>
-        </View>
-
+      <ImgBackgroundLayout className="justify-center">
         {profile === UserProfile.driver && (
           <>
             <View className="flex-row justify-between my-2">
-              <MenuCard
-                text="Conductor"
-                route="/req-conductor"
-                iconSource="steering"
-              />
-
-              {STAGE === "dev" && (
+              {STAGE === "test" && (
                 <MenuCard
                   text="Supervisor"
                   route="/menu-supervisor"
@@ -115,27 +85,9 @@ const MenuScreen = () => {
             </View>
           </>
         )}
-
-        <ThemedModal
-          isVisible={isVisibleModal}
-          hideModal={hideModal}
-          isNativeModal
-        >
-          <ThemedButton
-            variant="icon"
-            className="absolute top-2 right-2 z-50 py-0 px-0"
-            onPress={hideModal}
-            iconName="close-circle"
-            iconColor={darkGrayColor}
-            iconSize={36}
-          />
-          <ScrollView>
-            <Text>{PRIVACY_POLICY}</Text>
-          </ScrollView>
-        </ThemedModal>
       </ImgBackgroundLayout>
 
-      <FabMenu showModal={showModal} />
+      <FabMenu />
     </>
   );
 };

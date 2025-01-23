@@ -19,16 +19,17 @@ export const MenuCard = ({
   route,
   iconSource,
   iconSize = 50,
-  iconColor = "white",
+  iconColor = "#4b5563",
 }: MenuCardProps) => {
-
   return (
     <TouchableOpacity
-      className="flex-1 justify-center items-center bg-light-primary py-6 rounded-xl mx-1 border border-white gap-3"
+      className="flex-1 justify-center items-center bg-light-white py-6 rounded-xl mx-1 border border-white gap-3"
       onPress={() => router.push(route)}
     >
       <Icon source={iconSource} size={iconSize} color={iconColor} />
-      <ThemedText variant="h4" className="text-center text-white font-ruda">{text}</ThemedText>
+      <ThemedText variant="h4" className="text-center text-gray-600 font-ruda">
+        {text}
+      </ThemedText>
     </TouchableOpacity>
   );
 };

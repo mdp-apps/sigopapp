@@ -5,6 +5,7 @@ export * from './ThemedDataTable';
 export * from './ThemedDatePicker';
 export * from './ThemedDialog';
 export * from './ThemedDropdown';
+export * from './ThemedHelperText';
 export * from './ThemedIput';
 export * from './ThemedModal';
 export * from './ThemedMultiSelect';

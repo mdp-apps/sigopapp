@@ -1,10 +1,15 @@
+import { useThemeColor } from "@/presentation/theme/hooks";
+
 import { Stack } from "expo-router";
 
 const ConductorLayout = () => {
+  const backgrounColor = useThemeColor({}, "background");
+  
   return (
     <Stack
       screenOptions={{
         headerShadowVisible: false,
+        contentStyle: { backgroundColor: backgrounColor },
       }}
     >
       <Stack.Screen

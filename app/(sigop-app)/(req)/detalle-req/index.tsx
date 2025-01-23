@@ -4,7 +4,9 @@ import { ActivityIndicator } from "react-native-paper";
 
 import { useLocalSearchParams } from "expo-router";
 
+import { useThemeColor } from "@/presentation/theme/hooks";
 import { useProductsReqByCode } from "@/presentation/producto/hooks";
+
 import { ThemedChip, ThemedView } from "@/presentation/theme/components";
 import {
   PackagingDispatchProducts,
@@ -15,6 +17,8 @@ import { Formatter } from "@/config/helpers";
 import { REQ_TYPE_FORMAT } from "@/config/constants";
 
 const DetalleReqScreen = () => {
+  const primaryColor = useThemeColor({}, "primary");
+
   const { carrierName, customerAbbr, reqCode, reqType, vehiclePatent } =
     useLocalSearchParams();
 
@@ -22,42 +26,52 @@ const DetalleReqScreen = () => {
     useProductsReqByCode(reqCode as string, reqType as string);
 
   return (
-    <ThemedView className="py-3" margin>
+    <ThemedView className="py-3 mt-4" margin>
       {isLoadingProductsReq ? (
         <ActivityIndicator size="large" className="bg-blue-800" />
       ) : (
         <ScrollView>
-          <View className="flex-row">
+          <View className="mb-4">
+            <View className="flex-row">
+              <ThemedChip
+                tooltipTitle="Cliente"
+                iconSource="account-tie"
+                text={customerAbbr as string}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ color: "white" }}
+                iconColor="white"
+              />
+
+              <ThemedChip
+                tooltipTitle="Patente"
+                iconSource="car-info"
+                text={vehiclePatent as string}
+                style={{ backgroundColor: primaryColor, marginLeft: 10 }}
+                textStyle={{ fontSize: 16, color: "white" }}
+                iconColor="white"
+              />
+            </View>
+
             <ThemedChip
-              tooltipTitle="Cliente"
-              iconSource="account-tie"
-              text={customerAbbr as string}
+              tooltipTitle="Transportista"
+              iconSource="truck-delivery"
+              text={carrierName as string}
+              style={{ backgroundColor: primaryColor }}
+              textStyle={{ fontSize: 16, color: "white" }}
+              iconColor="white"
             />
 
             <ThemedChip
-              tooltipTitle="Patente"
-              iconSource="car-info"
-              text={vehiclePatent as string}
-              style={{ marginLeft: 10 }}
-              textStyle={{ fontSize: 16 }}
+              tooltipTitle="Total KG"
+              iconSource="plus-box-multiple"
+              text={`Total: ${Formatter.numberWithDots(totalKg)} KG.`}
+              style={{ backgroundColor: primaryColor }}
+              textStyle={{ fontSize: 16, color: "white" }}
+              iconColor="white"
             />
           </View>
 
-          <ThemedChip
-            tooltipTitle="Transportista"
-            iconSource="truck-delivery"
-            text={carrierName as string}
-            textStyle={{ fontSize: 16 }}
-          />
-
-          <ThemedChip
-            tooltipTitle="Total KG"
-            iconSource="plus-box-multiple"
-            text={`Total: ${Formatter.numberWithDots(totalKg)} KG.`}
-            textStyle={{ fontSize: 16 }}
-          />
-
-          {Number(reqType) !== REQ_TYPE_FORMAT.despachoEnvasado ? (
+          {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
             <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
           ) : (
             <OtherProducts products={productsReq} />

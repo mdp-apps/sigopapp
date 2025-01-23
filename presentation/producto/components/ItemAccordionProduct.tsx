@@ -1,11 +1,11 @@
 import React from "react";
 import { List } from "react-native-paper";
 
+import { useThemeColor } from "@/presentation/theme/hooks";
 import { ThemedText } from "@/presentation/theme/components";
 
 import { ProductReq } from "@/infrastructure/entities";
 import { Formatter } from "@/config/helpers";
-import { Colors } from "@/config/constants";
 
 interface ItemAccordionProductProps {
   product: ProductReq;
@@ -20,6 +20,8 @@ export const ItemAccordionProduct = ({
   icon = "asterisk",
   isPackaging = false,
 }: ItemAccordionProductProps) => {
+  const quaternaryColor = useThemeColor({},"quaternary");
+
   return (
     <List.Item
       title={
@@ -36,7 +38,7 @@ export const ItemAccordionProduct = ({
         </>
       }
       left={(props) => <List.Icon {...props} icon={icon} />}
-      style={{ backgroundColor: Colors.light.quaternary, paddingLeft: 10 }}
+      style={{ backgroundColor: quaternaryColor, paddingLeft: 10 }}
       onPress={showModal}
     />
   );
