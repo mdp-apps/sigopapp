@@ -11,12 +11,19 @@ import {
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { create } from "zustand";
+import { CustomerCompany } from "@/config/constants";
 
 export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
+
+export enum UserProfile {
+  driver = "driver",
+  customer = "customer",
+}
 
 export interface AuthState {
   status: AuthStatus;
   user?: UserSession | DriverSession;
+  profile?: UserProfile;
 
   login: (email: string, password: string) => Promise<boolean>;
   loginDriver: (rut: string) => Promise<boolean>;
@@ -32,39 +39,41 @@ export interface AuthState {
 const saveUserSession = async (
   isSessionSaved: string,
   user: User | Driver
-): Promise<UserSession | DriverSession> => {
+): Promise<{ session: UserSession | DriverSession; profile: UserProfile }> => {
+  let profile: UserProfile;
+  let session: UserSession | DriverSession;
+
+  const isAuthenticated = isSessionSaved === "SI";
+
   const baseSession = {
     code: user.code,
     rut: user.rut,
     name: user.name,
     paternalLastname: user.paternalLastname,
     maternalLastname: user.maternalLastname,
-    isDriver: isSessionSaved === "SI",
   };
 
   if ("emailLogin" in user) {
-    const userSession = {
+    isAuthenticated && Number(user.companyCode) !== CustomerCompany.mdp
+      ? (profile = UserProfile.customer)
+      : (profile = UserProfile.driver);
+
+    session = {
       ...baseSession,
       companyCode: user.companyCode,
       companyName: user.companyName,
       emailLogin: user.emailLogin,
-      // companyCode 1 es "Muelles de Penco"
-      isCustomer: user.companyCode !== "1" && isSessionSaved === "SI",
     };
-
-    await StorageAdapter.setItem("userSession", JSON.stringify(userSession));
-
-    return userSession;
   } else {
-    const driverSession = {
+    profile = UserProfile.driver;
+    session = {
       ...baseSession,
-      isCustomer: false,
     };
-
-    await StorageAdapter.setItem("userSession", JSON.stringify(driverSession));
-
-    return driverSession;
   }
+
+  await StorageAdapter.setItem("userSession", JSON.stringify(session));
+
+  return { session, profile };
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -73,16 +82,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   changeStatus: async (isSessionSaved: string, user?: User | Driver) => {
     if (isSessionSaved === "NO" || !user) {
-      set({ status: "unauthenticated", user: undefined });
+      set({ status: "unauthenticated", user: undefined, profile: undefined });
 
       get().logout();
 
       return false;
     }
 
-    const userSession = await saveUserSession(isSessionSaved, user);
+    const { session, profile } = await saveUserSession(isSessionSaved, user);
 
-    set({ status: "authenticated", user: userSession });
+    set({ status: "authenticated", user: session, profile: profile });
 
     return true;
   },
@@ -141,7 +150,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return;
     }
 
-    set({ status: "unauthenticated", user: undefined });
+    set({ status: "unauthenticated", user: undefined, profile: undefined });
   },
   logout: async () => {
     await StorageAdapter.removeItem("userSession");
@@ -149,6 +158,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     await StorageAdapter.removeItem("userPassword");
     await StorageAdapter.removeItem("userRut");
 
-    set({ status: "unauthenticated", user: undefined });
+    set({ status: "unauthenticated", user: undefined, profile: undefined });
   },
 }));

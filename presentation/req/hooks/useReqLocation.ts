@@ -59,7 +59,7 @@ export const useReqLocation = () => {
     const response = await changeReqStatus(reqCode, status, user?.code!);
 
     if (response.result !== "") {
-      setCurrentStatus(status); // Actualizar el estado local
+      setCurrentStatus(status);
     } else {
       Alert.alert("Error", "No se ha confirmado la llegada.");
     }
@@ -70,7 +70,6 @@ export const useReqLocation = () => {
       const resultado = await validateRequirement();
       if (resultado === 0) {
         await changeRequirementStatus(reqCode as string, REQ_STATUS.pendiente);
-        // Actualizar el estado actual a 3 para refrescar la pantalla
         setCurrentStatus(REQ_STATUS.pendiente);
       } else {
         Alert.alert("Error", "Hay otro requerimiento en curso.");
@@ -94,6 +93,7 @@ export const useReqLocation = () => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
+      console.log(JSON.stringify(location, null,2));
       setLocation(location);
       setLastUpdated(new Date());
     } catch (error) {

@@ -24,7 +24,7 @@ export const MenuCard = ({
 
   return (
     <TouchableOpacity
-      className="flex-1 flex-col justify-center items-center bg-light-primary py-6 rounded-xl mx-3 border border-white gap-3"
+      className="flex-1 justify-center items-center bg-light-primary py-6 rounded-xl mx-1 border border-white gap-3"
       onPress={() => router.push(route)}
     >
       <Icon source={iconSource} size={iconSize} color={iconColor} />

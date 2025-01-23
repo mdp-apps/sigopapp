@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { FAB } from "react-native-paper";
 
-import { useAuthStore } from "@/presentation/auth/store";
+import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 import { UserSession } from "@/infrastructure/entities";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -21,7 +21,7 @@ export const FabMenu = ({ showModal }: FabMenuProps) => {
 
   const primaryColor = useThemeColor({}, "primary");
   const {isVisible: isVisibleFab, toggle: toggleFab} = useVisibility();
-  const { user, logout } = useAuthStore();
+  const { user,profile, logout } = useAuthStore();
 
   useEffect(() => {
     buildActions();
@@ -36,7 +36,7 @@ export const FabMenu = ({ showModal }: FabMenuProps) => {
       user?.maternalLastname.charAt(0) ?? ""
     }.`;
 
-    if (user?.isDriver) {
+    if (profile === UserProfile.driver) {
       setDynamicActions((prevActions) => [
         ...prevActions,
         {

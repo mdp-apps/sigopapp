@@ -1,5 +1,4 @@
-import { ScrollView } from "react-native";
-
+import React from "react";
 import { ThemedText } from "@/presentation/theme/components";
 import { AccordionProduct, ItemAccordionProduct, ModalProductDetail } from "./";
 
@@ -18,7 +17,7 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
   } = useVisibility();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <>
       {products.length > 0 ? (
         products.map((product) => (
           <AccordionProduct
@@ -41,6 +40,6 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
       ) : (
         <ThemedText>No hay datos disponibles</ThemedText>
       )}
-    </ScrollView>
+    </>
   );
 };

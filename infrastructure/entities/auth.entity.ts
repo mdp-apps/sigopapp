@@ -29,11 +29,7 @@ export interface UserSession extends BaseUser {
   companyCode: string;
   companyName: string;
   emailLogin: string;
-  isCustomer: boolean;
-  isDriver: boolean;
 }
 
 export interface DriverSession extends BaseUser {
-  isCustomer: boolean;
-  isDriver: boolean;
 }

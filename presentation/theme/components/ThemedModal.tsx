@@ -1,15 +1,20 @@
 import { Dimensions } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
 import { ModalProps } from "react-native";
 import { StyleSheet, Modal as NativeModal, View } from "react-native";
 import { Modal, Portal } from "react-native-paper";
 
-interface ThemedModalProps extends ModalProps {
+interface ThemedModalContentProps extends ModalProps {
   children: React.ReactNode;
+  isFullModal?: boolean;
+}
+
+interface ThemedModalProps extends ThemedModalContentProps {
   isVisible: boolean;
   hideModal: () => void;
   isNativeModal?: boolean;
   isTransparent?: boolean;
-  isFullModal?: boolean;
+  hasAutomaticClosing?: boolean;
 }
 
 const { width } = Dimensions.get("window");
@@ -21,6 +26,8 @@ export const ThemedModal = ({
   isTransparent = true,
   isNativeModal = false,
   isFullModal,
+  hasAutomaticClosing = true,
+  className,
   ...rest
 }: ThemedModalProps) => {
   return isNativeModal ? (
@@ -32,16 +39,17 @@ export const ThemedModal = ({
       onDismiss={hideModal}
       {...rest}
     >
-      <View className="flex-1 flex-row justify-center items-center bg-black/50">
-        <View
-          className={[
-            "flex-1 justify-center bg-white p-5 my-5 rounded-lg mx-3",
-          ].join(" ")}
-          style={{ width: isFullModal ? width * 0.9 : width * 0.8 }}
-        >
+      {hasAutomaticClosing ? (
+        <TouchableWithoutFeedback onPress={hideModal}>
+          <ThemedModalContent className={className} isFullModal={isFullModal}>
+            {children}
+          </ThemedModalContent>
+        </TouchableWithoutFeedback>
+      ) : (
+        <ThemedModalContent className={className} isFullModal={isFullModal}>
           {children}
-        </View>
-      </View>
+        </ThemedModalContent>
+      )}
     </NativeModal>
   ) : (
     <Portal>
@@ -51,9 +59,31 @@ export const ThemedModal = ({
         contentContainerStyle={styles.containerModal}
         dismissable={true}
       >
-        <View style={styles.modalContent}>{children}</View>
+        <TouchableWithoutFeedback onPress={hideModal}>
+          <View style={styles.modalContent}>{children}</View>
+        </TouchableWithoutFeedback>
       </Modal>
     </Portal>
+  );
+};
+
+const ThemedModalContent = ({
+  children,
+  isFullModal,
+  className
+}: ThemedModalContentProps) => {
+  return (
+    <View className="flex-1 flex-row justify-center items-center bg-black/50">
+      <View
+        className={[
+          "flex-1 justify-center bg-white p-5 my-5 rounded-lg mx-3",
+          className,
+        ].join(" ")}
+        style={{ width: isFullModal ? width * 0.9 : width * 0.8 }}
+      >
+        {children}
+      </View>
+    </View>
   );
 };
 

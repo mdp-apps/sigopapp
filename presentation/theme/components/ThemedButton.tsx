@@ -47,7 +47,7 @@ export const ThemedButton = ({
         children
       ) : (
         <Text className={["text-white text-md", textClassName].join(" ")}>
-          {text}
+          {text} {iconName && <Ionicons name={iconName} size={iconSize} />}
         </Text>
       )}
     </Pressable>

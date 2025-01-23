@@ -1,5 +1,15 @@
-import { StyleSheet, TextStyle, StyleProp, ViewStyle } from "react-native";
-import { Chip, Icon, Tooltip } from "react-native-paper";
+import {
+  StyleSheet,
+  TextStyle,
+  StyleProp,
+  ViewStyle,
+  TouchableWithoutFeedback,
+  View,
+  Text,
+} from "react-native";
+import { Chip, Icon } from "react-native-paper";
+
+import { useVisibility } from "@/presentation/shared/hooks";
 
 import { Colors } from "@/config/constants";
 
@@ -24,21 +34,36 @@ export const ThemedChip = ({
   style,
   textStyle,
 }: ThemedChipProps) => {
+  const {
+    isVisible: isTooltipVisible,
+    hide: handleOutsidePress,
+    toggle: handleChipPress,
+  } = useVisibility();
+
   return (
-    <Tooltip title={tooltipTitle ?? ""}>
-      <Chip
-        mode={mode}
-        icon={() =>
-          iconSource && (
-            <Icon source={iconSource} size={iconSize} color={iconColor} />
-          )
-        }
-        style={[styles.chip, style]}
-        textStyle={[styles.text, textStyle]}
-      >
-        {text}
-      </Chip>
-    </Tooltip>
+    <TouchableWithoutFeedback onPress={handleOutsidePress}>
+      <View>
+        <Chip
+          mode={mode}
+          icon={() =>
+            iconSource && (
+              <Icon source={iconSource} size={iconSize} color={iconColor} />
+            )
+          }
+          style={[styles.chip, style]}
+          textStyle={[styles.text, textStyle]}
+          onPress={() => handleChipPress()}
+        >
+          {text}
+        </Chip>
+
+        {isTooltipVisible && (
+          <View className="absolute top-0.5 right-0 bg-slate-800 p-2 rounded-xl z-50">
+            <Text className="text-white text-center">{tooltipTitle}</Text>
+          </View>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

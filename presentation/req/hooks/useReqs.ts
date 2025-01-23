@@ -5,7 +5,7 @@ import * as UseCases from "@/core/req/use-cases";
 import { Req } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
-import { useAuthStore } from "@/presentation/auth/store";
+import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
 type ReqsBody = {
   patent?: string;
@@ -21,7 +21,7 @@ export const useReqs = () => {
   const [reqs, setReqs] = useState<Req[]>([]);
   const [isLoadingReqs, setIsLoadingReqs] = useState(false);
 
-  const { user } = useAuthStore();
+  const { profile } = useAuthStore();
 
   const getRequirements = async (reqsBody: ReqsBody) => {
     setIsLoadingReqs(true);
@@ -37,7 +37,7 @@ export const useReqs = () => {
       turno: reqsBody.turn,
     };
 
-    if (user?.isDriver) {
+    if (profile === UserProfile.driver) {
       // body.conductor = user?.code.toString();
     }
     const response = await UseCases.getReqsUseCase(sigopApiFetcher, body);

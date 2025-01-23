@@ -4,8 +4,7 @@ import { Card } from "react-native-paper";
 
 import { Link } from "expo-router";
 
-import { useReqStore } from "../store";
-import { ThemedButton, ThemedChip } from "@/presentation/theme/components";
+import { ThemedChip } from "@/presentation/theme/components";
 
 import { DriverReq } from "@/infrastructure/entities";
 import { DateAdapter } from "@/config/adapters";
@@ -15,8 +14,6 @@ interface DriverReqCardProps {
 }
 
 export const DriverReqCard = ({ req }: DriverReqCardProps) => {
-  const { showObservationModal } = useReqStore();
-
   return (
     <Card>
       <Card.Title
@@ -68,45 +65,39 @@ export const DriverReqCard = ({ req }: DriverReqCardProps) => {
       </Card.Content>
 
       <Card.Actions>
-        {req.observation && (
-          <ThemedButton
-            text="Observación"
-            className="bg-blue-800 text-white px-4 py-2 rounded-full"
-            onPress={() => showObservationModal(req.observation)}
-          />
-        )}
+        <View className="flex-1 flex-row gap-4">
+          <Link
+            className="bg-blue-800 px-4 py-2 rounded-full text-white"
+            href={{
+              pathname: "/detalle-req",
+              params: {
+                vehiclePatent: req.vehiclePatent,
+                customerAbbr: req.customerAbbr,
+                carrierName: req.carrierName,
+                reqType: `${req.reqType}${req.formatType}`,
+                reqCode: req.internalCode,
+              },
+            }}
+          >
+            Productos
+          </Link>
 
-        <Link
-          className="bg-blue-800 px-4 py-2 rounded-full text-white"
-          href={{
-            pathname: "/detalle-req",
-            params: {
-              vehiclePatent: req.vehiclePatent,
-              customerAbbr: req.customerAbbr,
-              carrierName: req.carrierName,
-              reqType: `${req.reqType}${req.formatType}`,
-              reqCode: req.internalCode,
-            },
-          }}
-        >
-          Productos
-        </Link>
-
-        <Link
-          className="bg-blue-800 px-4 py-2 rounded-full text-white"
-          href={{
-            pathname: "/detalle-conductor",
-            params: {
-              reqCode: req.internalCode,
-              status: req.status,
-              vehiclePatent: req.vehiclePatent,
-              driverRut: req.rutDriver,
-              reqType: `${req.reqType}${req.formatType}`,
-            },
-          }}
-        >
-          Siguiente
-        </Link>
+          <Link
+            className="bg-emerald-800 px-4 py-2 rounded-full text-white"
+            href={{
+              pathname: "/detalle-conductor",
+              params: {
+                reqCode: req.internalCode,
+                status: req.status,
+                vehiclePatent: req.vehiclePatent,
+                driverRut: req.rutDriver,
+                reqType: `${req.reqType}${req.formatType}`,
+              },
+            }}
+          >
+            Generar QR
+          </Link>
+        </View>
       </Card.Actions>
     </Card>
   );

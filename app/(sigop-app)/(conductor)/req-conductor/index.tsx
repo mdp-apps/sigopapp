@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { View, ScrollView, Alert } from "react-native";
-import { ActivityIndicator, Button, Text } from "react-native-paper";
+import { ActivityIndicator, Button, Divider } from "react-native-paper";
 
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useDriverReqsByRut } from "@/presentation/req/hooks";
-import { useAuthStore } from "@/presentation/auth/store";
+import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
 import { ImgBackgroundLayout } from "@/presentation/shared/layouts";
 import {
@@ -33,11 +33,11 @@ const ReqConductorScreen = () => {
   } = useForm<z.infer<typeof driverReqSchema>>({
     resolver: zodResolver(driverReqSchema),
     defaultValues: {
-     rut: "",
+      rut: "",
     },
   });
 
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
 
   const {
     isVisible: isVisibleDialog,
@@ -53,12 +53,10 @@ const ReqConductorScreen = () => {
 
   const { isVisible: isVisibleCard, show: showCard } = useVisibility();
 
-  const {
-    driverReqs,
-    reqType,
-    isLoadingDriverReqs,
-    changeReqType
-  } = useDriverReqsByRut(user?.isDriver ? user?.rut : getValues("rut"));
+  const { driverReqs, reqType, isLoadingDriverReqs, changeReqType } =
+    useDriverReqsByRut(
+      profile === UserProfile.driver ? user?.rut! : getValues("rut")
+    );
 
   useEffect(() => {
     if (errors.rut) {
@@ -69,7 +67,7 @@ const ReqConductorScreen = () => {
   const handleReqType = (value: number) => {
     changeReqType(value);
 
-    user?.isDriver ? showCard() : showDialog();
+    profile === UserProfile.driver ? showCard() : showDialog();
   };
 
   const onSubmit = () => {
@@ -78,7 +76,10 @@ const ReqConductorScreen = () => {
   };
 
   return (
-    <ImgBackgroundLayout source={require("../../../../assets/camion.jpg")}>
+    <ImgBackgroundLayout
+      className="justify-center py-5"
+      source={require("../../../../assets/camion.jpg")}
+    >
       <Button
         style={{
           backgroundColor: Colors.light.tertiary,
@@ -89,13 +90,12 @@ const ReqConductorScreen = () => {
           fontFamily: "Ruda-Bold",
         }}
         icon="information-outline"
-        mode="contained-tonal"
         onPress={showModal}
       >
         Información
       </Button>
 
-      <View className="flex w-full gap-3 my-4">
+      <View className="flex w-full gap-3 my-7">
         <ThemedButton
           className="bg-blue-800 text-white px-4 py-6 rounded-xl"
           onPress={() => handleReqType(REQ_TYPE.despacho)}
@@ -119,31 +119,53 @@ const ReqConductorScreen = () => {
         <ActivityIndicator animating={true} color={Colors.light.tomato} />
       ) : (
         isVisibleCard && (
-          <ScrollView>
-            {driverReqs.length > 0 ? (
-              driverReqs.map((item, index) => (
-                <DriverReqCard key={index} req={item} />
-              ))
-            ) : (
-              <NoDataCard
-                message={`No hay ${
-                  REQ_TYPE.despacho === reqType ? "Despachos" : "Recepciones"
-                }`}
-                iconSource={
-                  REQ_TYPE.despacho === reqType ? "truck-minus" : "truck-plus"
-                }
-              />
-            )}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View className="flex-col gap-5">
+              {driverReqs.length > 0 ? (
+                driverReqs.map((item, index) => (
+                  <DriverReqCard key={index} req={item} />
+                ))
+              ) : (
+                <NoDataCard
+                  message={`No hay ${
+                    REQ_TYPE.despacho === reqType ? "Despachos" : "Recepciones"
+                  }`}
+                  iconSource={
+                    REQ_TYPE.despacho === reqType ? "truck-minus" : "truck-plus"
+                  }
+                />
+              )}
+            </View>
           </ScrollView>
         )
       )}
 
-      <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
-        <Text variant="bodyLarge">
-          * Revise que la patente coincida con su camión. {"\n"} {"\n"}
-          Despacho: Carga de productos. {"\n"}
-          Recepción: Entrega de carga a Muelles de Penco.
-        </Text>
+      <ThemedModal
+        isVisible={isVisibleModal}
+        hideModal={hideModal}
+        isNativeModal
+      >
+        <ThemedText variant="h5">
+          * Revise que su carga y patente sean los correctos.
+        </ThemedText>
+
+        <Divider style={{ marginVertical: 10 }} />
+
+        <View className="gap-4">
+          <ThemedText variant="h4" className="font-bold">
+            Despacho:{" "}
+            <ThemedText variant="h5" className="font-normal">
+              Carga de productos.
+            </ThemedText>
+          </ThemedText>
+
+          <ThemedText variant="h4" className="font-bold">
+            Recepción:{" "}
+            <ThemedText variant="h5" className="font-normal">
+              Entrega de carga a Muelles de Penco.
+            </ThemedText>
+          </ThemedText>
+        </View>
       </ThemedModal>
 
       <ThemedDialog

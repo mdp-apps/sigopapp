@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { ActivityIndicator } from "react-native-paper";
 
@@ -15,18 +15,11 @@ import { Formatter } from "@/config/helpers";
 import { REQ_TYPE_FORMAT } from "@/config/constants";
 
 const DetalleReqScreen = () => {
-  const { 
-    carrierName,
-    customerAbbr,
-    reqCode,
-    reqType,
-    vehiclePatent,
-   } = useLocalSearchParams();
+  const { carrierName, customerAbbr, reqCode, reqType, vehiclePatent } =
+    useLocalSearchParams();
 
-  const { productsReq, isLoadingProductsReq,totalKg, productsPerBatch } = useProductsReqByCode(
-    reqCode as string,
-    reqType as string
-  );
+  const { productsReq, isLoadingProductsReq, totalKg, productsPerBatch } =
+    useProductsReqByCode(reqCode as string, reqType as string);
 
   return (
     <ThemedView className="pt-3" margin>
@@ -64,11 +57,13 @@ const DetalleReqScreen = () => {
             textStyle={{ fontSize: 16 }}
           />
 
-          {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
-            <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
-          ) : (
-            <OtherProducts products={productsReq} />
-          )}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
+              <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
+            ) : (
+              <OtherProducts products={productsReq} />
+            )}
+          </ScrollView>
         </View>
       )}
     </ThemedView>

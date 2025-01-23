@@ -1,3 +1,4 @@
+export * from './CustomerCompany';
 export * from './Colors';
 export * from './Column';
 export * from './InternalMov';

@@ -7,8 +7,8 @@ import { useAuthStore } from "@/presentation/auth/store";
 import { Colors } from "@/config/constants";
 
 const CheckAuthenticationLayout = () => {
-  const { status, checkStatus, user } = useAuthStore();
-  // console.log(JSON.stringify({ status, user }, null, 2));
+  const { status, checkStatus, user,profile } = useAuthStore();
+  console.log(JSON.stringify({ status, user, profile }, null, 2));
 
   useEffect(() => {
     checkStatus();
