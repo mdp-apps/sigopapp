@@ -22,11 +22,11 @@ const DetalleReqScreen = () => {
     useProductsReqByCode(reqCode as string, reqType as string);
 
   return (
-    <ThemedView className="pt-3" margin>
+    <ThemedView className="py-3" margin>
       {isLoadingProductsReq ? (
         <ActivityIndicator size="large" className="bg-blue-800" />
       ) : (
-        <View>
+        <ScrollView>
           <View className="flex-row">
             <ThemedChip
               tooltipTitle="Cliente"
@@ -57,14 +57,12 @@ const DetalleReqScreen = () => {
             textStyle={{ fontSize: 16 }}
           />
 
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
-              <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
-            ) : (
-              <OtherProducts products={productsReq} />
-            )}
-          </ScrollView>
-        </View>
+          {Number(reqType) !== REQ_TYPE_FORMAT.despachoEnvasado ? (
+            <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
+          ) : (
+            <OtherProducts products={productsReq} />
+          )}
+        </ScrollView>
       )}
     </ThemedView>
   );

@@ -1,7 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-
-import { Button } from "react-native-paper";
+import { View, Text, ScrollView } from 'react-native';
 
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
@@ -49,7 +47,7 @@ const MenuScreen = () => {
                 iconSource="steering"
               />
 
-              {STAGE === "test" && (
+              {STAGE === "dev" && (
                 <MenuCard
                   text="Supervisor"
                   route="/menu-supervisor"

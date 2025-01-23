@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { ThemedText } from "@/presentation/theme/components";
 import { AccordionProduct, ItemAccordionProduct, ModalProductDetail } from "./";
 
 import { ProductReq } from "@/infrastructure/entities";
-import { useVisibility } from "@/presentation/shared/hooks";
 
 interface ProductoOtrosProps {
   products: ProductReq[];
 }
 
 export const OtherProducts = ({ products }: ProductoOtrosProps) => {
-  const {
-    isVisible: isVisibleModal,
-    show: showModal,
-    hide: hideModal,
-  } = useVisibility();
+  const [visibleModalProduct, setVisibleModalProduct] = useState<number | null>(null);
+
+  const showModal = (codeDetailReq: number) => {
+    setVisibleModalProduct(codeDetailReq);
+  };
+
+  const hideModal = () => {
+    setVisibleModalProduct(null);
+  };
 
   return (
     <>
@@ -28,11 +31,14 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
               </ThemedText>
             }
           >
-            <ItemAccordionProduct product={product} showModal={showModal} />
+            <ItemAccordionProduct
+              product={product}
+              showModal={() => showModal(product.codeDetailReq)}
+            />
 
             <ModalProductDetail
               product={product}
-              visibleModal={isVisibleModal}
+              visibleModal={visibleModalProduct === product.codeDetailReq}
               hideModal={hideModal}
             />
           </AccordionProduct>

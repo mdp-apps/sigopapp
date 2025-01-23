@@ -7,15 +7,17 @@ Aplicación móvil para gestionar movimientos de zona portuaria Muelles de Penco
 Para el desarrollo UI de esta aplicación móvil se usaron las siguientes tecnologías 
 y bibliotecas:
 
-- **_React Native_**
-- **_React Native Paper_**
-- **_Expo_**
-- **_React_**
-- **_TypeScript_**
-- **_React Query_**
-- **_Zustand_**
-- **_Axios_**
-- **_NativeWind_**
+- **_[React Native](https://reactnative.dev/)_**
+- **_[React Native Paper](https://reactnativepaper.com/)_**
+- **_[Expo](https://docs.expo.dev/)_**
+- **_[React](https://es.react.dev/)_**
+- **_[TypeScript](https://www.typescriptlang.org/)_**
+- **_[React Hook Form](https://react-hook-form.com/)_**
+- **_[Zod](https://zod.dev/)_**
+- **_[React Query](https://tanstack.com/query/v4/docs/framework/react/overview)_**
+- **_[Zustand](https://www.npmjs.com/package/zustand)_**
+- **_[Axios](https://axios-http.com/docs/intro)_**
+- **_[NativeWind](https://www.nativewind.dev/)_**
 
 ---
 
