@@ -134,7 +134,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         pwd: password,
       });
 
-      get().changeStatus(res.isSessionSaved, res.user);
+      if (res.isSessionSaved === "SI") {
+        const authUser = get().changeStatus(res.isSessionSaved, res.user);
+        console.log(JSON.stringify(authUser, null, 2));
+      } else {
+        set({ status: "unauthenticated", user: undefined, profile: undefined });
+      }
 
       return;
     }
@@ -145,7 +150,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         rut: rut.replaceAll(".", ""),
       });
 
-      get().changeStatus(res.isSessionSaved, res.user);
+      if (res.isSessionSaved === "SI") {
+        get().changeStatus(res.isSessionSaved, res.user);
+      } else {
+        set({ status: "unauthenticated", user: undefined, profile: undefined });
+      }
 
       return;
     }

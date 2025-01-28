@@ -14,7 +14,7 @@ export const useDriverReqsByRut = (rut: string) => {
   const [isLoadingDriverReqs, setIsLoadingDriverReqs] = useState(false);
 
   useEffect(() => {
-    (async () => {
+    const getDriverReqs = async () => {
       setIsLoadingDriverReqs(true);
       const response = await UseCases.getDriverReqsByRutUseCase(
         sigopApiFetcher,
@@ -27,7 +27,9 @@ export const useDriverReqsByRut = (rut: string) => {
 
       setDriverReqs(response);
       setIsLoadingDriverReqs(false);
-    })();
+    };
+
+    if (rut) getDriverReqs();
   }, [rut, reqType]);
 
   const changeReqType = (value: number) => { 

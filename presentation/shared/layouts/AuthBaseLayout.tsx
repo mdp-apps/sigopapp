@@ -1,6 +1,6 @@
 import {
   View,
-  Text,
+  SafeAreaView,
   StyleSheet,
   ImageBackground,
   ScrollView,
@@ -8,62 +8,54 @@ import {
   Platform,
 } from "react-native";
 
-import { ThemedView } from "@/presentation/theme/components";
+import { ThemedText, ThemedView } from "@/presentation/theme/components";
 interface AuthBaseLayoutProps {
   children: React.ReactNode;
 }
 
 export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <View style={styles.mainBody}>
-        <View style={styles.viewMain}>
-          <ImageBackground
-            source={require("../../../assets/background_login.png")}
-            resizeMode="cover"
-            style={styles.imageBackground}
-          >
-            <Text style={styles.text}>Sigop</Text>
-          </ImageBackground>
-        </View>
+    <SafeAreaView className="flex-1 bg-white">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
+      >
+        <View className="flex-1 justify-center content-center bg-white">
+          <View className="flex-1 justify-center items-center">
+            <ImageBackground
+              source={require("../../../assets/background_login.png")}
+              resizeMode="cover"
+              className="flex-1 w-full"
+              style={{ height: 500 }}
+            >
+              {/* <Text style={styles.text}>Sigop</Text> */}
+              <ThemedText
+                className="text-white font-bold text-5xl uppercase text-center font-ruda-bold mt-20"
+              >
+                Sigop
+              </ThemedText>
+            </ImageBackground>
+          </View>
 
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={styles.containerScrollView}
-        >
-          <ThemedView className="items-center" bgColor="white" margin>
-            {children}
-          </ThemedView>
-        </ScrollView>
-      </View>
-    </KeyboardAvoidingView>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={styles.containerScrollView}
+          >
+            <ThemedView className="items-center" bgColor="white" margin>
+              {children}
+            </ThemedView>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  mainBody: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#fff",
-    alignContent: "center",
-  },
-  viewMain: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   containerScrollView: {
     flex: 1,
     justifyContent: "center",
     alignContent: "center",
-  },
-  imageBackground: {
-    flex: 1,
-    width: "100%",
-    height: "150%",
   },
   text: {
     color: "white",

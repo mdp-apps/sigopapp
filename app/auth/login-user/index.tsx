@@ -1,6 +1,6 @@
-import { Alert } from "react-native";
+import { Alert, Keyboard } from "react-native";
 
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
 
@@ -11,14 +11,12 @@ import {
   ThemedInput,
   ThemedText,
 } from "@/presentation/theme/components";
+import { PasswordInput } from "@/presentation/shared/components";
 import { loginUserSchema } from "@/presentation/shared/validations";
-
-import { StorageAdapter } from "@/config/adapters/storage.adapter";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { PasswordInput } from "@/presentation/shared/components";
 
 const LoginSigopScreen = () => {
   const { login } = useAuthStore();
@@ -89,15 +87,13 @@ const LoginSigopScreen = () => {
         className="bg-light-primary mt-4 w-5/6"
       />
 
-      <ThemedText
+      <Link
         className="text-center mt-4 underline text-2xl text-light-primary font-ruda"
-        onPress={async () => {
-          router.push("/auth/(login-rut)");
-          await StorageAdapter.clear();
-        }}
+        href="/auth/(login-rut)"
+        onPress={() => Keyboard.dismiss()}
       >
         Ingresa con tu RUT
-      </ThemedText>
+      </Link>
     </AuthBaseLayout>
   );
 };

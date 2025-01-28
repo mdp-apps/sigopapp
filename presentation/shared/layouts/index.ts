@@ -1,2 +1,2 @@
 export * from "./AuthBaseLayout";
-export * from "./ImgBackgroundLayout";
+export * from "./BackgroundLayout";

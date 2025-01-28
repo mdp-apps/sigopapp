@@ -55,7 +55,7 @@ export const PackagingDispatchProducts = ({
                       width: 70,
                       marginBottom: 0,
                     }}
-                    textStyle={{ fontSize: 12, textTransform: "uppercase" }}
+                    textStyle={{ fontSize: 11, textTransform: "uppercase" }}
                   />
 
                   <ThemedText className="font-ruda w-4/6">

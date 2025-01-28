@@ -4,21 +4,16 @@ import { Stack } from "expo-router";
 
 const ConductorLayout = () => {
   const backgrounColor = useThemeColor({}, "background");
-  
+
   return (
     <Stack
       screenOptions={{
         headerShadowVisible: false,
-        contentStyle: { backgroundColor: backgrounColor },
+        contentStyle: {
+          backgroundColor: backgrounColor,
+        },
       }}
     >
-      <Stack.Screen
-        name="req-conductor/index"
-        options={{
-          headerShown: false,
-        }}
-      />
-
       <Stack.Screen
         name="ver-req-conductor/index"
         options={{
@@ -32,6 +27,7 @@ const ConductorLayout = () => {
           headerShown: false,
         }}
       />
+
     </Stack>
   );
 };

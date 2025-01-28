@@ -8,12 +8,12 @@ import { useVisibility } from "@/presentation/shared/hooks";
 import { useDriverReqsByRut } from "@/presentation/req/hooks";
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
-import { ImgBackgroundLayout } from "@/presentation/shared/layouts";
 import {
   ThemedButton,
   ThemedDialog,
   ThemedModal,
   ThemedText,
+  ThemedView,
 } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
 import { FabMenu } from "@/presentation/menu/components";
@@ -27,7 +27,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-const ReqConductorScreen = () => {
+export const DriverReq = () => {
   const {
     control,
     handleSubmit,
@@ -79,7 +79,7 @@ const ReqConductorScreen = () => {
   };
 
   return (
-    <ImgBackgroundLayout className="justify-center py-5 mt-4">
+    <ThemedView className="justify-center items-center my-4" margin safe>
       <Button
         style={{
           backgroundColor: Colors.light.tertiary,
@@ -95,21 +95,27 @@ const ReqConductorScreen = () => {
         Información
       </Button>
 
-      <View className="flex w-full gap-3 my-7">
+      <View className="w-full gap-3 my-7">
         <ThemedButton
-          className="bg-blue-800 text-white px-4 py-6 rounded-xl"
+          className="bg-light-primary text-white px-4 py-6 rounded-xl"
           onPress={() => handleReqType(REQ_TYPE.despacho)}
         >
-          <ThemedText variant="h3" className="font-ruda text-white">
+          <ThemedText
+            variant="h3"
+            className="font-ruda-bold text-white uppercase w-full text-center"
+          >
             Despacho
           </ThemedText>
         </ThemedButton>
 
         <ThemedButton
-          className="bg-light-tomato text-white px-4 py-6 rounded-xl"
+          className="bg-teal-600 text-white px-4 py-6 rounded-xl"
           onPress={() => handleReqType(REQ_TYPE.recepcion)}
         >
-          <ThemedText variant="h3" className="font-ruda text-white">
+          <ThemedText
+            variant="h3"
+            className="font-ruda-bold text-white uppercase w-full text-center"
+          >
             Recepción
           </ThemedText>
         </ThemedButton>
@@ -127,11 +133,15 @@ const ReqConductorScreen = () => {
       </View>
 
       {isLoadingDriverReqs ? (
-        <ActivityIndicator animating={true} color={Colors.light.tomato} />
+        <ActivityIndicator
+          animating={true}
+          color={Colors.light.tomato}
+          size="large"
+        />
       ) : (
         isVisibleCard && (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View className="flex gap-5">
+          <ScrollView>
+            <View className="gap-5">
               {driverReqs.length > 0 ? (
                 driverReqs.map((item, index) => (
                   <DriverReqCard key={index} req={item} />
@@ -145,8 +155,7 @@ const ReqConductorScreen = () => {
                     REQ_TYPE.despacho === reqType ? "truck-minus" : "truck-plus"
                   }
                 />
-                )}
-                
+              )}
             </View>
           </ScrollView>
         )
@@ -192,10 +201,7 @@ const ReqConductorScreen = () => {
         handleDialogCancel={hideDialog}
         handleDialogAccept={handleSubmit(onSubmit)}
       />
-
-      <FabMenu />
-    </ImgBackgroundLayout>
+    </ThemedView>
   );
 };
 
-export default ReqConductorScreen;

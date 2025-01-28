@@ -4,14 +4,14 @@ import { View } from "react-native";
 import { router } from "expo-router";
 
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
-import { ImgBackgroundLayout } from "@/presentation/shared/layouts";
+import { BackgroundLayout } from "@/presentation/shared/layouts";
 import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 
 const SupervisorScreen = () => {
   const { profile } = useAuthStore();
 
   return (
-    <ImgBackgroundLayout
+    <BackgroundLayout
       className="justify-center"
     >
       {profile === UserProfile.customer && (
@@ -31,7 +31,7 @@ const SupervisorScreen = () => {
         <View className="flex w-full gap-4">
           <ThemedButton
             className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
-            onPress={() => router.push("/req-conductor")}
+            onPress={() => router.push("/")}
           >
             <ThemedText variant="h3" className="font-ruda text-white">
               Ticket de entrada
@@ -77,7 +77,7 @@ const SupervisorScreen = () => {
           </ThemedText>
         </ThemedButton>
       </View>
-    </ImgBackgroundLayout>
+    </BackgroundLayout>
   );
 };
 

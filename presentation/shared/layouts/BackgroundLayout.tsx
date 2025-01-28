@@ -1,20 +1,20 @@
 import { ThemedView } from "@/presentation/theme/components";
 
-interface ImgBackgroundLayoutProps {
+interface BackgroundLayoutProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export const ImgBackgroundLayout = ({
+export const BackgroundLayout = ({
   children,
   className,
-}: ImgBackgroundLayoutProps) => {
+}: BackgroundLayoutProps) => {
 
   return (
     <ThemedView
-      className={["items-center bg-slate-100", className].join(" ")}
-      safe
+      className={["items-center", className].join(" ")}
       margin
+      safe
     >
       {children}
     </ThemedView>

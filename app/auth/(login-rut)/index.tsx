@@ -1,6 +1,6 @@
-import { Alert } from "react-native";
+import { Alert, Keyboard } from "react-native";
 
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
@@ -12,7 +12,6 @@ import {
 } from "@/presentation/theme/components";
 import { loginRutSchema } from "@/presentation/shared/validations";
 
-import { StorageAdapter } from "@/config/adapters";
 import { Formatter } from "@/config/helpers";
 
 import { useForm, Controller } from "react-hook-form";
@@ -34,6 +33,8 @@ const LoginConductorScreen = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof loginRutSchema>) => {
+    Keyboard.dismiss();
+
     const formattedRut = Formatter.formatRut(values.rut);
     const driverSession = await loginDriver(formattedRut);
 
@@ -80,15 +81,13 @@ const LoginConductorScreen = () => {
         className="bg-light-primary w-5/6  mt-2"
       />
 
-      <ThemedText
+      <Link
         className="text-center mt-4 underline text-2xl text-light-primary font-ruda"
-        onPress={async () => {
-          router.push("/auth/login-user");
-          await StorageAdapter.clear();
-        }}
+        href="/auth/login-user"
+        onPress={() => Keyboard.dismiss()}
       >
         Ingresa con tu email
-      </ThemedText>
+      </Link>
     </AuthBaseLayout>
   );
 };
