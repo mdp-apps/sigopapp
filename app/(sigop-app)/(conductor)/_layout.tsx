@@ -22,7 +22,7 @@ const ConductorLayout = () => {
       />
 
       <Stack.Screen
-        name="detalle-conductor/index"
+        name="ingreso-conductor/index"
         options={{
           headerShown: false,
         }}

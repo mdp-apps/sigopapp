@@ -1,4 +1,5 @@
 import { View } from "react-native";
+import { router } from "expo-router";
 
 import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 
@@ -7,17 +8,15 @@ import QRCodeStyled from "react-native-qrcode-styled";
 interface QRCodeReqProps {
   reqCode: string;
   dataToEncode: string;
-  hideModal: () => void;
 }
 
-export const QRCodeReq = ({ reqCode, dataToEncode, hideModal }: QRCodeReqProps) => {
-  console.log(JSON.stringify(dataToEncode, null, 2));
+export const QRCodeReq = ({ reqCode, dataToEncode }: QRCodeReqProps) => {
 
   return (
     <View className="flex-1 justify-center items-center">
       <ThemedButton
         className="absolute top-8 py-3 px-8 bg-cyan-700 rounded-md"
-        onPress={hideModal}
+        onPress={() => router.back()}
       >
         <ThemedText variant="h4" className="text-white font-ruda-bold">
           Cerrar
@@ -25,7 +24,7 @@ export const QRCodeReq = ({ reqCode, dataToEncode, hideModal }: QRCodeReqProps) 
       </ThemedButton>
 
       {dataToEncode && (
-        <View className="flex-1 justify-center items-center">
+        <View className="flex-1 justify-center items-center gap-6">
           <QRCodeStyled
             data={dataToEncode}
             pieceSize={9}

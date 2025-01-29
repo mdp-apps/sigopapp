@@ -11,13 +11,12 @@ const CheckAuthenticationLayout = () => {
   const backgroundColor = useThemeColor({}, "background");
 
   const { status, checkStatus, user, profile } = useAuthStore();
-  console.log(JSON.stringify({ status, user, profile }, null, 2));
+  // console.log(JSON.stringify({ status, user, profile }, null, 2));
 
   useEffect(() => {
     checkStatus();
   }, []);
 
-  
   if (status === "checking") {
     return <GlobalLoader />;
   }
@@ -25,7 +24,6 @@ const CheckAuthenticationLayout = () => {
   if (status === "unauthenticated") {
     return <Redirect href="/auth/(login-rut)" />;
   }
-
 
   return (
     <Stack
