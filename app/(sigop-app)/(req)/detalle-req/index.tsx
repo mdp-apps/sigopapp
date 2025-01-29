@@ -19,11 +19,20 @@ import { REQ_TYPE_FORMAT } from "@/config/constants";
 const DetalleReqScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
 
-  const { carrierName, customerAbbr, reqCode, reqType, vehiclePatent } =
-    useLocalSearchParams();
+  const {
+    carrierName,
+    customerAbbr,
+    reqCode,
+    reqType,
+    vehiclePatent
+  } = useLocalSearchParams();
 
-  const { productsReq, isLoadingProductsReq, totalKg, productsPerBatch } =
-    useProductsReqByCode(reqCode as string, reqType as string);
+  const {
+    productsReq,
+    isLoadingProductsReq,
+    totalKg,
+    productsPerBatch
+  } = useProductsReqByCode(reqCode as string, reqType as string);
 
   return (
     <ThemedView className="py-3 mt-4" margin>
@@ -32,7 +41,7 @@ const DetalleReqScreen = () => {
       ) : (
         <ScrollView>
           <View className="mb-4">
-            <View className="flex-row">
+            <View className="flex-row justify-between">
               <ThemedChip
                 tooltipTitle="Cliente"
                 iconSource="account-tie"
@@ -46,20 +55,20 @@ const DetalleReqScreen = () => {
                 tooltipTitle="Patente"
                 iconSource="car-info"
                 text={vehiclePatent as string}
-                style={{ backgroundColor: primaryColor, marginLeft: 10 }}
-                textStyle={{ fontSize: 16, color: "white" }}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ color: "white" }}
+                iconColor="white"
+              />
+
+              <ThemedChip
+                tooltipTitle="Transportista"
+                iconSource="truck-delivery"
+                text={carrierName as string}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ color: "white" }}
                 iconColor="white"
               />
             </View>
-
-            <ThemedChip
-              tooltipTitle="Transportista"
-              iconSource="truck-delivery"
-              text={carrierName as string}
-              style={{ backgroundColor: primaryColor }}
-              textStyle={{ fontSize: 16, color: "white" }}
-              iconColor="white"
-            />
 
             <ThemedChip
               tooltipTitle="Total KG"
@@ -70,7 +79,7 @@ const DetalleReqScreen = () => {
               iconColor="white"
             />
           </View>
-
+        
           {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
             <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
           ) : (

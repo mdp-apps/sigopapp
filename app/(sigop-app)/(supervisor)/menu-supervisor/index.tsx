@@ -14,20 +14,15 @@ const SupervisorScreen = () => {
     <BackgroundLayout
       className="justify-center"
     >
-      {profile === UserProfile.customer && (
-        <>
-          <ThemedButton
-            className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
-            onPress={() => router.push("/req-patente")}
-          >
-            <ThemedText variant="h3" className="font-ruda text-white">
-              Requerimientos
-            </ThemedText>
-          </ThemedButton>
-        </>
-      )}
+        <ThemedButton
+          className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
+          onPress={() => router.push("/req-patente")}
+        >
+          <ThemedText variant="h3" className="font-ruda text-white">
+            Requerimientos
+          </ThemedText>
+        </ThemedButton>
 
-      {profile === UserProfile.driver && (
         <View className="flex w-full gap-4">
           <ThemedButton
             className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
@@ -47,7 +42,6 @@ const SupervisorScreen = () => {
             </ThemedText>
           </ThemedButton>
         </View>
-      )}
 
       <View className="flex w-full gap-4 mt-4">
         <ThemedButton

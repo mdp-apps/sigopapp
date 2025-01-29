@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ThemedText } from "@/presentation/theme/components";
-import { AccordionProduct, ItemAccordionProduct, ModalProductDetail } from "./";
+import { ThemedAccordion, ThemedText } from "@/presentation/theme/components";
+import { ItemAccordionProduct, ModalProductDetail } from "./";
 
 import { ProductReq } from "@/infrastructure/entities";
 
@@ -23,13 +23,10 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
     <>
       {products.length > 0 ? (
         products.map((product) => (
-          <AccordionProduct
+          <ThemedAccordion
             key={product.codeDetailReq}
-            accordionTitle={
-              <ThemedText variant="h6" className="font-ruda">
-                {product.productName}
-              </ThemedText>
-            }
+            title={product.productName}
+            titleStyle={{fontSize: 16}}
           >
             <ItemAccordionProduct
               product={product}
@@ -41,7 +38,7 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
               visibleModal={visibleModalProduct === product.codeDetailReq}
               hideModal={hideModal}
             />
-          </AccordionProduct>
+          </ThemedAccordion>
         ))
       ) : (
         <ThemedText>No hay datos disponibles</ThemedText>

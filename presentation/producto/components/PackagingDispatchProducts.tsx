@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { useVisibility } from "@/presentation/shared/hooks";
 
 import {
-  ThemedChip,
-  ThemedSnackbar,
-  ThemedText,
+  ThemedAccordion,
 } from "@/presentation/theme/components";
-import { AccordionProduct, ItemAccordionProduct, ModalProductDetail } from "./";
+import { ItemAccordionProduct, ModalProductDetail } from "./";
 
 import { ProductReq } from "@/infrastructure/entities";
 import { COMPONENT_TYPE } from "@/config/constants";
@@ -31,8 +28,6 @@ export const PackagingDispatchProducts = ({
     hide: hideModal,
   } = useVisibility();
 
-  const { isVisible: isVisibleSnackbar, hide: hideSnackbar } = useVisibility();
-
   const handleModal = (product: ProductReq) => {
     setModalProduct(product);
     showModal();
@@ -43,26 +38,10 @@ export const PackagingDispatchProducts = ({
       {Object.keys(productsPerBatch).length > 0 ? (
         <>
           {Object.keys(productsPerBatch).map((batch) => (
-            <AccordionProduct
+            <ThemedAccordion
               key={batch}
-              accordionTitle={
-                <View className="flex-row justify-center items-center gap-3">
-                  <ThemedChip
-                    mode="outlined"
-                    text={`Lote ${batch}`}
-                    style={{
-                      backgroundColor: "white",
-                      width: 70,
-                      marginBottom: 0,
-                    }}
-                    textStyle={{ fontSize: 11, textTransform: "uppercase" }}
-                  />
-
-                  <ThemedText className="font-ruda w-4/6">
-                    {productsPerBatch[batch][0].mixName}
-                  </ThemedText>
-                </View>
-              }
+              title={`Lote ${batch}`}
+              description={productsPerBatch[batch][0].mixName}
             >
               {productsPerBatch[batch].map((product) =>
                 product.componentType === COMPONENT_TYPE.fertilizante ? (
@@ -75,13 +54,13 @@ export const PackagingDispatchProducts = ({
                   <ItemAccordionProduct
                     key={product.codeDetailReq}
                     product={product}
-                    icon="assistant"
+                    icon="archive-check"
                     showModal={() => handleModal(product)}
                     isPackaging
                   />
                 )
               )}
-            </AccordionProduct>
+            </ThemedAccordion>
           ))}
 
           <ModalProductDetail
@@ -93,13 +72,6 @@ export const PackagingDispatchProducts = ({
       ) : (
         <Text>No hay datos disponibles</Text>
       )}
-
-      <ThemedSnackbar
-        visible={isVisibleSnackbar}
-        onDismiss={hideSnackbar}
-        message="Producto actualizado correctamente"
-        duration={3000}
-      />
     </>
   );
 };

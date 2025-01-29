@@ -79,23 +79,17 @@ export const DriverReq = () => {
   };
 
   return (
-    <ThemedView className="justify-center items-center my-4" margin safe>
-      <Button
-        style={{
-          backgroundColor: Colors.light.tertiary,
-        }}
-        labelStyle={{
-          color: "black",
-          fontSize: 18,
-          fontFamily: "Ruda-Bold",
-        }}
-        icon="information-outline"
+    <ThemedView className="justify-center items-start my-4" margin safe>
+      <ThemedButton
+        variant="icon"
+        className="items-start bg-light-white !px-2 !py-2 rounded-lg"
+        iconName="information-circle-outline"
+        iconColor="black"
+        iconSize={24}
         onPress={showModal}
-      >
-        Información
-      </Button>
+      />
 
-      <View className="w-full gap-3 my-7">
+      <View className="w-full gap-3 mt-3 mb-7">
         <ThemedButton
           className="bg-light-primary text-white px-4 py-6 rounded-xl"
           onPress={() => handleReqType(REQ_TYPE.despacho)}
@@ -204,4 +198,3 @@ export const DriverReq = () => {
     </ThemedView>
   );
 };
-

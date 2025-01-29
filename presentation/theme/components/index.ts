@@ -1,3 +1,4 @@
+export * from './ThemedAccordion';
 export * from './ThemedButton';
 export * from './ThemedCard';
 export * from './ThemedChip';

@@ -1,6 +1,7 @@
 import React from "react";
 import { Divider } from "react-native-paper";
 
+import { useThemeColor } from "@/presentation/theme/hooks";
 import {
   ThemedChip,
   ThemedModal,
@@ -22,6 +23,8 @@ export const ModalProductDetail = ({
   visibleModal,
   hideModal,
 }: ModalProductDetailProps) => {
+  const primaryColor = useThemeColor({}, "primary");
+
   return (
     <ThemedModal isVisible={visibleModal} hideModal={hideModal} isNativeModal>
       {product.productName && (
@@ -37,6 +40,9 @@ export const ModalProductDetail = ({
           text={`Mezcla: ${product.mixCode ? `${product.mixCode} -` : ""} ${
             product.mixName
           }`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
@@ -44,6 +50,9 @@ export const ModalProductDetail = ({
         <ThemedChip
           tooltipTitle={String(product.codeDetailReq)}
           text={`Código Detalle: ${product.codeDetailReq}`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
@@ -53,6 +62,9 @@ export const ModalProductDetail = ({
           <ThemedChip
             tooltipTitle={`${product.operationCode} - ${product.operationName}`}
             text={`Operación: ${product.operationCode} - ${product.operationName}`}
+            style={{ backgroundColor: primaryColor }}
+            textStyle={{ color: "white" }}
+            iconColor="white"
           />
         )}
 
@@ -60,6 +72,9 @@ export const ModalProductDetail = ({
         <ThemedChip
           tooltipTitle={product.abbrWarehouse}
           text={`Bodega: ${product.abbrWarehouse}`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
@@ -67,6 +82,9 @@ export const ModalProductDetail = ({
         <ThemedChip
           tooltipTitle={product.abbrPlant}
           text={`Planta: ${product.abbrPlant}`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
@@ -74,6 +92,9 @@ export const ModalProductDetail = ({
         <ThemedChip
           tooltipTitle={String(product.ballotCode)}
           text={`Papeleta: ${product.ballotCode}`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
@@ -81,6 +102,9 @@ export const ModalProductDetail = ({
         <ThemedChip
           tooltipTitle={String(product.codeDI)}
           text={`DI: ${product.codeDI}`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
@@ -88,6 +112,9 @@ export const ModalProductDetail = ({
         <ThemedChip
           tooltipTitle={product.observation}
           text={`Observación: ${product.observation}`}
+          style={{ backgroundColor: primaryColor }}
+          textStyle={{ color: "white" }}
+          iconColor="white"
         />
       )}
 
