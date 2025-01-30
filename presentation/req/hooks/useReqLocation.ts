@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import * as Location from "expo-location";
 
 import { useAuthStore } from "@/presentation/auth/store";
@@ -11,10 +11,15 @@ import {
   useValidateActiveReqs,
 } from "@/presentation/req/hooks";
 
+import { DriverReq } from "@/infrastructure/entities";
 import { CalcAdapter } from "@/config/adapters";
-import { REQ_STATUS, TARGET_LATITUDE, TARGET_LONGITUDE } from "@/config/constants";
+import {
+  REQ_STATUS,
+  TARGET_LATITUDE,
+  TARGET_LONGITUDE,
+} from "@/config/constants";
 
-export const useReqLocation = () => {
+export const useReqLocation = (reqCode: number, driverRut: string) => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
   );
@@ -22,26 +27,24 @@ export const useReqLocation = () => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [currentStatus, setCurrentStatus] = useState<number | null>(null);
 
-  const { reqCode, driverRut } = useLocalSearchParams();
-
   const { user } = useAuthStore();
-   const { reqStatus } = useReqStatusByCode(reqCode as string);
+  const { reqStatus } = useReqStatusByCode(String(reqCode));
   const { changeReqStatus, isLoadingChangeReqStatus } = useChangeReqStatus();
   const { validateActiveReqs } = useValidateActiveReqs();
 
-   useEffect(() => {
-      (async () => {
-        setCurrentStatus(reqStatus.status);
-        if (reqStatus.status !== REQ_STATUS.pendiente) {
-          await getLocation();
-        }
-      })();
-    }, [reqStatus]);
+  useEffect(() => {
+    (async () => {
+      setCurrentStatus(reqStatus.status);
+      if (reqStatus.status !== REQ_STATUS.pendiente) {
+        await getLocation();
+      }
+    })();
+  }, [reqStatus]);
 
   const validateRequirement = async () => {
     try {
       const activeReqs = await validateActiveReqs(
-        reqCode as string,
+        String(reqCode),
         driverRut as string
       );
 
@@ -69,10 +72,14 @@ export const useReqLocation = () => {
     try {
       const resultado = await validateRequirement();
       if (resultado === 0) {
-        await changeRequirementStatus(reqCode as string, REQ_STATUS.pendiente);
+        await changeRequirementStatus(String(reqCode), REQ_STATUS.pendiente);
         setCurrentStatus(REQ_STATUS.pendiente);
+
+        return true;
       } else {
         Alert.alert("Error", "Hay otro requerimiento en curso.");
+
+        return false;
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -93,7 +100,8 @@ export const useReqLocation = () => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log(JSON.stringify(location, null,2));
+      // console.log(JSON.stringify(location, null, 2));
+
       setLocation(location);
       setLastUpdated(new Date());
     } catch (error) {
@@ -106,13 +114,13 @@ export const useReqLocation = () => {
     }
   };
 
-  const validateLocation = () => {
+  const validateLocation = (req: DriverReq) => {
     const distance = location
       ? CalcAdapter.calculateDistance(
           location.coords.latitude,
           location.coords.longitude,
           TARGET_LATITUDE,
-          TARGET_LONGITUDE,
+          TARGET_LONGITUDE
         )
       : null;
 
@@ -123,7 +131,21 @@ export const useReqLocation = () => {
       Alert.alert("Confirmar", "¿Está seguro de confirmar su llegada?", [
         {
           text: "Confirmar",
-          onPress: () => handleConfirm(),
+          onPress: async () => {
+            const isConfirm = await handleConfirm();
+            if (isConfirm) {
+              router.push({
+                pathname: "/ingreso-conductor",
+                params: {
+                  reqCode: req.internalCode,
+                  status: req.status,
+                  vehiclePatent: req.vehiclePatent,
+                  driverRut: req.rutDriver,
+                  reqType: `${req.reqType}${req.formatType}`,
+                },
+              });
+            }
+          },
           style: "default",
         },
         {

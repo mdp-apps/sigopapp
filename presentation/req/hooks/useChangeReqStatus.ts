@@ -25,7 +25,6 @@ export const useChangeReqStatus = () => {
         usuario: String(userId),
       }
     );
-    console.log("resultChangeReqStatus", JSON.stringify(response));
 
     setIsLoadingChangeReqStatus(false);
 

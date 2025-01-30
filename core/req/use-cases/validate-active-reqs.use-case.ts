@@ -20,6 +20,7 @@ export const validateActiveReqsUseCase = async (
       ApiResponse<ActiveReqResponse[]>,
       Body
     >(`/requerimientos/activos`, body);
+    console.log(validateActiveReqs);
 
     return validateActiveReqs.resultado.map(
       ReqMapper.fromActiveReqsAccountResultToEntity

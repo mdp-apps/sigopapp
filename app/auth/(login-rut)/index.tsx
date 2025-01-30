@@ -17,6 +17,7 @@ import { Formatter } from "@/config/helpers";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { STAGE } from "@/config/api/sigopApi";
 
 const LoginConductorScreen = () => {
   const { loginDriver } = useAuthStore();
@@ -81,13 +82,15 @@ const LoginConductorScreen = () => {
         className="bg-light-primary w-5/6  mt-2"
       />
 
-      <Link
-        className="text-center mt-4 underline text-2xl text-light-primary font-ruda"
-        href="/auth/login-user"
-        onPress={() => Keyboard.dismiss()}
-      >
-        Ingresa con tu email
-      </Link>
+      {STAGE === "dev" && (
+        <Link
+          className="text-center mt-4 underline text-2xl text-light-primary font-ruda"
+          href="/auth/login-user"
+          onPress={() => Keyboard.dismiss()}
+        >
+          Ingresa con tu email
+        </Link>
+      )}
     </AuthBaseLayout>
   );
 };

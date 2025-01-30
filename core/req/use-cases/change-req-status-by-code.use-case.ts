@@ -19,6 +19,7 @@ export const changeReqStatusByCodeUseCase = async (
       `/requerimientos/cambiaestadorequerimiento`,
       body
     );
+    console.log(changeReqStatus);
 
     return ResultMapper.fromResultToEntity(changeReqStatus);
   } catch (error) {

@@ -16,7 +16,6 @@ export const useValidateActiveReqs = () => {
       requerimiento: reqCode,
       rut: driverRut,
     });
-    console.log("activeReqs", JSON.stringify(response));
 
     setIsLoadingActiveReqs(false);
 

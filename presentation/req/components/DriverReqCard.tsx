@@ -1,9 +1,10 @@
 import { View } from "react-native";
 import { Card } from "react-native-paper";
 
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
-import { ThemedAccordion, ThemedChip } from "@/presentation/theme/components";
+import { useReqLocation } from "../hooks";
+import { ThemedAccordion, ThemedButton, ThemedChip, ThemedText } from "@/presentation/theme/components";
 
 import { DriverReq } from "@/infrastructure/entities";
 import { DateAdapter } from "@/config/adapters";
@@ -13,6 +14,8 @@ interface DriverReqCardProps {
 }
 
 export const DriverReqCard = ({ req }: DriverReqCardProps) => {
+  const { validateLocation } = useReqLocation(req.internalCode, req.rutDriver);
+
   return (
     <ThemedAccordion
       title={`REQ ${req.internalCode}`}
@@ -83,21 +86,14 @@ export const DriverReqCard = ({ req }: DriverReqCardProps) => {
             Productos
           </Link>
 
-          <Link
-            className="bg-emerald-600 px-4 py-2 rounded-full text-white font-semibold"
-            href={{
-              pathname: "/ingreso-conductor",
-              params: {
-                reqCode: req.internalCode,
-                status: req.status,
-                vehiclePatent: req.vehiclePatent,
-                driverRut: req.rutDriver,
-                reqType: `${req.reqType}${req.formatType}`,
-              },
-            }}
+          <ThemedButton
+            className="bg-emerald-600 !px-4 !py-2 rounded-full"
+            onPress={() => validateLocation(req)}
           >
-            Generar QR
-          </Link>
+            <ThemedText className="text-white font-semibold">
+              Generar QR
+            </ThemedText>
+          </ThemedButton>
         </View>
       </Card.Actions>
     </ThemedAccordion>
