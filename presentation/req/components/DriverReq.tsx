@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { View, ScrollView, Alert } from "react-native";
-import { ActivityIndicator, Button, Divider } from "react-native-paper";
+import { ActivityIndicator, Divider } from "react-native-paper";
 import { router } from "expo-router";
 
 import { useVisibility } from "@/presentation/shared/hooks";
@@ -16,7 +16,6 @@ import {
   ThemedView,
 } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
-import { FabMenu } from "@/presentation/menu/components";
 import { DriverReqCard } from "@/presentation/req/components";
 import { driverReqSchema } from "@/presentation/shared/validations";
 

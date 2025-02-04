@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Card } from "react-native-paper";
 
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 
 import { useReqLocation } from "../hooks";
 import { ThemedAccordion, ThemedButton, ThemedChip, ThemedText } from "@/presentation/theme/components";
@@ -14,7 +14,10 @@ interface DriverReqCardProps {
 }
 
 export const DriverReqCard = ({ req }: DriverReqCardProps) => {
-  const { validateLocation } = useReqLocation(req.internalCode, req.rutDriver);
+  const { validateLocation } = useReqLocation(
+    req.internalCode,
+    req.rutDriver
+  );
 
   return (
     <ThemedAccordion

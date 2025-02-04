@@ -28,7 +28,6 @@ export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
               className="flex-1 w-full"
               style={{ height: 500 }}
             >
-              {/* <Text style={styles.text}>Sigop</Text> */}
               <ThemedText
                 className="text-white font-bold text-5xl uppercase text-center font-ruda-bold mt-20"
               >
@@ -56,16 +55,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignContent: "center",
-  },
-  text: {
-    color: "white",
-    fontSize: 48,
-    lineHeight: 84,
-    fontWeight: "bold",
-    textAlign: "center",
-    textTransform: "uppercase",
-
-    marginTop: 68,
-    fontFamily: "Ruda-Bold",
   },
 });

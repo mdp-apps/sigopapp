@@ -3,6 +3,7 @@ import { Alert, Keyboard } from "react-native";
 import { Link, router } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
+import { useLocationPermissionsStore } from "@/presentation/shared/store";
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import {
   ThemedButton,
@@ -21,6 +22,7 @@ import { STAGE } from "@/config/api/sigopApi";
 
 const LoginConductorScreen = () => {
   const { loginDriver } = useAuthStore();
+  const { requestLocationPermission } = useLocationPermissionsStore(); 
 
   const {
     control,
@@ -41,6 +43,8 @@ const LoginConductorScreen = () => {
 
     if (driverSession) {
       router.push("/(sigop-app)/(home)");
+
+      await requestLocationPermission();
     } else {
       Alert.alert("Error", "RUT no está registrado.");
     }

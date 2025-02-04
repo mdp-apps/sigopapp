@@ -8,10 +8,10 @@ import { TARGET_LATITUDE, TARGET_LONGITUDE } from "@/config/constants";
 const { width, height } = Dimensions.get("window");
 
 export const PortAreaMap = () => {
-  const { location, lastUpdated } = useReqLocation();
+  // const { lastKnownLocation, lastUpdated } = useReqLocation();
 
   return (
-    location && (
+    // lastKnownLocation && (
       <MapView
         style={{
           width: width,
@@ -203,16 +203,18 @@ export const PortAreaMap = () => {
 
         <Marker
           coordinate={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
+            latitude: 0,
+            longitude: 0,
+            // latitude: lastKnownLocation.latitude,
+            // longitude: lastKnownLocation.longitude,
           }}
           title="Posición actual"
-          description={`Actualización: ${
-            lastUpdated ? lastUpdated.toLocaleString() : "N/A"
-          }`}
+          // description={`Actualización: ${
+          //   lastUpdated ? lastUpdated.toLocaleString() : "N/A"
+          // }`}
         />
       </MapView>
     )
-  );
+  // );
 };
 

@@ -45,6 +45,8 @@ Esta _App Móvil_  usa una estructura de carpetas basada en arquitectura limpia 
 | `/presentation/modulo`           | Contiene código relacionado con la interfaz de usuario de nuestra aplicación. Esto realizado por módulos independientes | N/A |
 | `/presentation/modulo/components`| Contiene  los componentes de React que se utilizan en nuestra aplicación, pero de su determinado módulo. | `NombreComponente.tsx` |
 | `/presentation/modulo/hooks`     | Contiene los hooks personalizados de React que se utilizan en nuestra aplicación, pero de su determinado módulo. | `useNombrehook.ts` |
+| `/presentation/modulo/layouts`   | Contiene todos los layouts que son bases de diseño para las pantallas en la que lo usemos | `NombreLayout.tsx` |
+| `/presentation/modulo/providers` | Contiene todos los wrappers o envoltorios que ejecutan lógica al inicia la app| `NombreProvider.tsx` |
 | `/presentation/modulo/store`     | Contiene el código relacionado con la gestión del estado global de nuestra app (usando la biblioteca Zustand). | `useNombreStore.ts` |
 ---
 

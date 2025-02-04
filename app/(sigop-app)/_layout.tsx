@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
-import { useThemeColor } from "@/presentation/theme/hooks";
-
 import { Redirect, Stack } from "expo-router";
 
-import { GlobalLoader } from "@/presentation/shared/components";
+import { useThemeColor } from "@/presentation/theme/hooks";
 import { useAuthStore } from "@/presentation/auth/store";
+import { PermissionsCheckerProvider } from "@/presentation/shared/providers";
+
+import { GlobalLoader } from "@/presentation/shared/components";
 
 const CheckAuthenticationLayout = () => {
   const backgroundColor = useThemeColor({}, "background");
@@ -26,20 +27,22 @@ const CheckAuthenticationLayout = () => {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShadowVisible: false,
-        headerShown: false,
-        contentStyle: { backgroundColor: backgroundColor },
-      }}
-    >
-      <Stack.Screen
-        name="(home)/index"
-        options={{
+     <PermissionsCheckerProvider>
+      <Stack
+        screenOptions={{
+          headerShadowVisible: false,
           headerShown: false,
+          contentStyle: { backgroundColor: backgroundColor },
         }}
-      />
-    </Stack>
+      >
+        <Stack.Screen
+          name="(home)/index"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+     </PermissionsCheckerProvider>
   );
 };
 

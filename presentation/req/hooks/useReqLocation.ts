@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-import { router, useLocalSearchParams } from "expo-router";
-import * as Location from "expo-location";
+import { router } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
+import { useLocationStore } from "@/presentation/shared/store";
 import {
   useChangeReqStatus,
   useReqStatusByCode,
@@ -20,25 +20,24 @@ import {
 } from "@/config/constants";
 
 export const useReqLocation = (reqCode: number, driverRut: string) => {
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
-  const [errorLocation, setErrorLocation] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [currentStatus, setCurrentStatus] = useState<number | null>(null);
 
   const { user } = useAuthStore();
+  const { lastKnownLocation, getLocation } = useLocationStore();
+
   const { reqStatus } = useReqStatusByCode(String(reqCode));
   const { changeReqStatus, isLoadingChangeReqStatus } = useChangeReqStatus();
   const { validateActiveReqs } = useValidateActiveReqs();
 
   useEffect(() => {
-    (async () => {
-      setCurrentStatus(reqStatus.status);
-      if (reqStatus.status !== REQ_STATUS.pendiente) {
-        await getLocation();
-      }
-    })();
+    if (!lastKnownLocation) getLocation();
+
+    console.log(JSON.stringify(lastKnownLocation, null, 2));
+  }, []);
+
+  useEffect(() => {
+    setCurrentStatus(reqStatus.status);
   }, [reqStatus]);
 
   const validateRequirement = async () => {
@@ -64,11 +63,12 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
     if (response.result !== "") {
       setCurrentStatus(status);
     } else {
-      Alert.alert("Error", "No se ha confirmado la llegada.");
+      Alert.alert("Alerta", "No se ha confirmado la llegada.");
     }
   };
 
   const handleConfirm = async () => {
+    
     try {
       const resultado = await validateRequirement();
       if (resultado === 0) {
@@ -77,7 +77,7 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
 
         return true;
       } else {
-        Alert.alert("Error", "Hay otro requerimiento en curso.");
+        Alert.alert("Alerta", "Hay otro requerimiento en curso.");
 
         return false;
       }
@@ -90,42 +90,32 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
     }
   };
 
-  const getLocation = async () => {
-    try {
-      console.log("Getting location...");
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorLocation("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      // console.log(JSON.stringify(location, null, 2));
-
-      setLocation(location);
-      setLastUpdated(new Date());
-    } catch (error) {
-      console.error(error);
-      if (error instanceof Error) {
-        setErrorLocation(error.message);
-      } else {
-        setErrorLocation(String(error));
-      }
-    }
-  };
-
-  const validateLocation = (req: DriverReq) => {
-    const distance = location
-      ? CalcAdapter.calculateDistance(
-          location.coords.latitude,
-          location.coords.longitude,
-          TARGET_LATITUDE,
-          TARGET_LONGITUDE
-        )
-      : null;
+  const validateLocation = async (req: DriverReq) => {
+    
+    const distance =
+      lastKnownLocation &&
+      CalcAdapter.calculateDistance(
+        lastKnownLocation.latitude,
+        lastKnownLocation.longitude,
+        TARGET_LATITUDE,
+        TARGET_LONGITUDE
+      );
 
     const radius = 1500;
-    const isInZone = distance !== null && distance <= radius;
+    const isInZone = distance && distance <= radius;
+    console.log(
+      JSON.stringify(
+        {
+          reqCode: req.internalCode,
+          distance,
+          isInZone,
+          latitude: lastKnownLocation?.latitude,
+          longitude: lastKnownLocation?.longitude,
+        },
+        null,
+        2
+      )
+    );
 
     if (isInZone) {
       Alert.alert("Confirmar", "¿Está seguro de confirmar su llegada?", [
@@ -156,7 +146,7 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
       ]);
     } else {
       Alert.alert(
-        "Error",
+        "Alerta",
         "No está dentro del rango permitido para confirmar su llegada.",
         [
           {
@@ -170,8 +160,7 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
   };
 
   return {
-    location,
-    errorLocation,
+    lastKnownLocation,
     isLoadingChangeReqStatus,
     lastUpdated,
     currentStatus,
