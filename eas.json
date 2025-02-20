@@ -20,6 +20,10 @@
       "android": {
         "serviceAccountKeyPath": "./service-account-file.json",
         "track": "production"
+      },
+      "ios": {
+        "appleId": "mprado@muellesdepenco.cl",
+        "appleTeamId": "NYJP32RHR3"
       }
     }
   }

@@ -29,13 +29,6 @@ const ClienteLayout = () => {
           headerTitle: "Requerimientos cliente",
         }}
       />
-
-      <Stack.Screen
-        name="stock-actual-cliente/index"
-        options={{
-          headerTitle: "Stock",
-        }}
-      />
     </Stack>
   );
 };

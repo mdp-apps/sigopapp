@@ -67,7 +67,6 @@ const LoginConductorScreen = () => {
             onChangeText={onChange}
             value={value}
             placeholder="Ingrese su RUT  (Sin puntos, con guión y DV)"
-            keyboardType="name-phone-pad"
             returnKeyType="next"
             isNative
           />

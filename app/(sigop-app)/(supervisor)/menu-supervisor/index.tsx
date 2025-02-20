@@ -53,14 +53,6 @@ const SupervisorScreen = () => {
           </ThemedText>
         </ThemedButton>
 
-        <ThemedButton
-          className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
-          onPress={() => router.push("/stock-actual")}
-        >
-          <ThemedText variant="h3" className="font-ruda text-white">
-            Stock
-          </ThemedText>
-        </ThemedButton>
 
         <ThemedButton
           className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"

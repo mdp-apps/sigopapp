@@ -9,7 +9,7 @@ import { Formatter } from "@/config/helpers";
 
 interface ItemAccordionProductProps {
   product: ProductReq;
-  showModal: () => void;
+  showModal?: () => void;
   icon?: IconSource;
   isPackaging?: boolean;
 }

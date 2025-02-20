@@ -22,45 +22,45 @@ export const ThemedAccordion = ({
   const handlePress = () => setExpanded(!expanded);
 
   return (
-    <List.Accordion
-      title={title}
-      description={description}
-      expanded={expanded}
-      onPress={handlePress}
-      titleStyle={[styles.titleStyle, titleStyle]}
-      descriptionStyle={[styles.descriptionStyle, descriptionStyle]}
-      style={[styles.accordionStyle, { backgroundColor: "#f3f3f3" }]}
-    >
-      <Card style={styles.cardStyle}>{children}</Card>
-    </List.Accordion>
+      <List.Accordion
+        title={title}
+        description={description}
+        expanded={expanded}
+        onPress={handlePress}
+        titleStyle={[styles.title, titleStyle]}
+        descriptionStyle={[styles.description, descriptionStyle]}
+        style={styles.accordion}
+      >
+        <Card style={styles.card}>{children}</Card>
+      </List.Accordion>
   );
 };
 
 const styles = StyleSheet.create({
-  accordionStyle: {
-    backgroundColor: "white",
-    width: 390,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
+  accordion: {
+    backgroundColor: "#f3f3f3",
+    width: "100%",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
+    shadowRadius: 2,
+    elevation: 1,
   },
-  titleStyle: {
+  title: {
     fontSize: 22,
     fontFamily: "Ruda-Bold",
     color: "black",
   },
-  descriptionStyle: {
+  description: {
     fontSize: 14,
     fontFamily: "Ruda-Bold",
   },
-  cardStyle: {
+  card: {
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
+    shadowRadius: 1,
+    elevation: 1,
     width: "100%",
     borderRadius: "none",
     backgroundColor: "white",

@@ -30,16 +30,6 @@ const MenuScreen = () => {
             />
           </View>
 
-          {STAGE === "test" && (
-            <View className="flex-row justify-center my-2">
-              <MenuCard
-                text="Stock actual"
-                route="/stock-actual-cliente"
-                iconSource="archive-eye"
-              />
-            </View>
-          )}
-
           <View className="flex-row justify-between my-2 ">
             {STAGE === "test" && (
               <MenuCard
@@ -65,25 +55,20 @@ const MenuScreen = () => {
       {STAGE === "test" && (
         <>
           <View className="flex-row justify-between my-2">
-            {STAGE === "test" && (
-              <MenuCard
-                text="Supervisor"
-                route="/menu-supervisor"
-                iconSource="account-hard-hat"
-              />
-            )}
+            <MenuCard
+              text="Supervisor"
+              route="/menu-supervisor"
+              iconSource="account-hard-hat"
+            />
           </View>
 
-          {STAGE === "test" && (
-            <View className="flex-row justify-center my-2">
-              <MenuCard text="Pruebas" route="/prueba" iconSource="test-tube" />
+          <View className="flex-row justify-center my-2">
+            <MenuCard text="Pruebas" route="/prueba" iconSource="test-tube" />
 
-              <View className="flex-1 mx-1" />
-            </View>
-          )}
+          </View>
         </>
       )}
-      
+
       <FabMenu />
     </>
   );

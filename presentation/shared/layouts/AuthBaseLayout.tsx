@@ -20,31 +20,32 @@ export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <View className="flex-1 justify-center content-center bg-white">
-          <View className="flex-1 justify-center items-center">
-            <ImageBackground
-              source={require("../../../assets/background_login.png")}
-              resizeMode="cover"
-              className="flex-1 w-full"
-              style={{ height: 500 }}
-            >
-              <ThemedText
-                className="text-white font-bold text-5xl uppercase text-center font-ruda-bold mt-20"
-              >
-                Sigop
-              </ThemedText>
-            </ImageBackground>
-          </View>
+        <ScrollView contentContainerStyle={styles.containerScrollView}>
+          <View className="flex-1">
+            <View className="h-72">
+              <View className="flex-1 justify-center items-center">
+                <ImageBackground
+                  source={require("../../../assets/background_login.png")}
+                  resizeMode="cover"
+                  className="flex-1 w-full"
+                  style={{ height: 500 }}
+                >
+                  <ThemedText className="text-white font-bold text-5xl uppercase text-center font-ruda-bold mt-20">
+                    Sigop
+                  </ThemedText>
+                </ImageBackground>
+              </View>
+            </View>
 
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={styles.containerScrollView}
-          >
-            <ThemedView className="items-center" bgColor="white" margin>
+            <ThemedView
+              className="flex-1 justify-center items-center"
+              bgColor="white"
+              margin
+            >
               {children}
             </ThemedView>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -52,8 +53,6 @@ export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
 
 const styles = StyleSheet.create({
   containerScrollView: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
+    flexGrow: 1,
   },
 });

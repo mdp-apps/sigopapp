@@ -59,6 +59,7 @@ export const DriverReq = () => {
     useDriverReqsByRut(
       profile === UserProfile.driver ? user?.rut! : getValues("rut")
     );
+  
 
   useEffect(() => {
     if (errors.rut) {
@@ -78,7 +79,7 @@ export const DriverReq = () => {
   };
 
   return (
-    <ThemedView className="justify-center items-start my-4" margin safe>
+    <ThemedView className="flex-1 justify-start items-start my-4" margin safe>
       <ThemedButton
         variant="icon"
         className="items-start bg-light-white !px-2 !py-2 rounded-lg"
@@ -125,34 +126,41 @@ export const DriverReq = () => {
         )}
       </View>
 
-      {isLoadingDriverReqs ? (
-        <ActivityIndicator
-          animating={true}
-          color={Colors.light.tomato}
-          size="large"
-        />
-      ) : (
-        isVisibleCard && (
-          <ScrollView>
-            <View className="gap-5">
-              {driverReqs.length > 0 ? (
-                driverReqs.map((item, index) => (
-                  <DriverReqCard key={index} req={item} />
-                ))
-              ) : (
-                <NoDataCard
-                  message={`No hay ${
-                    REQ_TYPE.despacho === reqType ? "Despachos" : "Recepciones"
-                  }`}
-                  iconSource={
-                    REQ_TYPE.despacho === reqType ? "truck-minus" : "truck-plus"
-                  }
-                />
-              )}
-            </View>
-          </ScrollView>
-        )
-      )}
+      <ScrollView className="w-full">
+        <View className="w-full min-h-56">
+          {isLoadingDriverReqs ? (
+            <ActivityIndicator
+              animating={true}
+              color={Colors.light.tomato}
+              size="large"
+              className="mx-auto"
+            />
+          ) : (
+            isVisibleCard && (
+              <View className="gap-5">
+                {driverReqs.length > 0 ? (
+                  driverReqs.map((item, index) => (
+                    <DriverReqCard key={index} req={item} />
+                  ))
+                ) : (
+                  <NoDataCard
+                    message={`No hay ${
+                      REQ_TYPE.despacho === reqType
+                        ? "Despachos"
+                        : "Recepciones"
+                    }`}
+                    iconSource={
+                      REQ_TYPE.despacho === reqType
+                        ? "truck-minus"
+                        : "truck-plus"
+                    }
+                  />
+                )}
+              </View>
+            )
+          )}
+        </View>
+      </ScrollView>
 
       <ThemedModal
         isVisible={isVisibleModal}

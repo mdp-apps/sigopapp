@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { ThemedAccordion, ThemedText } from "@/presentation/theme/components";
-import { ItemAccordionProduct, ModalProductDetail } from "./";
+import { ItemAccordionProduct } from "./";
 
 import { ProductReq } from "@/infrastructure/entities";
 
@@ -9,15 +9,6 @@ interface ProductoOtrosProps {
 }
 
 export const OtherProducts = ({ products }: ProductoOtrosProps) => {
-  const [visibleModalProduct, setVisibleModalProduct] = useState<number | null>(null);
-
-  const showModal = (codeDetailReq: number) => {
-    setVisibleModalProduct(codeDetailReq);
-  };
-
-  const hideModal = () => {
-    setVisibleModalProduct(null);
-  };
 
   return (
     <>
@@ -30,14 +21,9 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
           >
             <ItemAccordionProduct
               product={product}
-              showModal={() => showModal(product.codeDetailReq)}
             />
 
-            <ModalProductDetail
-              product={product}
-              visibleModal={visibleModalProduct === product.codeDetailReq}
-              hideModal={hideModal}
-            />
+
           </ThemedAccordion>
         ))
       ) : (

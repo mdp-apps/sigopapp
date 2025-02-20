@@ -30,13 +30,6 @@ const PruebaLayout = () => {
       />
 
       <Stack.Screen
-        name="stock-actual/index"
-        options={{
-          headerTitle: "Stock",
-        }}
-      />
-
-      <Stack.Screen
         name="ver-req-supervisor/index"
         options={{
           headerTitle: "Supervisor",
