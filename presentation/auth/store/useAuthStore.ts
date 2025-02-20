@@ -1,3 +1,5 @@
+import { router } from "expo-router";
+
 import { StorageAdapter } from "@/config/adapters/storage.adapter";
 
 import * as UseCases from "@/core/auth/use-cases";
@@ -11,39 +13,38 @@ import {
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { create } from "zustand";
-import { CustomerCompany } from "@/config/constants";
 
 export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
 
 export enum UserProfile {
+  default = "",
   driver = "driver",
   customer = "customer",
+  supervisor = "supervisor",
+  planner = "planner",
 }
 
 export interface AuthState {
   status: AuthStatus;
   user?: UserSession | DriverSession;
-  profile?: UserProfile;
+  profile: UserProfile;
 
   login: (email: string, password: string) => Promise<boolean>;
   loginDriver: (rut: string) => Promise<boolean>;
-  checkStatus: () => Promise<void>;
   logout: () => Promise<void>;
-
+  checkStatus: () => Promise<void>;
   changeStatus: (
     isSessionSaved: string,
     user?: User | Driver
   ) => Promise<boolean>;
+  selectProfile: (profile: UserProfile) => void;
 }
 
 const saveUserSession = async (
-  isSessionSaved: string,
-  user: User | Driver
+  user: User | Driver,
+  profile: UserProfile
 ): Promise<{ session: UserSession | DriverSession; profile: UserProfile }> => {
-  let profile: UserProfile;
   let session: UserSession | DriverSession;
-
-  const isAuthenticated = isSessionSaved === "SI";
 
   const baseSession = {
     code: user.code,
@@ -54,10 +55,6 @@ const saveUserSession = async (
   };
 
   if ("emailLogin" in user) {
-    isAuthenticated && Number(user.companyCode) !== CustomerCompany.mdp
-      ? (profile = UserProfile.customer)
-      : (profile = UserProfile.driver);
-
     session = {
       ...baseSession,
       companyCode: user.companyCode,
@@ -65,7 +62,6 @@ const saveUserSession = async (
       emailLogin: user.emailLogin,
     };
   } else {
-    profile = UserProfile.driver;
     session = {
       ...baseSession,
     };
@@ -79,6 +75,7 @@ const saveUserSession = async (
 export const useAuthStore = create<AuthState>((set, get) => ({
   status: "checking",
   user: undefined,
+  profile: UserProfile.default,
 
   changeStatus: async (isSessionSaved: string, user?: User | Driver) => {
     if (isSessionSaved === "NO" || !user) {
@@ -89,9 +86,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return false;
     }
 
-    const { session, profile } = await saveUserSession(isSessionSaved, user);
+    const { session } = await saveUserSession(user, get().profile);
 
-    set({ status: "authenticated", user: session, profile: profile });
+    set({ status: "authenticated", user: session, profile: get().profile });
 
     return true;
   },
@@ -120,6 +117,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     return get().changeStatus(res.isSessionSaved, res.user);
+  },
+  logout: async () => {
+    await StorageAdapter.removeItem("userSession");
+    await StorageAdapter.removeItem("userEmail");
+    await StorageAdapter.removeItem("userPassword");
+    await StorageAdapter.removeItem("userRut");
+
+    set({ status: "unauthenticated", user: undefined, profile: undefined });
   },
   checkStatus: async () => {
     const email = await StorageAdapter.getItem("userEmail");
@@ -161,12 +166,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     set({ status: "unauthenticated", user: undefined, profile: undefined });
   },
-  logout: async () => {
-    await StorageAdapter.removeItem("userSession");
-    await StorageAdapter.removeItem("userEmail");
-    await StorageAdapter.removeItem("userPassword");
-    await StorageAdapter.removeItem("userRut");
+  selectProfile: (profile: UserProfile) => {
+    if (profile === UserProfile.default) return;
+    
+    set({ profile });
+    
+    if (profile === UserProfile.driver) {
+      router.push("/auth/login-driver");
+      return;
+    }
 
-    set({ status: "unauthenticated", user: undefined, profile: undefined });
+    router.push("/auth/login-user");
   },
 }));

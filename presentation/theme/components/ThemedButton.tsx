@@ -1,13 +1,13 @@
 import { Text, Pressable, PressableProps } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
 import { Colors } from "@/config/constants";
+import { Icon } from "react-native-paper";
 
 interface Props extends PressableProps {
   children?: React.ReactNode;
   className?: string;
   iconColor?: string;
-  iconName?: keyof typeof Ionicons.glyphMap;
+  iconName?: string;
   iconSize?: number;
   text?: string;
   textClassName?: string;
@@ -34,7 +34,8 @@ export const ThemedButton = ({
     <Pressable
       onPress={onPress}
       className={[
-        "items-center px-6 py-3 active:opacity-80",
+        "items-center active:opacity-80",
+        variant === "icon" ? "p-4" : "px-6 py-3",
         outlineStyle,
         roundedStyle,
         className,
@@ -42,12 +43,12 @@ export const ThemedButton = ({
       {...rest}
     >
       {variant === "icon" ? (
-        <Ionicons name={iconName} size={iconSize} color={iconColor} />
+        <Icon source={iconName} size={iconSize} color={iconColor} />
       ) : children ? (
         children
       ) : (
         <Text className={["text-white text-md", textClassName].join(" ")}>
-          {text} {iconName && <Ionicons name={iconName} size={iconSize} />}
+          {text} {iconName && <Icon source={iconName} size={iconSize} />}
         </Text>
       )}
     </Pressable>

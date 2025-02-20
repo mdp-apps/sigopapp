@@ -1,8 +1,9 @@
 import { Alert, Keyboard } from "react-native";
 
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 
-import { useAuthStore } from "@/presentation/auth/store";
+import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+
 import { useLocationPermissionsStore } from "@/presentation/shared/store";
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import {
@@ -14,15 +15,15 @@ import {
 import { loginRutSchema } from "@/presentation/shared/validations";
 
 import { Formatter } from "@/config/helpers";
+import { USER_PROFILES } from "@/config/constants";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { STAGE } from "@/config/api/sigopApi";
 
 const LoginConductorScreen = () => {
   const { loginDriver } = useAuthStore();
-  const { requestLocationPermission } = useLocationPermissionsStore(); 
+  const { requestLocationPermission } = useLocationPermissionsStore();
 
   const {
     control,
@@ -51,8 +52,11 @@ const LoginConductorScreen = () => {
   };
 
   return (
-    <AuthBaseLayout>
-      <ThemedText variant="h3" className="font-ruda text-light-primary mb-2">
+    <AuthBaseLayout profile={USER_PROFILES[UserProfile.driver]}>
+      <ThemedText
+        variant="h2"
+        className="font-ruda-bold text-light-primary mb-2"
+      >
         Iniciar sesión
       </ThemedText>
 
@@ -82,18 +86,8 @@ const LoginConductorScreen = () => {
         variant="rounded"
         onPress={handleSubmit(onSubmit)}
         text="INGRESAR"
-        className="bg-light-primary w-5/6  mt-2"
+        className="bg-light-primary w-5/6 mt-2"
       />
-
-      {STAGE === "dev" && (
-        <Link
-          className="text-center mt-4 underline text-2xl text-light-primary font-ruda"
-          href="/auth/login-user"
-          onPress={() => Keyboard.dismiss()}
-        >
-          Ingresa con tu email
-        </Link>
-      )}
     </AuthBaseLayout>
   );
 };

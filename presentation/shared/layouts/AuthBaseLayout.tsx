@@ -6,14 +6,16 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Text,
 } from "react-native";
 
 import { ThemedText, ThemedView } from "@/presentation/theme/components";
 interface AuthBaseLayoutProps {
   children: React.ReactNode;
+  profile?: string;
 }
 
-export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
+export const AuthBaseLayout = ({ children,profile }: AuthBaseLayoutProps) => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <KeyboardAvoidingView
@@ -33,6 +35,7 @@ export const AuthBaseLayout = ({ children }: AuthBaseLayoutProps) => {
                   <ThemedText className="text-white font-bold text-5xl uppercase text-center font-ruda-bold mt-20">
                     Sigop
                   </ThemedText>
+                  <Text className="text-2xl text-slate-100 text-center">{profile}</Text>
                 </ImageBackground>
               </View>
             </View>

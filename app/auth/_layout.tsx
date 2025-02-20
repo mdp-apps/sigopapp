@@ -16,12 +16,18 @@ const AuthLayout = () => {
       />
 
       <Stack.Screen
-        name="login-user/index"
+        name="login-driver/index"
         options={{
           headerShown: false,
         }}
       />
 
+      <Stack.Screen
+        name="login-user/index"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 };

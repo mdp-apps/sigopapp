@@ -23,7 +23,7 @@ const CheckAuthenticationLayout = () => {
   }
 
   if (status === "unauthenticated") {
-    return <Redirect href="/auth/(login-rut)" />;
+    return <Redirect href="/auth/(profiles)" />;
   }
 
   return (

@@ -10,7 +10,7 @@ import { STAGE } from "@/config/api/sigopApi";
 import { DriverReq } from "@/presentation/req/components";
 
 const MenuScreen = () => {
-  const { profile } = useAuthStore();
+  const { profile,user,status } = useAuthStore();
 
   return (
     <>

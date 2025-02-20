@@ -14,12 +14,14 @@ import {
 import { PasswordInput } from "@/presentation/shared/components";
 import { loginUserSchema } from "@/presentation/shared/validations";
 
+import { USER_PROFILES } from "@/config/constants";
+
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const LoginSigopScreen = () => {
-  const { login } = useAuthStore();
+  const { login, profile } = useAuthStore();
 
   const {
     control,
@@ -44,8 +46,8 @@ const LoginSigopScreen = () => {
   };
 
   return (
-    <AuthBaseLayout>
-      <ThemedText variant="h3" className="font-ruda text-light-primary mb-2">
+    <AuthBaseLayout profile={USER_PROFILES[profile as keyof typeof USER_PROFILES]}>
+      <ThemedText variant="h2" className="font-ruda-bold text-light-primary mb-2">
         Iniciar sesión
       </ThemedText>
 
@@ -87,13 +89,6 @@ const LoginSigopScreen = () => {
         className="bg-light-primary mt-4 w-5/6"
       />
 
-      <Link
-        className="text-center mt-4 underline text-2xl text-light-primary font-ruda"
-        href="/auth/(login-rut)"
-        onPress={() => Keyboard.dismiss()}
-      >
-        Ingresa con tu RUT
-      </Link>
     </AuthBaseLayout>
   );
 };
