@@ -4,9 +4,10 @@ import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import { ThemedButton, ThemedText } from "@/presentation/theme/components";
+import { STAGE } from "@/config/api/sigopApi";
 
 const ProfileMenuScreen = () => {
-  const { selectProfile } = useAuthStore(); 
+  const { selectProfile } = useAuthStore();
 
   return (
     <AuthBaseLayout>
@@ -19,43 +20,67 @@ const ProfileMenuScreen = () => {
 
       <View className="flex gap-4 w-full m-3">
         <View className="flex flex-row justify-evenly">
-          <ThemedButton
-            variant="icon"
-            onPress={() => selectProfile(UserProfile.driver)}
-            className="rounded-full bg-light-primary"
-            iconName="dump-truck"
-            iconSize={60}
-            iconColor="white"
-          />
+          <View className="flex flex-col items-center gap-1">
+            <ThemedButton
+              variant="icon"
+              onPress={() => selectProfile(UserProfile.driver)}
+              className="rounded-full bg-light-primary"
+              iconName="dump-truck"
+              iconSize={60}
+              iconColor="white"
+            />
+            <ThemedText className="font-semibold text-md text-center text-light-primary">
+              Conductor
+            </ThemedText>
+          </View>
 
-          <ThemedButton
-            variant="icon"
-            onPress={() => selectProfile(UserProfile.supervisor)}
-            className="rounded-full bg-light-primary"
-            iconName="account-hard-hat"
-            iconSize={60}
-            iconColor="white"
-          />
+          <View className="flex flex-col items-center gap-1">
+            <ThemedButton
+              variant="icon"
+              onPress={() => selectProfile(UserProfile.supervisor)}
+              className="rounded-full bg-light-primary "
+              iconName="account-hard-hat"
+              iconSize={60}
+              iconColor="white"
+            />
+            <ThemedText className="font-semibold text-md text-center text-light-primary">
+              Supervisor
+            </ThemedText>
+          </View>
         </View>
-        <View className="flex flex-row justify-evenly">
-          <ThemedButton
-            variant="icon"
-            onPress={() => selectProfile(UserProfile.customer)}
-            className="rounded-full bg-light-primary"
-            iconName="account-tie"
-            iconSize={60}
-            iconColor="white"
-          />
 
-          <ThemedButton
-            variant="icon"
-            onPress={() => selectProfile(UserProfile.planner)}
-            className="rounded-full bg-light-primary"
-            iconName="account-edit"
-            iconSize={60}
-            iconColor="white"
-          />
-        </View>
+        {STAGE === "dev" && (
+          <View className="flex flex-row justify-evenly">
+            <View className="flex flex-col items-center gap-1">
+              <ThemedButton
+                variant="icon"
+                onPress={() => selectProfile(UserProfile.customer)}
+                className="rounded-full bg-light-primary"
+                iconName="account-tie"
+                iconSize={60}
+                iconColor="white"
+              />
+              <ThemedText className="font-semibold text-md text-center text-light-primary">
+                Cliente
+              </ThemedText>
+            </View>
+
+            <View className="flex flex-col items-center gap-1">
+              <ThemedButton
+                variant="icon"
+                onPress={() => selectProfile(UserProfile.planner)}
+                className="rounded-full bg-light-primary"
+                iconName="account-edit"
+                iconSize={60}
+                iconColor="white"
+              />
+
+              <ThemedText className="font-semibold text-md text-center text-light-primary">
+                Planificador
+              </ThemedText>
+            </View>
+          </View>
+        )}
       </View>
     </AuthBaseLayout>
   );

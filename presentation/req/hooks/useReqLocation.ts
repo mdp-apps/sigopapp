@@ -33,7 +33,6 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
   useEffect(() => {
     if (!lastKnownLocation) getLocation();
 
-    console.log(JSON.stringify(lastKnownLocation, null, 2));
   }, []);
 
   useEffect(() => {

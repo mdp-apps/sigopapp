@@ -1,4 +1,3 @@
-import React from "react";
 import { View } from "react-native";
 
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
@@ -10,7 +9,8 @@ import { STAGE } from "@/config/api/sigopApi";
 import { DriverReq } from "@/presentation/req/components";
 
 const MenuScreen = () => {
-  const { profile,user,status } = useAuthStore();
+  const { profile } = useAuthStore();
+  console.log({ profile });
 
   return (
     <>
@@ -52,6 +52,7 @@ const MenuScreen = () => {
 
       {profile === UserProfile.driver && <DriverReq />}
 
+
       {STAGE === "test" && (
         <>
           <View className="flex-row justify-between my-2">
@@ -64,7 +65,6 @@ const MenuScreen = () => {
 
           <View className="flex-row justify-center my-2">
             <MenuCard text="Pruebas" route="/prueba" iconSource="test-tube" />
-
           </View>
         </>
       )}

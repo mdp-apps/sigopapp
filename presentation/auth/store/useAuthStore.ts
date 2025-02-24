@@ -24,6 +24,8 @@ export enum UserProfile {
   planner = "planner",
 }
 
+type Session = { session: UserSession | DriverSession; profile: UserProfile };
+
 export interface AuthState {
   status: AuthStatus;
   user?: UserSession | DriverSession;
@@ -43,7 +45,7 @@ export interface AuthState {
 const saveUserSession = async (
   user: User | Driver,
   profile: UserProfile
-): Promise<{ session: UserSession | DriverSession; profile: UserProfile }> => {
+): Promise<Session> => {
   let session: UserSession | DriverSession;
 
   const baseSession = {
@@ -67,7 +69,10 @@ const saveUserSession = async (
     };
   }
 
-  await StorageAdapter.setItem("userSession", JSON.stringify(session));
+  await StorageAdapter.setItem(
+    "userSession",
+    JSON.stringify(session)
+  );
 
   return { session, profile };
 };
@@ -86,9 +91,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return false;
     }
 
-    const { session } = await saveUserSession(user, get().profile);
+    const storageProfile = await StorageAdapter.getItem("userProfile") as UserProfile;
+    
+    console.log({ profile: get().profile, storageProfile });  
+    const { session,profile } = await saveUserSession(user, storageProfile);
 
-    set({ status: "authenticated", user: session, profile: get().profile });
+    set({ status: "authenticated", user: session, profile: profile });
 
     return true;
   },
@@ -141,7 +149,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       if (res.isSessionSaved === "SI") {
         const authUser = get().changeStatus(res.isSessionSaved, res.user);
-        console.log(JSON.stringify(authUser, null, 2));
       } else {
         set({ status: "unauthenticated", user: undefined, profile: undefined });
       }
@@ -166,10 +173,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     set({ status: "unauthenticated", user: undefined, profile: undefined });
   },
-  selectProfile: (profile: UserProfile) => {
+  selectProfile: async(profile: UserProfile) => {
     if (profile === UserProfile.default) return;
     
     set({ profile });
+    await StorageAdapter.setItem("userProfile", profile);
     
     if (profile === UserProfile.driver) {
       router.push("/auth/login-driver");
