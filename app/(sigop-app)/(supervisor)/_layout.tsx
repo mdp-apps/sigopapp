@@ -63,6 +63,13 @@ const PruebaLayout = () => {
           headerTitle: "Saldos",
         }}
       />
+
+      <Stack.Screen
+        name="configurar-pallets-req/index"
+        options={{
+          headerTitle: "Req. ??",
+        }}
+      />
     </Stack>
   );
 };
