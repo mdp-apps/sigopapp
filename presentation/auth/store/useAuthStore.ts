@@ -93,7 +93,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     const storageProfile = await StorageAdapter.getItem("userProfile") as UserProfile;
     
-    console.log({ profile: get().profile, storageProfile });  
     const { session,profile } = await saveUserSession(user, storageProfile);
 
     set({ status: "authenticated", user: session, profile: profile });
@@ -148,7 +147,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
 
       if (res.isSessionSaved === "SI") {
-        const authUser = get().changeStatus(res.isSessionSaved, res.user);
+        get().changeStatus(res.isSessionSaved, res.user);
       } else {
         set({ status: "unauthenticated", user: undefined, profile: undefined });
       }

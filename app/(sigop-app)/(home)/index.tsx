@@ -4,16 +4,20 @@ import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
 import { ThemedView } from "@/presentation/theme/components";
 import { FabMenu, MenuCard } from "@/presentation/menu/components";
+import { DriverReq } from "@/presentation/req/components";
+import { SupervisorMenu } from "@/presentation/supervisor/components";
 
 import { STAGE } from "@/config/api/sigopApi";
-import { DriverReq } from "@/presentation/req/components";
 
 const MenuScreen = () => {
   const { profile } = useAuthStore();
-  console.log({ profile });
 
   return (
     <>
+      {profile === UserProfile.driver && <DriverReq />}
+
+      {profile === UserProfile.supervisor && <SupervisorMenu />}
+
       {profile === UserProfile.customer && (
         <ThemedView className="justify-center items-center" margin safe>
           <View className="flex-row gap-2 justify-between my-2">
@@ -50,23 +54,14 @@ const MenuScreen = () => {
         </ThemedView>
       )}
 
-      {profile === UserProfile.driver && <DriverReq />}
-
-
       {STAGE === "test" && (
-        <>
-          <View className="flex-row justify-between my-2">
-            <MenuCard
-              text="Supervisor"
-              route="/menu-supervisor"
-              iconSource="account-hard-hat"
-            />
-          </View>
-
-          <View className="flex-row justify-center my-2">
-            <MenuCard text="Pruebas" route="/prueba" iconSource="test-tube" />
-          </View>
-        </>
+        <View className="flex-row justify-between my-2">
+          <MenuCard
+            text="Supervisor"
+            route="/menu-supervisor"
+            iconSource="account-hard-hat"
+          />
+        </View>
       )}
 
       <FabMenu />

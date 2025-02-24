@@ -1,7 +1,10 @@
-import { Text, Pressable, PressableProps } from "react-native";
+import { Pressable, PressableProps } from "react-native";
+
+import { Icon } from "react-native-paper";
+
+import { ThemedText } from "./ThemedText";
 
 import { Colors } from "@/config/constants";
-import { Icon } from "react-native-paper";
 
 interface Props extends PressableProps {
   children?: React.ReactNode;
@@ -34,7 +37,7 @@ export const ThemedButton = ({
     <Pressable
       onPress={onPress}
       className={[
-        "items-center active:opacity-80",
+        "flex-row items-center gap-4 active:opacity-80",
         variant === "icon" ? "p-4" : "px-6 py-3",
         outlineStyle,
         roundedStyle,
@@ -42,14 +45,19 @@ export const ThemedButton = ({
       ].join(" ")}
       {...rest}
     >
-      {variant === "icon" ? (
+      {variant === "icon" && !text ? (
         <Icon source={iconName} size={iconSize} color={iconColor} />
       ) : children ? (
         children
       ) : (
-        <Text className={["text-white text-md", textClassName].join(" ")}>
-          {text} {iconName && <Icon source={iconName} size={iconSize} />}
-        </Text>
+        <>
+          {iconName && (
+            <Icon source={iconName} size={iconSize} color={iconColor} />
+          )}
+          <ThemedText className={["text-white text-center", textClassName].join(" ")}>
+            {text}
+          </ThemedText>
+        </>
       )}
     </Pressable>
   );

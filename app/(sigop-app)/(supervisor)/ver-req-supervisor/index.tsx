@@ -1,11 +1,11 @@
 
-import { View, FlatList, Alert } from "react-native";
+import { View, FlatList } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 import { Link } from "expo-router";
 
 import { useReqStore } from "@/presentation/req/store";
-import { useFilters, useVisibility } from "@/presentation/shared/hooks";
+import { useFilters } from "@/presentation/shared/hooks";
 import { useReqs } from "@/presentation/req/hooks";
 import { useWarehouses } from "@/presentation/bodega/hooks";
 import { useCustomers } from "@/presentation/cliente/hooks";

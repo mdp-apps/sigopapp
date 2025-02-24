@@ -1,24 +1,49 @@
 import React, { useEffect, useState } from "react";
 
+import {
+  Animated,
+  ColorValue,
+  GestureResponderEvent,
+  ScrollView,
+  StyleProp,
+  Text,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 import { FAB } from "react-native-paper";
 
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
-import { UserSession } from "@/infrastructure/entities";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
+
 import { ThemedButton, ThemedModal } from "@/presentation/theme/components";
-import { ScrollView, Text } from "react-native";
+
+import { UserSession } from "@/infrastructure/entities";
 import { PRIVACY_POLICY } from "@/config/constants";
 
+import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
+
 type FabActions = {
-  icon?: string;
+  icon: IconSource;
   label?: string;
-  onPress?: () => void;
+  color?: string;
+  labelTextColor?: string;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
+  style?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
+  containerStyle?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
+  labelStyle?: StyleProp<TextStyle>;
+  labelMaxFontSizeMultiplier?: number;
+  onPress: (e: GestureResponderEvent) => void;
+  size?: "small" | "medium";
+  testID?: string;
+  rippleColor?: ColorValue;
 };
 
 export const FabMenu = () => {
   const [dynamicActions, setDynamicActions] = useState<FabActions[]>([]);
 
+  const primaryColor = useThemeColor({}, "primary");
   const darkGrayColor = useThemeColor({}, "darkGray");
 
   const {
@@ -27,7 +52,6 @@ export const FabMenu = () => {
     show: showModal,
   } = useVisibility();
 
-  const primaryColor = useThemeColor({}, "primary");
   const { isVisible: isVisibleFab, toggle: toggleFab } = useVisibility();
   const { user, profile, logout } = useAuthStore();
 
@@ -40,17 +64,18 @@ export const FabMenu = () => {
 
     const iconName = user?.name.charAt(0).toLocaleLowerCase() || "a";
     const validIconName = iconName.match(/^[a-z]+$/) ? iconName : "a";
-    const userName = `${user?.name} ${user?.paternalLastname} ${
-      user?.maternalLastname.charAt(0) ?? ""
-    }.`;
+    const userName = `${user?.name} ${user?.paternalLastname}`;
 
     if (profile === UserProfile.driver) {
       setDynamicActions((prevActions) => [
         ...prevActions,
         {
           icon: `alpha-${validIconName}-circle`,
-          label: `${userName} [Conductor]`,
+          label: `${userName} - conductor`,
           onPress: () => console.log("Pressed email"),
+          color: primaryColor,
+          style: { backgroundColor: "white" },
+          labelStyle: { fontSize: 14 },
         },
       ]);
     } else {
@@ -58,13 +83,19 @@ export const FabMenu = () => {
         ...prevActions,
         {
           icon: `alpha-${validIconName}-circle`,
-          label: `${userName} [${(user as UserSession)?.companyName}]`,
+          label: `${userName} - ${(user as UserSession)?.companyName}`,
           onPress: () => console.log("Pressed name"),
+          color: primaryColor,
+          style: { backgroundColor: "white", alignItems: "center" },
+          labelStyle: { fontSize: 14 },
         },
         {
           icon: "email",
           label: (user as UserSession)?.emailLogin,
           onPress: () => console.log("Pressed email"),
+          color: primaryColor,
+          style: { backgroundColor: "white" },
+          labelStyle: { fontSize: 14 },
         },
       ]);
     }
@@ -75,11 +106,17 @@ export const FabMenu = () => {
         icon: `tooltip-text-outline`,
         label: `Política de privacidad`,
         onPress: () => showModal(),
+        color: primaryColor,
+        style: { backgroundColor: "white" },
+        labelStyle: { fontSize: 14 },
       },
       {
         icon: "logout",
         label: "Cerrar sesión",
         onPress: () => logout(),
+        color: primaryColor,
+        style: { backgroundColor: "white" },
+        labelStyle: { fontSize: 14 },
       },
     ]);
   };
@@ -92,7 +129,7 @@ export const FabMenu = () => {
         icon={isVisibleFab ? "account-minus" : "account-details"}
         color="white"
         fabStyle={{ backgroundColor: primaryColor }}
-        actions={dynamicActions as any}
+        actions={dynamicActions}
         onStateChange={({ open }) => toggleFab(open)}
       />
 

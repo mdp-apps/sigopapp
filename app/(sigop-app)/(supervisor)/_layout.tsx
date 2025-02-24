@@ -35,6 +35,34 @@ const PruebaLayout = () => {
           headerTitle: "Supervisor",
         }}
       />
+
+      <Stack.Screen
+        name="produccion-paletizada/index"
+        options={{
+          headerTitle: "Producción paletizada",
+        }}
+      />
+
+      <Stack.Screen
+        name="requerimientos/index"
+        options={{
+          headerTitle: "Requerimientos",
+        }}
+      />
+
+      <Stack.Screen
+        name="mov-internos/index"
+        options={{
+          headerTitle: "Movimientos internos",
+        }}
+      />
+
+      <Stack.Screen
+        name="saldos/index"
+        options={{
+          headerTitle: "Saldos",
+        }}
+      />
     </Stack>
   );
 };

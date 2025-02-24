@@ -113,17 +113,6 @@ export const DriverReq = () => {
             Recepción
           </ThemedText>
         </ThemedButton>
-
-        {STAGE === "test" && (
-          <ThemedButton
-            className="bg-light-green text-white px-4 py-6 rounded-xl"
-            onPress={() => router.push("/menu-supervisor")}
-          >
-            <ThemedText variant="h3" className="font-ruda text-white">
-              Supervisor
-            </ThemedText>
-          </ThemedButton>
-        )}
       </View>
 
       <ScrollView className="w-full">
