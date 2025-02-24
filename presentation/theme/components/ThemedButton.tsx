@@ -37,8 +37,8 @@ export const ThemedButton = ({
     <Pressable
       onPress={onPress}
       className={[
-        "flex-row items-center gap-4 active:opacity-80",
-        variant === "icon" ? "p-4" : "px-6 py-3",
+        "active:opacity-80",
+        variant === "icon" ? "flex-row items-center gap-4 p-4" : "px-6 py-3",
         outlineStyle,
         roundedStyle,
         className,
@@ -54,7 +54,9 @@ export const ThemedButton = ({
           {iconName && (
             <Icon source={iconName} size={iconSize} color={iconColor} />
           )}
-          <ThemedText className={["text-white text-center", textClassName].join(" ")}>
+          <ThemedText
+            className={["text-white text-center", textClassName].join(" ")}
+          >
             {text}
           </ThemedText>
         </>
