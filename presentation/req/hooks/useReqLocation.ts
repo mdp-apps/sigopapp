@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import { useAuthStore } from "@/presentation/auth/store";
 import { useLocationStore } from "@/presentation/shared/store";
 import {
-  useChangeReqStatus,
+  useChangeReqStatusMutation,
   useReqStatusByCode,
   useValidateActiveReqs,
 } from "@/presentation/req/hooks";
@@ -21,23 +21,27 @@ import {
 
 export const useReqLocation = (reqCode: number, driverRut: string) => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [currentStatus, setCurrentStatus] = useState<number | null>(null);
 
   const { user } = useAuthStore();
   const { lastKnownLocation, getLocation } = useLocationStore();
 
-  const { reqStatus } = useReqStatusByCode(String(reqCode));
-  const { changeReqStatus, isLoadingChangeReqStatus } = useChangeReqStatus();
+  const { queryReqStatus } = useReqStatusByCode(reqCode);
+  const { 
+    changeReqStatus,
+    currentStatus, 
+    changeCurrentStatus,
+  } = useChangeReqStatusMutation();
   const { validateActiveReqs } = useValidateActiveReqs();
 
   useEffect(() => {
     if (!lastKnownLocation) getLocation();
-
   }, []);
 
   useEffect(() => {
-    setCurrentStatus(reqStatus.status);
-  }, [reqStatus]);
+    if (queryReqStatus.data) {
+      changeCurrentStatus(queryReqStatus.data.status);
+    }
+  }, [queryReqStatus.data]);
 
   const validateRequirement = async () => {
     try {
@@ -56,23 +60,16 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
     }
   };
 
-  const changeRequirementStatus = async (reqCode: string, status: number) => {
-    const response = await changeReqStatus(reqCode, status, user?.code!);
-
-    if (response.result !== "") {
-      setCurrentStatus(status);
-    } else {
-      Alert.alert("Alerta", "No se ha confirmado la llegada.");
-    }
-  };
-
   const handleConfirm = async () => {
-    
     try {
       const resultado = await validateRequirement();
       if (resultado === 0) {
-        await changeRequirementStatus(String(reqCode), REQ_STATUS.pendiente);
-        setCurrentStatus(REQ_STATUS.pendiente);
+        changeReqStatus.mutate({
+          accion: "Cambiar estado requerimiento",
+          requerimiento: String(reqCode),
+          estado: REQ_STATUS.pendiente,
+          usuario: user?.code!,
+        });
 
         return true;
       } else {
@@ -90,7 +87,6 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
   };
 
   const validateLocation = async (req: DriverReq) => {
-    
     const distance =
       lastKnownLocation &&
       CalcAdapter.calculateDistance(
@@ -160,7 +156,6 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
 
   return {
     lastKnownLocation,
-    isLoadingChangeReqStatus,
     lastUpdated,
     currentStatus,
 

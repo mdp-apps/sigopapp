@@ -1,36 +1,23 @@
-import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/req/use-cases";
-
 import { sigopApiFetcher } from "@/config/api/sigopApi";
-import { CurrentStatusReq } from "@/infrastructure/entities";
+
+import { useQuery } from "@tanstack/react-query";
 
 
-export const useReqStatusByCode = (reqCode: string) => {
-  const [reqStatus, setReqStatus] = useState<CurrentStatusReq>(
-    {} as CurrentStatusReq
-  );
-  const [isLoadingReqStatus, setIsLoadingReqStatus] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingReqStatus(true);
-      const response = await UseCases.getReqStatusByCodeUseCase(
-        sigopApiFetcher,
-        {
-          accion: "Consultar estado requerimiento",
-          requerimiento: reqCode,
-        }
-      );
-
-      setReqStatus(response);
-      setIsLoadingReqStatus(false);
-    })();
-  }, [reqCode]);
+export const useReqStatusByCode = (reqCode: number) => {
+  const queryReqStatus = useQuery({
+    queryKey: ["req-status", reqCode],
+    queryFn: async () =>
+      await UseCases.getReqStatusByCodeUseCase(sigopApiFetcher, {
+        accion: "Consultar estado requerimiento",
+        requerimiento: String(reqCode),
+      }),
+    enabled: !!reqCode,
+  });
 
   return {
-    reqStatus,
-    isLoadingReqStatus,
+    queryReqStatus,
   };
 };
 

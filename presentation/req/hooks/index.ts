@@ -1,4 +1,4 @@
-export * from './useChangeReqStatus';
+export * from './useChangeReqStatusMutation';
 export * from './useDriverReqsByRut';
 export * from './useLogStatusReq';
 export * from './useReqByCode';
