@@ -15,11 +15,14 @@ import {
 import { PaperProvider } from "react-native-paper";
 import { AlertNotificationRoot } from "react-native-alert-notification";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "react-native-reanimated";
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -29,6 +32,7 @@ export default function RootLayout() {
     Ruda: require("../assets/fonts/Ruda.ttf"),
     "Ruda-Bold": require("../assets/fonts/Ruda_Bold.ttf"),
   });
+
 
   useEffect(() => {
     if (loaded) {
@@ -46,19 +50,21 @@ export default function RootLayout() {
     >
       <PaperProvider>
         <AlertNotificationRoot>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: {
-                  backgroundColor: backgroundColor,
-                },
-              }}
-            />
-            <StatusBar style="auto" />
-          </ThemeProvider>
+          <QueryClientProvider client={queryClient}>   
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: {
+                    backgroundColor: backgroundColor,
+                  },
+                }}
+              />
+              <StatusBar style="auto" />
+            </ThemeProvider>
+         </QueryClientProvider>
         </AlertNotificationRoot>
       </PaperProvider>
     </GestureHandlerRootView>

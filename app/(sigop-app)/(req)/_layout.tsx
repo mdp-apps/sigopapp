@@ -40,18 +40,6 @@ const ReqLayout = () => {
         }}
       />
 
-      <Stack.Screen
-        name="detalle-req/index"
-        options={{
-          headerShown: true,
-          headerTitle: reqCode
-            ? `Detalle de Req. ${reqCode}`
-            : "Detalle de Requerimiento",
-          headerTitleStyle: {
-            fontFamily: "Ruda",
-          },
-        }}
-      />
     </Stack>
   );
 };

@@ -1,8 +1,9 @@
 import { useThemeColor } from "@/presentation/theme/hooks";
 
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 const ConductorLayout = () => {
+  const { reqCode } = useLocalSearchParams();
   const backgrounColor = useThemeColor({}, "background");
 
   return (
@@ -15,19 +16,31 @@ const ConductorLayout = () => {
       }}
     >
       <Stack.Screen
-        name="ver-req-conductor/index"
-        options={{
-          title: "Requerimientos",
-        }}
-      />
-
-      <Stack.Screen
         name="ingreso-conductor/index"
         options={{
           headerShown: false,
         }}
       />
 
+      <Stack.Screen
+        name="detalle-req/index"
+        options={{
+          headerShown: true,
+          headerTitle: reqCode
+            ? `Detalle de Req. ${reqCode}`
+            : "Detalle de Requerimiento",
+          headerTitleStyle: {
+            fontFamily: "Ruda",
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="ver-req-conductor/index"
+        options={{
+          title: "Requerimientos",
+        }}
+      />
     </Stack>
   );
 };

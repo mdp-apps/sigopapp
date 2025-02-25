@@ -52,7 +52,7 @@ export const DriverReq = () => {
 
   const { isVisible: isVisibleCard, show: showCard } = useVisibility();
 
-  const { driverReqs, reqType, isLoadingDriverReqs, changeReqType } =
+  const { queryDriverReqs, reqType, changeReqType } =
     useDriverReqsByRut(
       profile === UserProfile.driver ? user?.rut! : getValues("rut")
     );
@@ -114,7 +114,7 @@ export const DriverReq = () => {
 
       <ScrollView className="w-full">
         <View className="w-full min-h-56">
-          {isLoadingDriverReqs ? (
+          {queryDriverReqs.isLoading ? (
             <ActivityIndicator
               animating={true}
               color={Colors.light.tomato}
@@ -124,8 +124,8 @@ export const DriverReq = () => {
           ) : (
             isVisibleCard && (
               <View className="gap-5">
-                {driverReqs.length > 0 ? (
-                  driverReqs.map((item, index) => (
+                {queryDriverReqs.data && queryDriverReqs.data.length > 0 ? (
+                  queryDriverReqs.data.map((item, index) => (
                     <DriverReqCard key={index} req={item} />
                   ))
                 ) : (
