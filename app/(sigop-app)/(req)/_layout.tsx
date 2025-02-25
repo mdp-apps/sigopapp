@@ -1,16 +1,19 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 
-import { Colors } from "@/config/constants";
+import { useThemeColor } from "@/presentation/theme/hooks";
 
-const PruebaLayout = () => {
+const ReqLayout = () => {
   const { reqCode } = useLocalSearchParams();
+
+  const primaryColor = useThemeColor({}, "primary");
+  const backgroundColor = useThemeColor({}, "background");
 
 
   return (
     <Stack
       screenOptions={{
         headerShadowVisible: false,
-        contentStyle: { backgroundColor: Colors.light.background },
+        contentStyle: { backgroundColor: backgroundColor },
       }}
     >
       <Stack.Screen
@@ -23,11 +26,13 @@ const PruebaLayout = () => {
       <Stack.Screen
         name="log-estados/index"
         options={{
-          headerTitle: reqCode ? `Trazabilidad de Req. ${reqCode}` : "Trazabilidad",
+          headerTitle: reqCode
+            ? `Trazabilidad de Req. ${reqCode}`
+            : "Trazabilidad",
           headerShown: true,
-          headerTintColor: Colors.light.background,
+          headerTintColor: backgroundColor,
           headerStyle: {
-            backgroundColor: Colors.light.primary,
+            backgroundColor: primaryColor,
           },
           headerTitleStyle: {
             fontFamily: "Ruda",
@@ -39,7 +44,9 @@ const PruebaLayout = () => {
         name="detalle-req/index"
         options={{
           headerShown: true,
-          headerTitle: reqCode ? `Detalle de Req. ${reqCode}` : "Detalle de Requerimiento",
+          headerTitle: reqCode
+            ? `Detalle de Req. ${reqCode}`
+            : "Detalle de Requerimiento",
           headerTitleStyle: {
             fontFamily: "Ruda",
           },
@@ -49,4 +56,4 @@ const PruebaLayout = () => {
   );
 };
 
-export default PruebaLayout;
+export default ReqLayout;

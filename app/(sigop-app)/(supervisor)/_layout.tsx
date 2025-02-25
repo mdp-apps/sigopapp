@@ -1,14 +1,21 @@
-import { Colors } from "@/config/constants";
-import { Stack } from "expo-router";
+import { Stack, useGlobalSearchParams } from "expo-router";
 
-const PruebaLayout = () => {
+import { useThemeColor } from "@/presentation/theme/hooks";
+
+const SupervisorLayout = () => {
+  const { reqCode } = useGlobalSearchParams();
+
+  const primaryColor = useThemeColor({}, "primary");
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
     <Stack
       screenOptions={{
+        contentStyle: { backgroundColor: backgroundColor },
         headerShadowVisible: true,
-        headerTintColor: Colors.light.background,
+        headerTintColor: backgroundColor,
         headerStyle: {
-          backgroundColor: Colors.light.primary,
+          backgroundColor: primaryColor,
         },
         headerTitleStyle: {
           fontFamily: "Ruda",
@@ -67,11 +74,17 @@ const PruebaLayout = () => {
       <Stack.Screen
         name="configurar-pallets-req/index"
         options={{
-          headerTitle: "Req. ??",
+          headerTitle: reqCode
+            ? `Req. ${reqCode}`
+            : "Requerimiento de pallets",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "center",
         }}
       />
     </Stack>
   );
 };
 
-export default PruebaLayout;
+export default SupervisorLayout;

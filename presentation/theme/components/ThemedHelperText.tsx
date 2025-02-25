@@ -13,7 +13,15 @@ export const ThemedHelperText = ({
   type = "error",
 }: ThemedHelperText) => {
   return (
-    <HelperText variant="titleLarge" type={type} visible={isVisible}>
+    <HelperText
+      variant="titleSmall"
+      type={type}
+      visible={isVisible}
+      style={{
+        padding: 0,
+        margin: 0,
+      }}
+    >
       {children}
     </HelperText>
   );

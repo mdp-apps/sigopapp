@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 import { View, ScrollView, Alert } from "react-native";
 import { ActivityIndicator, Divider } from "react-native-paper";
-import { router } from "expo-router";
 
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useDriverReqsByRut } from "@/presentation/req/hooks";
@@ -20,8 +19,6 @@ import { DriverReqCard } from "@/presentation/req/components";
 import { driverReqSchema } from "@/presentation/shared/validations";
 
 import { Colors, REQ_TYPE } from "@/config/constants";
-import { STAGE } from "@/config/api/sigopApi";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -83,7 +80,7 @@ export const DriverReq = () => {
       <ThemedButton
         variant="icon"
         className="items-start bg-light-white !px-2 !py-2 rounded-lg"
-        iconName="information-circle-outline"
+        iconName="information-outline"
         iconColor="black"
         iconSize={24}
         onPress={showModal}
