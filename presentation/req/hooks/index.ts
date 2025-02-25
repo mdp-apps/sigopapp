@@ -7,4 +7,4 @@ export * from './useReqStatusByCode';
 export * from './useReqs';
 export * from './useStatusReqs';
 export * from './useTypeReqs';
-export * from './useValidateActiveReqs';
+export * from './useValidateActiveReqsMutation';

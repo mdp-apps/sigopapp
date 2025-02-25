@@ -7,7 +7,7 @@ export interface ChangeReqStatusBody {
   accion: "Cambiar estado requerimiento";
   requerimiento: string;
   estado: number;
-  usuario: number;
+  usuario: string;
 }
 
 export const changeReqStatusByCodeUseCase = async (

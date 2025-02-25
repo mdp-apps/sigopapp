@@ -3,88 +3,27 @@ import { Alert } from "react-native";
 
 import { router } from "expo-router";
 
-import { useAuthStore } from "@/presentation/auth/store";
 import { useLocationStore } from "@/presentation/shared/store";
 import {
   useChangeReqStatusMutation,
-  useReqStatusByCode,
-  useValidateActiveReqs,
+  useValidateActiveReqsMutation,
 } from "@/presentation/req/hooks";
 
 import { DriverReq } from "@/infrastructure/entities";
 import { CalcAdapter } from "@/config/adapters";
-import {
-  REQ_STATUS,
-  TARGET_LATITUDE,
-  TARGET_LONGITUDE,
-} from "@/config/constants";
+import { TARGET_LATITUDE, TARGET_LONGITUDE } from "@/config/constants";
 
 export const useReqLocation = (reqCode: number, driverRut: string) => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  const { user } = useAuthStore();
   const { lastKnownLocation, getLocation } = useLocationStore();
-
-  const { queryReqStatus } = useReqStatusByCode(reqCode);
-  const { 
-    changeReqStatus,
-    currentStatus, 
-    changeCurrentStatus,
-  } = useChangeReqStatusMutation();
-  const { validateActiveReqs } = useValidateActiveReqs();
+  const { changeReqStatus, currentStatus } = useChangeReqStatusMutation();
+  const { validateActiveReqs } = useValidateActiveReqsMutation(reqCode);
+  
 
   useEffect(() => {
     if (!lastKnownLocation) getLocation();
   }, []);
-
-  useEffect(() => {
-    if (queryReqStatus.data) {
-      changeCurrentStatus(queryReqStatus.data.status);
-    }
-  }, [queryReqStatus.data]);
-
-  const validateRequirement = async () => {
-    try {
-      const activeReqs = await validateActiveReqs(
-        String(reqCode),
-        driverRut as string
-      );
-
-      if (activeReqs) {
-        return activeReqs[0].loadNumber;
-      } else {
-        throw new Error("No se ha confirmado la llegada.");
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleConfirm = async () => {
-    try {
-      const resultado = await validateRequirement();
-      if (resultado === 0) {
-        changeReqStatus.mutate({
-          accion: "Cambiar estado requerimiento",
-          requerimiento: String(reqCode),
-          estado: REQ_STATUS.pendiente,
-          usuario: user?.code!,
-        });
-
-        return true;
-      } else {
-        Alert.alert("Alerta", "Hay otro requerimiento en curso.");
-
-        return false;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert("Error", error.message);
-      } else {
-        Alert.alert("Error", String(error));
-      }
-    }
-  };
 
   const validateLocation = async (req: DriverReq) => {
     const distance =
@@ -98,26 +37,21 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
 
     const radius = 1500;
     const isInZone = distance && distance <= radius;
-    console.log(
-      JSON.stringify(
-        {
-          reqCode: req.internalCode,
-          distance,
-          isInZone,
-          latitude: lastKnownLocation?.latitude,
-          longitude: lastKnownLocation?.longitude,
-        },
-        null,
-        2
-      )
-    );
 
     if (isInZone) {
       Alert.alert("Confirmar", "¿Está seguro de confirmar su llegada?", [
         {
           text: "Confirmar",
           onPress: async () => {
-            const isConfirm = await handleConfirm();
+            validateActiveReqs.mutate({
+              requerimiento: String(reqCode),
+              rut: driverRut,
+            });
+
+            const isConfirm =
+              validateActiveReqs.data &&
+              validateActiveReqs.data[0].loadNumber === 0;
+            
             if (isConfirm) {
               router.push({
                 pathname: "/ingreso-conductor",

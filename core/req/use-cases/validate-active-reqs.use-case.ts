@@ -5,7 +5,7 @@ import { ApiResponse } from "@/infrastructure/interfaces";
 import { ReqMapper } from "@/infrastructure/mappers";
 import { ActiveReq } from "@/infrastructure/entities";
 
-interface Body {
+export interface ValidateActiveReqsBody {
   accion: "Cuenta requerimientos activos";
   requerimiento: string;
   rut: string;
@@ -13,12 +13,12 @@ interface Body {
 
 export const validateActiveReqsUseCase = async (
   fetcher: HttpAdapter,
-  body: Body
+  body: ValidateActiveReqsBody
 ): Promise<ActiveReq[]> => {
   try {
     const validateActiveReqs = await fetcher.post<
       ApiResponse<ActiveReqResponse[]>,
-      Body
+      ValidateActiveReqsBody
     >(`/requerimientos/activos`, body);
 
     return validateActiveReqs.resultado.map(
