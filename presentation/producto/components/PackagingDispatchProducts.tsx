@@ -1,10 +1,6 @@
 import React from "react";
-import { Text } from "react-native-paper";
 
-
-import {
-  ThemedAccordion,
-} from "@/presentation/theme/components";
+import { ThemedAccordion, ThemedText } from "@/presentation/theme/components";
 import { ItemAccordionProduct } from "./";
 
 import { ProductReq } from "@/infrastructure/entities";
@@ -17,8 +13,6 @@ interface ProductosProps {
 export const PackagingDispatchProducts = ({
   productsPerBatch,
 }: ProductosProps) => {
-
-
   return (
     <>
       {Object.keys(productsPerBatch).length > 0 ? (
@@ -46,10 +40,11 @@ export const PackagingDispatchProducts = ({
               )}
             </ThemedAccordion>
           ))}
-
         </>
       ) : (
-        <Text>No hay datos disponibles</Text>
+        <ThemedText className="text-xl font-semibold">
+          No hay datos disponibles
+        </ThemedText>
       )}
     </>
   );

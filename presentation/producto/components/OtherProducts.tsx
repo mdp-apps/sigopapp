@@ -9,7 +9,6 @@ interface ProductoOtrosProps {
 }
 
 export const OtherProducts = ({ products }: ProductoOtrosProps) => {
-
   return (
     <>
       {products.length > 0 ? (
@@ -17,17 +16,15 @@ export const OtherProducts = ({ products }: ProductoOtrosProps) => {
           <ThemedAccordion
             key={product.codeDetailReq}
             title={product.productName}
-            titleStyle={{fontSize: 16}}
+            titleStyle={{ fontSize: 16 }}
           >
-            <ItemAccordionProduct
-              product={product}
-            />
-
-
+            <ItemAccordionProduct product={product} />
           </ThemedAccordion>
         ))
       ) : (
-        <ThemedText>No hay datos disponibles</ThemedText>
+        <ThemedText className="text-xl font-semibold">
+          No hay datos disponibles
+        </ThemedText>
       )}
     </>
   );

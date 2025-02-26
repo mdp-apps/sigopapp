@@ -17,7 +17,7 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   const { lastKnownLocation, getLocation } = useLocationStore();
-  const { changeReqStatus, currentStatus } = useChangeReqStatusMutation();
+  const { currentStatus } = useChangeReqStatusMutation();
   const { validateActiveReqs } = useValidateActiveReqsMutation(reqCode);
   
 

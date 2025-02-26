@@ -28,15 +28,14 @@ const DetalleReqScreen = () => {
   } = useLocalSearchParams();
 
   const {
-    productsReq,
-    isLoadingProductsReq,
+    queryProductsReq,
     totalKg,
     productsPerBatch
   } = useProductsReqByCode(reqCode as string, reqType as string);
 
   return (
     <ThemedView className="py-3 mt-4" margin>
-      {isLoadingProductsReq ? (
+      {queryProductsReq.isLoading ? (
         <ActivityIndicator size="large" className="bg-blue-800" />
       ) : (
         <ScrollView>
@@ -79,11 +78,11 @@ const DetalleReqScreen = () => {
               iconColor="white"
             />
           </View>
-        
+
           {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
             <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
           ) : (
-            <OtherProducts products={productsReq} />
+            <OtherProducts products={queryProductsReq.data!} />
           )}
         </ScrollView>
       )}
