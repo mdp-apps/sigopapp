@@ -16,15 +16,13 @@ export const DriverReqPalletizedCard = ({
   req,
   handlePalletizedDataLoaded,
 }: DriverReqPalletizedCardProps) => {
-  const { palletizedProduction } = usePalletizedProduction(
-    Number(req.internalCode)
-  );
+  const { queryPalletizedProduction } = usePalletizedProduction(req.internalCode);
 
   useEffect(() => {
-    if (palletizedProduction.length > 0) {
-      handlePalletizedDataLoaded(palletizedProduction[0]);
+    if (queryPalletizedProduction.isSuccess) {
+      handlePalletizedDataLoaded(queryPalletizedProduction.data[0]);
     }
-  }, [palletizedProduction]);
+  }, [queryPalletizedProduction.isSuccess]);
 
   return (
     <ReqCard req={req}>

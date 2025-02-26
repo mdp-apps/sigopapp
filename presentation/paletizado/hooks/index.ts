@@ -1,2 +1,2 @@
-export * from './useConfigurePallets';
+export * from './useConfigurePalletsMutation';
 export * from './usePalletizedProduction';

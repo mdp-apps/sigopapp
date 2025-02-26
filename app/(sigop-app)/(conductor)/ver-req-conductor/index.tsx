@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { View, FlatList, Alert } from "react-native";
+import { View, FlatList } from "react-native";
 
 import { ActivityIndicator } from "react-native-paper";
 
@@ -8,10 +8,7 @@ import { useReqStore } from "@/presentation/req/store";
 import { useAuthStore } from "@/presentation/auth/store";
 import { useFilters, useVisibility } from "@/presentation/shared/hooks";
 import { usePackagingByCustomer } from "@/presentation/envase/hooks";
-import {
-  ConfigurePalletBody,
-  useConfigurePallets,
-} from "@/presentation/paletizado/hooks";
+import { useConfigurePalletsMutation } from "@/presentation/paletizado/hooks";
 import { useReqs } from "@/presentation/req/hooks";
 import { useTurns } from "@/presentation/turno/hooks";
 import { useStatusReqs, useTypeReqs } from "@/presentation/req/hooks";
@@ -135,8 +132,7 @@ const VerReqConductorScreen = () => {
   const [reqType, setReqType] = useState(0);
   const [reqCode, setReqCode] = useState(0);
 
-  const { dropdownPackaging, isLoadingPackaging } =
-    usePackagingByCustomer(customerReq);
+  const { queryPackagingByCustomer,dropdownPackaging } = usePackagingByCustomer(customerReq);
   const { queryReqs } = useReqs({
     customer: filters.customer,
     date: filters.date,
@@ -146,16 +142,16 @@ const VerReqConductorScreen = () => {
     status: filters.reqStatus,
     turn: filters.turn,
   });
-  const { configurePallets } = useConfigurePallets();
-  const { queryTurns,dropdownTurns } = useTurns();
-  const { queryTypeReqs,dropdownTypeReqs } = useTypeReqs();
-  const { queryStatusReqs,dropdownStatusReqs } = useStatusReqs();
+  const { configurePallets } = useConfigurePalletsMutation();
+  const { queryTurns, dropdownTurns } = useTurns();
+  const { queryTypeReqs, dropdownTypeReqs } = useTypeReqs();
+  const { queryStatusReqs, dropdownStatusReqs } = useStatusReqs();
 
   const handlePalletizedDataLoaded = (data: Palletized) => {
-    setValue("hasPallets", data.hasPallet === 1);
-    setValue("nroPallets", data.palletQuantity);
-    setValue("totalPalletWeight", data.totalWeight);
-    setValue("quantityMix", data.mixQuantity);
+    setValue("hasPallets", data?.hasPallet === 1);
+    setValue("nroPallets", data?.palletQuantity);
+    setValue("totalPalletWeight", data?.totalWeight);
+    setValue("quantityMix", data?.mixQuantity);
   };
 
   const handleModalPallets = (item: Req) => {
@@ -173,10 +169,6 @@ const VerReqConductorScreen = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
-    console.log(
-      reqType === REQ_TYPE_FORMAT.despachoEnvasado ? "desp_env" : "otros"
-    );
-
     if (values.nroPallets === 0 || values.totalPalletWeight === 0) {
       showSnackbar();
       return;
@@ -190,7 +182,7 @@ const VerReqConductorScreen = () => {
       return;
     }
 
-    const newData: ConfigurePalletBody = {
+    const newData = {
       enterKiosk: 0,
       hasPallet: values.hasPallets ? 1 : 0,
       id: 0,
@@ -205,16 +197,7 @@ const VerReqConductorScreen = () => {
       mix: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? "" : undefined,
     };
 
-    const configurePalletsResponse = await configurePallets(newData);
-
-    if (configurePalletsResponse.result === "OK") {
-      Alert.alert("OK", "Datos actualizados.");
-    } else {
-      Alert.alert(
-        "Error",
-        "No se han encontrado requerimientos con estos datos."
-      );
-    }
+    configurePallets.mutate(newData);
   };
 
   return (
@@ -526,7 +509,7 @@ const VerReqConductorScreen = () => {
         <View className="gap-3">
           <ThemedDropdown
             data={dropdownPackaging}
-            isLoading={isLoadingPackaging}
+            isLoading={queryPackagingByCustomer.isLoading}
           />
 
           <Controller

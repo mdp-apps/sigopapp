@@ -34,35 +34,20 @@ const MenuScreen = () => {
             />
           </View>
 
-          <View className="flex-row justify-between my-2 ">
-            {STAGE === "test" && (
-              <MenuCard
-                text="Ticket de entrada"
-                route="/"
-                iconSource="qrcode"
-              />
-            )}
-
+          <View className="flex-row justify-between my-2">
             <MenuCard
               text="Requerimiento en curso"
               route="/ver-req-conductor"
               iconSource="playlist-play"
             />
 
-
-            <View className="flex-1 mx-1" />
+            <MenuCard
+              text="Supervisor"
+              route="/menu-supervisor"
+              iconSource="account-hard-hat"
+            />
           </View>
         </ThemedView>
-      )}
-
-      {STAGE === "dev" && (
-        <View className="flex-row justify-between my-2">
-          <MenuCard
-            text="Supervisor"
-            route="/menu-supervisor"
-            iconSource="account-hard-hat"
-          />
-        </View>
       )}
 
       <FabMenu />
