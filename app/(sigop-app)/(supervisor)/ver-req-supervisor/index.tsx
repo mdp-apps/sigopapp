@@ -86,15 +86,23 @@ const VerReqSupervisorScreen = () => {
     ticketDataToShow,
   } = useReqStore();
 
-  const { reqs, isLoadingReqs, getRequirements } = useReqs();
+  const { queryReqs } = useReqs({
+    customer: filters.customer,
+    date: filters.date,
+    patent: filters.patent,
+    reqType: filters.reqType,
+    requirement: filters.req,
+    status: filters.reqStatus,
+    turn: filters.turn,
+  });
 
-  const { dropdownWarehouses, isLoadingWarehouses } = useWarehouses();
-  const { dropdownCustomers, isLoadingCustomers } = useCustomers();
-  const { dropdownTurns, isLoadingTurns } = useTurns();
-  const { dropdownProducts, isLoadingProducts } = useProducts();
-  const { dropdownOperations, isLoadingOperations } = useOperations();
-  const { dropdownTypeReqs, isLoadingTypeReqs } = useTypeReqs();
-  const { dropdownStatusReqs, isLoadingStatusReqs } = useStatusReqs();
+  const { queryWarehouses, dropdownWarehouses } = useWarehouses();
+  const { queryCustomers,dropdownCustomers } = useCustomers();
+  const { queryTurns,dropdownTurns } = useTurns();
+  const { queryProducts,dropdownProducts } = useProducts();
+  const { queryOperations,dropdownOperations } = useOperations();
+  const { queryTypeReqs, dropdownTypeReqs } = useTypeReqs();
+  const { queryStatusReqs,dropdownStatusReqs } = useStatusReqs();
 
   return (
     <ThemedView className="px-3">
@@ -117,20 +125,8 @@ const VerReqSupervisorScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={() =>
-            searchRequirements(filters, () =>
-              getRequirements({
-                customer: filters.customer,
-                date: filters.date,
-                patent: filters.patent,
-                reqType: filters.reqType,
-                requirement: filters.req,
-                status: filters.reqStatus,
-                turn: filters.turn,
-              })
-            )
-          }
-          disabled={isLoadingReqs}
+          onPress={() => searchRequirements(filters)}
+          disabled={queryReqs.isLoading}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
             Buscar
@@ -151,7 +147,7 @@ const VerReqSupervisorScreen = () => {
       </View>
 
       <ThemedView className="mt-4">
-        {isLoadingReqs ? (
+        {queryReqs.isLoading ? (
           <ThemedView className="flex justify-center items-center mt-3">
             <ActivityIndicator
               size={100}
@@ -160,9 +156,9 @@ const VerReqSupervisorScreen = () => {
             />
           </ThemedView>
         ) : isVisibleReqCards ? (
-          reqs.length > 0 ? (
+          queryReqs.data && queryReqs.data.length > 0 ? (
             <FlatList
-              data={reqs}
+              data={queryReqs.data}
               renderItem={({ item }) => (
                 <ReqCard req={item}>
                   <Link
@@ -225,7 +221,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "customer" && (
           <ThemedDropdown
             data={dropdownCustomers}
-            isLoading={isLoadingCustomers}
+            isLoading={queryCustomers.isLoading}
             onChange={(items) => updateFilter("customer", items)}
             selected={filters.customer}
             placeholder="Seleccione cliente"
@@ -248,7 +244,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "turn" && (
           <ThemedDropdown
             data={dropdownTurns}
-            isLoading={isLoadingTurns}
+            isLoading={queryTurns.isLoading}
             onChange={(item) => updateFilter("turn", item)}
             selected={filters.turn}
             placeholder="Seleccione turno"
@@ -258,7 +254,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "reqType" && (
           <ThemedDropdown
             data={dropdownTypeReqs}
-            isLoading={isLoadingTypeReqs}
+            isLoading={queryTypeReqs.isLoading}
             onChange={(items) => updateFilter("reqType", items)}
             selected={filters.reqType}
             placeholder="Seleccione tipo de req."
@@ -268,7 +264,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "reqStatus" && (
           <ThemedDropdown
             data={dropdownStatusReqs}
-            isLoading={isLoadingStatusReqs}
+            isLoading={queryStatusReqs.isLoading}
             onChange={(item) => updateFilter("reqStatus", item)}
             selected={filters.reqStatus}
             placeholder="Seleccione estado"
@@ -278,7 +274,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "warehouse" && (
           <ThemedDropdown
             data={dropdownWarehouses}
-            isLoading={isLoadingWarehouses}
+            isLoading={queryWarehouses.isLoading}
             onChange={(item) => updateFilter("warehouse", item)}
             selected={filters.warehouse}
             placeholder="Seleccione bodega"
@@ -288,7 +284,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "product" && (
           <ThemedDropdown
             data={dropdownProducts}
-            isLoading={isLoadingProducts}
+            isLoading={queryProducts.isLoading}
             onChange={(item) => updateFilter("product", item)}
             selected={filters.product}
           />
@@ -297,7 +293,7 @@ const VerReqSupervisorScreen = () => {
         {selectedFilter === "operation" && (
           <ThemedDropdown
             data={dropdownOperations}
-            isLoading={isLoadingOperations}
+            isLoading={queryOperations.isLoading}
             onChange={(item) => updateFilter("operation", item)}
             selected={filters.operation}
             placeholder="Seleccione operaciones"

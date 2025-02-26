@@ -2,37 +2,42 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/req/use-cases";
 
-import { StatusReq } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
+import { useQuery } from "@tanstack/react-query";
+
 export const useStatusReqs = () => {
-  const [statusReqs, setStatusReqs] = useState<StatusReq[]>([]);
   const [dropdownStatusReqs, setDropdownStatusReqs] = useState<DropdownResponse[]>([]);
 
-  const [isLoadingStatusReqs, setIsLoadingStatusReqs] = useState(false);
+  const queryStatusReqs = useQuery({
+    queryKey: ["status-reqs"],
+    queryFn: async () => {
+      const response = await UseCases.getStatusRequirementsUseCase(
+        sigopApiFetcher,
+        {
+          accion: "Consultar estados requerimiento",
+        }
+      );
+
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
   useEffect(() => {
-    (async () => {
-      setIsLoadingStatusReqs(true);
-      const response = await UseCases.getStatusRequirementsUseCase(sigopApiFetcher, {
-        accion: "Consultar estados requerimiento",
-      });
+    if (queryStatusReqs.isSuccess) {
+      const dropdownStatusReqResult = queryStatusReqs.data.map((statusReq) => ({
+        code: statusReq.code.toString(),
+        name: statusReq.name,
+      }));
 
-       const dropdownStatusReqResult = response.map((statusReq) => ({
-         code: statusReq.code.toString(),
-         name: statusReq.name,
-       }));
-
-      setStatusReqs(response);
       setDropdownStatusReqs(dropdownStatusReqResult);
-      setIsLoadingStatusReqs(false);
-    })();
-  }, []);
+    }
+  }, [queryStatusReqs.isSuccess]);
 
   return {
-    statusReqs,
-    isLoadingStatusReqs,
+    queryStatusReqs,
     dropdownStatusReqs,
   };
 };

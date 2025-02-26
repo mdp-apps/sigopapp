@@ -2,37 +2,40 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/producto/use-cases";
 
-import { Product } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
+import { useQuery } from "@tanstack/react-query";
+
 export const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [dropdownProducts, setDropdownProducts] = useState<DropdownResponse[]>([]);
 
-  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingProducts(true);
+  const queryProducts = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
       const response = await UseCases.getProductsUseCase(sigopApiFetcher, {
         accion: "Consultar lista productos",
       });
 
-       const dropdownTurnResult = response.map((product) => ({
-         code: product.code.toString(),
-         name: `[${product.customerCode}] - ${product.name}`,
-       }));
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
-      setProducts(response);
+
+  useEffect(() => {
+    if (queryProducts.isSuccess) {
+      const dropdownTurnResult = queryProducts.data.map((product) => ({
+        code: product.code.toString(),
+        name: `[${product.customerCode}] - ${product.name}`,
+      }));
+
       setDropdownProducts(dropdownTurnResult);
-      setIsLoadingProducts(false);
-    })();
-  }, []);
+    }
+  }, [queryProducts.isSuccess]);
 
   return {
-    products,
-    isLoadingProducts,
+    queryProducts,
     dropdownProducts,
   };
 };

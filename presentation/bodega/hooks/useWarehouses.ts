@@ -2,40 +2,42 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/bodega/use-cases";
 
-import { WareHouse } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { DropdownResponse } from "@/infrastructure/interfaces";
+import { CustomerCompany } from "@/config/constants";
+
+import { useQuery } from "@tanstack/react-query";
 
 export const useWarehouses = () => {
-  const [warehouses, setWarehouses] = useState<WareHouse[]>([]);
-  const [dropdownWarehouses, setDropdownWarehouses] = useState<DropdownResponse[]>([]);
-  
-  const [isLoadingWarehouses, setIsLoadingWarehouses] = useState(false);
+  const [dropdownWarehouses, setDropdownWarehouses] = useState<
+    DropdownResponse[]
+  >([]);
 
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingWarehouses(true);
+  const queryWarehouses = useQuery({
+    queryKey: ["warehouses"],
+    queryFn: async () => {
       const response = await UseCases.getWarehousesUseCase(sigopApiFetcher, {
         accion: "Consultar lista bodegas",
-        cliente: 1,
+        cliente: CustomerCompany.mdp,
       });
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
-      const shortWarehousesResult = response.map((warehouse) => ({
+  useEffect(() => {
+    if (queryWarehouses.isSuccess) {
+      const shortWarehousesResult = queryWarehouses.data.map((warehouse) => ({
         code: warehouse.code.toString(),
         name: `[${warehouse.abbrName}] - ${warehouse.name}`,
       }));
-
-      setWarehouses(response);
+  
       setDropdownWarehouses(shortWarehousesResult);
-
-      setIsLoadingWarehouses(false);
-    })();
-  }, []);
+    }
+  }, [queryWarehouses.isSuccess]);
 
   return {
-    warehouses,
+    queryWarehouses,
     dropdownWarehouses,
-    isLoadingWarehouses,
   };
 };

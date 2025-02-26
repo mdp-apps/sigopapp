@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { FlatList } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -8,21 +7,7 @@ import { ThemedButton, ThemedView } from "@/presentation/theme/components";
 import { PatentReqCard } from "@/presentation/req/components";
 
 const ReqPatenteScreen = () => {
-  const { reqs, isLoadingReqs, getRequirements } = useReqs();
-
-  useEffect(() => {
-    (async () => {
-      await getRequirements({
-        patent: "",
-        requirement: "",
-        date: "",
-        turn: "",
-        status: "",
-        reqType: "",
-        customer: "",
-      });
-    })();
-  }, []);
+  const { queryReqs } = useReqs();
 
   return (
     <ThemedView className="mt-3" margin safe>
@@ -33,10 +18,12 @@ const ReqPatenteScreen = () => {
         textClassName="text-lg"
       />
 
-      {isLoadingReqs && <ActivityIndicator size="large" color="#0000ff" />}
+      {queryReqs.isLoading && (
+        <ActivityIndicator size="large" color="#0000ff" />
+      )}
 
       <FlatList
-        data={reqs}
+        data={queryReqs.data}
         renderItem={({ item }) => <PatentReqCard req={item} />}
         keyExtractor={(item) => String(item.internalCode)}
       />

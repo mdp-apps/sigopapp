@@ -2,38 +2,43 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/req/use-cases";
 
-import { TypeReq } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
-export const useTypeReqs = () => {
-  const [typeReqs, setTypeReqs] = useState<TypeReq[]>([]);
-  const [dropdownTypeReqs, setDropdownTypeReqs] = useState<DropdownResponse[]>([]);
+import { useQuery } from "@tanstack/react-query";
 
-  const [isLoadingTypeReqs, setIsLoadingTypeReqs] = useState(false);
+export const useTypeReqs = () => {
+  const [dropdownTypeReqs, setDropdownTypeReqs] = useState<DropdownResponse[]>(
+    []
+  );
+
+  const queryTypeReqs = useQuery({
+    queryKey: ["type-reqs"],
+    queryFn: async () => {
+      const response = await UseCases.getTypeRequirementsUseCase(
+        sigopApiFetcher,
+        {
+          accion: "Consultar lista tipos requerimiento",
+        }
+      );
+
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
   useEffect(() => {
-    (async () => {
-      setIsLoadingTypeReqs(true);
-      const response = await UseCases.getTypeRequirementsUseCase(sigopApiFetcher, {
-        accion: "Consultar lista tipos requerimiento",
-      });
-
-       const dropdownTypeReqResult = response.map((typeReq) => ({
-         code: typeReq.code.toString(),
-         name: typeReq.name,
-       }));
-
-      setTypeReqs(response);
+    if (queryTypeReqs.isSuccess) {
+      const dropdownTypeReqResult = queryTypeReqs.data.map((typeReq) => ({
+        code: typeReq.code.toString(),
+        name: typeReq.name,
+      }));
       setDropdownTypeReqs(dropdownTypeReqResult);
-      setIsLoadingTypeReqs(false);
-    })();
-  }, []);
+    }
+  }, [queryTypeReqs.isSuccess]);
 
   return {
-    typeReqs,
-    isLoadingTypeReqs,
+    queryTypeReqs,
     dropdownTypeReqs,
   };
 };
-

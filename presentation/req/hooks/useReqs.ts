@@ -1,54 +1,48 @@
-import { useState } from "react";
-
 import * as UseCases from "@/core/req/use-cases";
-
-import { Req } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
-import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+import { useQuery } from "@tanstack/react-query";
+
 
 type ReqsBody = {
-  patent?: string;
-  requirement?: string;
-  date?: string;
-  turn?: string;
-  status?: string;
-  reqType?: string;
   customer?: string;
+  date?: string;
+  patent?: string;
+  reqType?: string;
+  requirement?: string;
+  status?: string;
+  turn?: string;
 };
 
-export const useReqs = () => {
-  const [reqs, setReqs] = useState<Req[]>([]);
-  const [isLoadingReqs, setIsLoadingReqs] = useState(false);
+export const useReqs = (reqBody?: ReqsBody) => {
+  const queryReqs = useQuery({
+    queryKey: ["reqs", reqBody ? reqBody : "all"],
+    queryFn: async () => {
+      const {
+        customer = "",
+        date = "",
+        patent = "",
+        reqType = "",
+        requirement = "",
+        status = "",
+        turn = "",
+      } = reqBody || {};
 
-  const { profile } = useAuthStore();
-
-  const getRequirements = async (reqsBody: ReqsBody) => {
-    setIsLoadingReqs(true);
-
-    const body: UseCases.ReqsBody = {
-      accion: "Consultar requerimientos",
-      cliente: reqsBody.customer,
-      estado: reqsBody.status,
-      fecha: reqsBody.date,
-      patente: reqsBody.patent,
-      requerimiento: reqsBody.requirement,
-      tipo_requerimiento: reqsBody.reqType,
-      turno: reqsBody.turn,
-    };
-
-    if (profile === UserProfile.driver) {
-      // body.conductor = user?.code.toString();
-    }
-    const response = await UseCases.getReqsUseCase(sigopApiFetcher, body);
-
-    setReqs(response);
-    setIsLoadingReqs(false);
-  };
+      const response = await UseCases.getReqsUseCase(sigopApiFetcher, {
+        accion: "Consultar requerimientos",
+        cliente: customer,
+        estado: status,
+        fecha: date,
+        patente: patent,
+        requerimiento: requirement,
+        tipo_requerimiento: reqType,
+        turno: turn,
+      });
+      return response;
+    },
+  });
 
   return {
-    reqs,
-    isLoadingReqs,
-    getRequirements,
+    queryReqs,
   };
 };

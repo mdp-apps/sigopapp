@@ -137,11 +137,19 @@ const VerReqConductorScreen = () => {
 
   const { dropdownPackaging, isLoadingPackaging } =
     usePackagingByCustomer(customerReq);
-  const { reqs, isLoadingReqs, getRequirements } = useReqs();
+  const { queryReqs } = useReqs({
+    customer: filters.customer,
+    date: filters.date,
+    patent: filters.patent,
+    reqType: filters.reqType,
+    requirement: filters.req,
+    status: filters.reqStatus,
+    turn: filters.turn,
+  });
   const { configurePallets } = useConfigurePallets();
-  const { dropdownTurns, isLoadingTurns } = useTurns();
-  const { dropdownTypeReqs, isLoadingTypeReqs } = useTypeReqs();
-  const { dropdownStatusReqs, isLoadingStatusReqs } = useStatusReqs();
+  const { queryTurns,dropdownTurns } = useTurns();
+  const { queryTypeReqs,dropdownTypeReqs } = useTypeReqs();
+  const { queryStatusReqs,dropdownStatusReqs } = useStatusReqs();
 
   const handlePalletizedDataLoaded = (data: Palletized) => {
     setValue("hasPallets", data.hasPallet === 1);
@@ -230,20 +238,8 @@ const VerReqConductorScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={() =>
-            searchRequirements(filters, () =>
-              getRequirements({
-                customer: filters.customer,
-                date: filters.date,
-                patent: filters.patent,
-                reqType: filters.reqType,
-                requirement: filters.req,
-                status: filters.reqStatus,
-                turn: filters.turn,
-              })
-            )
-          }
-          disabled={isLoadingReqs}
+          onPress={() => searchRequirements(filters)}
+          disabled={queryReqs.isLoading}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
             Buscar
@@ -264,7 +260,7 @@ const VerReqConductorScreen = () => {
       </View>
 
       <ThemedView className="mt-4">
-        {isLoadingReqs ? (
+        {queryReqs.isLoading ? (
           <ThemedView className="flex justify-center items-center mt-3">
             <ActivityIndicator
               size={100}
@@ -273,9 +269,9 @@ const VerReqConductorScreen = () => {
             />
           </ThemedView>
         ) : isVisibleReqCards ? (
-          reqs.length > 0 ? (
+          queryReqs.data && queryReqs.data.length > 0 ? (
             <FlatList
-              data={reqs}
+              data={queryReqs.data}
               renderItem={({ item }) => (
                 <DriverReqPalletizedCard
                   req={item}
@@ -352,7 +348,7 @@ const VerReqConductorScreen = () => {
         {selectedFilter === "turn" && (
           <ThemedDropdown
             data={dropdownTurns}
-            isLoading={isLoadingTurns}
+            isLoading={queryTurns.isLoading}
             onChange={(item) => updateFilter("turn", item)}
             selected={filters.turn}
             placeholder="Seleccione turno"
@@ -362,7 +358,7 @@ const VerReqConductorScreen = () => {
         {selectedFilter === "reqType" && (
           <ThemedDropdown
             data={dropdownTypeReqs}
-            isLoading={isLoadingTypeReqs}
+            isLoading={queryTypeReqs.isLoading}
             onChange={(items) => updateFilter("reqType", items)}
             selected={filters.reqType}
             placeholder="Seleccione tipo de req."
@@ -372,7 +368,7 @@ const VerReqConductorScreen = () => {
         {selectedFilter === "reqStatus" && (
           <ThemedDropdown
             data={dropdownStatusReqs}
-            isLoading={isLoadingStatusReqs}
+            isLoading={queryStatusReqs.isLoading}
             onChange={(item) => updateFilter("reqStatus", item)}
             selected={filters.reqStatus}
             placeholder="Seleccione estado"

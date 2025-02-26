@@ -18,7 +18,7 @@ const MenuScreen = () => {
 
       {profile === UserProfile.supervisor && <SupervisorMenu />}
 
-      {profile === UserProfile.customer && (
+      {profile !== UserProfile.customer && (
         <ThemedView className="justify-center items-center" margin safe>
           <View className="flex-row gap-2 justify-between my-2">
             <MenuCard
@@ -49,12 +49,13 @@ const MenuScreen = () => {
               iconSource="playlist-play"
             />
 
+
             <View className="flex-1 mx-1" />
           </View>
         </ThemedView>
       )}
 
-      {STAGE === "test" && (
+      {STAGE === "dev" && (
         <View className="flex-row justify-between my-2">
           <MenuCard
             text="Supervisor"

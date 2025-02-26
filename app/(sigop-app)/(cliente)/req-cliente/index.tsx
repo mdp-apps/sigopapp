@@ -1,10 +1,10 @@
-import { View, FlatList, Alert } from "react-native";
+import { View, FlatList } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 import { Link } from "expo-router";
 
 import { useReqStore } from "@/presentation/req/store";
-import { useFilters, useVisibility } from "@/presentation/shared/hooks";
+import { useFilters } from "@/presentation/shared/hooks";
 import { useReqs, useStatusReqs, useTypeReqs } from "@/presentation/req/hooks";
 import { useTurns } from "@/presentation/turno/hooks";
 
@@ -77,10 +77,17 @@ const ReqClienteScreen = () => {
     ticketDataToShow,
   } = useReqStore();
 
-  const { reqs, isLoadingReqs, getRequirements } = useReqs();
-  const { dropdownTurns, isLoadingTurns } = useTurns();
-  const { dropdownTypeReqs, isLoadingTypeReqs } = useTypeReqs();
-  const { dropdownStatusReqs, isLoadingStatusReqs } = useStatusReqs();
+  const { queryReqs } = useReqs({
+    date: filters.date,
+    patent: filters.patent,
+    reqType: filters.reqType,
+    requirement: filters.req,
+    status: filters.reqStatus,
+    turn: filters.turn,
+  });
+  const { queryTurns,dropdownTurns } = useTurns();
+  const { queryTypeReqs,dropdownTypeReqs } = useTypeReqs();
+  const { queryStatusReqs,dropdownStatusReqs } = useStatusReqs();
 
   return (
     <ThemedView className="px-3">
@@ -103,19 +110,8 @@ const ReqClienteScreen = () => {
       <View className="flex-row justify-center items-center gap-5">
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
-          onPress={() =>
-            searchRequirements(filters, () =>
-              getRequirements({
-                date: filters.date,
-                patent: filters.patent,
-                reqType: filters.reqType,
-                requirement: filters.req,
-                status: filters.reqStatus,
-                turn: filters.turn,
-              })
-            )
-          }
-          disabled={isLoadingReqs}
+          onPress={() => searchRequirements(filters)}
+          disabled={queryReqs.isLoading}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
             Buscar
@@ -136,7 +132,7 @@ const ReqClienteScreen = () => {
       </View>
 
       <ThemedView className="mt-4">
-        {isLoadingReqs ? (
+        {queryReqs.isLoading ? (
           <ThemedView className="flex justify-center items-center mt-3">
             <ActivityIndicator
               size={100}
@@ -145,9 +141,9 @@ const ReqClienteScreen = () => {
             />
           </ThemedView>
         ) : isVisibleReqCards ? (
-          reqs.length > 0 ? (
+          queryReqs.data && queryReqs.data.length > 0 ? (
             <FlatList
-              data={reqs}
+              data={queryReqs.data}
               renderItem={({ item }) => (
                 <ReqCard req={item}>
                   <Link
@@ -223,7 +219,7 @@ const ReqClienteScreen = () => {
         {selectedFilter === "turn" && (
           <ThemedDropdown
             data={dropdownTurns}
-            isLoading={isLoadingTurns}
+            isLoading={queryTurns.isLoading}
             onChange={(item) => updateFilter("turn", item)}
             selected={filters.turn}
             placeholder="Seleccione turno"
@@ -233,7 +229,7 @@ const ReqClienteScreen = () => {
         {selectedFilter === "reqType" && (
           <ThemedDropdown
             data={dropdownTypeReqs}
-            isLoading={isLoadingTypeReqs}
+            isLoading={queryTypeReqs.isLoading}
             onChange={(items) => updateFilter("reqType", items)}
             selected={filters.reqType}
             placeholder="Seleccione tipo de req."
@@ -243,7 +239,7 @@ const ReqClienteScreen = () => {
         {selectedFilter === "reqStatus" && (
           <ThemedDropdown
             data={dropdownStatusReqs}
-            isLoading={isLoadingStatusReqs}
+            isLoading={queryStatusReqs.isLoading}
             onChange={(item) => updateFilter("reqStatus", item)}
             selected={filters.reqStatus}
             placeholder="Seleccione estado"

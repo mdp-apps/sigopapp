@@ -2,37 +2,39 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/turno/use-cases";
 
-import { Customer } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
+import { useQuery } from "@tanstack/react-query";
+
 export const useTurns = () => {
-  const [turns, setTurns] = useState<Customer[]>([]);
   const [dropdownTurns, setDropdownTurns] = useState<DropdownResponse[]>([]);
 
-  const [isLoadingTurns, setIsLoadingTurns] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingTurns(true);
+  const queryTurns = useQuery({
+    queryKey: ["turns"],
+    queryFn: async () => {
       const response = await UseCases.getTurnsUseCase(sigopApiFetcher, {
         accion: "Consultar lista turnos",
       });
 
-      const dropdownTurnResult = response.map((turn) => ({
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
+
+  useEffect(() => {
+    if (queryTurns.isSuccess) {
+      const dropdownTurnResult = queryTurns.data.map((turn) => ({
         code: turn.code.toString(),
         name: turn.name,
       }));
 
-      setTurns(response);
       setDropdownTurns(dropdownTurnResult);
-      setIsLoadingTurns(false);
-    })();
-  }, []);
+    }
+  }, [queryTurns.isSuccess]);
 
   return {
-    turns,
-    isLoadingTurns,
+    queryTurns,
     dropdownTurns,
   };
 };

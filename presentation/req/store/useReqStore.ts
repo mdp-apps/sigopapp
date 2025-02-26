@@ -12,7 +12,6 @@ export interface ReqState {
   isVisibleReqCards: boolean;
   searchRequirements: (
     filters: Record<string, string>,
-    callback: () => void
   ) => void;
   showReqCards: () => void;
   hideReqCards: () => void;
@@ -34,7 +33,7 @@ export const useReqStore = create<ReqState>((set,get) => ({
   hideReqCards() {
     set({ isVisibleReqCards: false });
   },
-  async searchRequirements(filters: Record<string,string>, callback: () => void) {
+  async searchRequirements(filters: Record<string,string>) {
     const areThereFilters = Object.values(filters).every(
       (filter) => filter === ""
     );
@@ -44,7 +43,6 @@ export const useReqStore = create<ReqState>((set,get) => ({
       return;
     }
 
-    callback();
 
     get().showReqCards();
   },

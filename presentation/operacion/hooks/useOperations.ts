@@ -2,37 +2,40 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/operacion/use-cases";
 
-import { Operation } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
+import { useQuery } from "@tanstack/react-query";
+
 export const useOperations = () => {
-  const [operations, setOperations] = useState<Operation[]>([]);
   const [dropdownOperations, setDropdownOperations] = useState<DropdownResponse[]>([]);
 
-  const [isLoadingOperations, setIsLoadingOperations] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      setIsLoadingOperations(true);
+  const queryOperations = useQuery({
+    queryKey: ["operations"],
+    queryFn: async () => {
       const response = await UseCases.getOperationsUseCase(sigopApiFetcher, {
         accion: "Consultar lista operaciones",
       });
 
-       const dropdownOperationResult = response.map((operation) => ({
-         code: operation.code.toString(),
-         name: `[${operation.operationCode}] - ${operation.name}`,
-       }));
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
-      setOperations(response);
+  useEffect(() => {
+    if (queryOperations.isSuccess) {
+      const dropdownOperationResult = queryOperations.data.map((operation) => ({
+        code: operation.code.toString(),
+        name: `[${operation.operationCode}] - ${operation.name}`,
+      }));
+
       setDropdownOperations(dropdownOperationResult);
-      setIsLoadingOperations(false);
-    })();
-  }, []);
+    }
+  }, [queryOperations.isSuccess]);
 
   return {
-    operations,
-    isLoadingOperations,
+    queryOperations,
     dropdownOperations,
   };
 };

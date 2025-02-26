@@ -7,9 +7,6 @@ import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 
 export const useProductsReqByCode = (reqCode: string, reqType: string) => {
-  // const [productsReq, setProductsReq] = useState<ProductReq[]>([]);
-  // const [isLoadingProductsReq, setIsLoadingProductsReq] = useState(false);
-
   const [productsPerBatch, setProductsPerBatch] = useState<{
     [key: string]: ProductReq[];
   }>({});
@@ -33,23 +30,6 @@ export const useProductsReqByCode = (reqCode: string, reqType: string) => {
     );
   }, [queryProductsReq.data]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     setIsLoadingProductsReq(true);
-  //     const response = await UseCases.getProductsReqByCodeUseCase(
-  //       sigopApiFetcher,
-  //       {
-  //         accion: "Consultar productos requerimiento",
-  //         requerimiento: reqCode,
-  //         tipo_requerimiento: reqType,
-  //       }
-  //     );
-
-  //     setProductsReq(response);
-  //     setIsLoadingProductsReq(false);
-  //   })();
-  // }, [reqCode, reqType]);
-
   useEffect(() => {
     const newProductsPerBatch: { [key: number]: ProductReq[] } = {};
 
@@ -63,7 +43,7 @@ export const useProductsReqByCode = (reqCode: string, reqType: string) => {
     }
 
     setProductsPerBatch(newProductsPerBatch);
-  }, [queryProductsReq]);
+  }, [queryProductsReq.data]);
 
   return {
     queryProductsReq,
