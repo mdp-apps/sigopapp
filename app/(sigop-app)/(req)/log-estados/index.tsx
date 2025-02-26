@@ -29,9 +29,7 @@ const LogEstadosScreen = () => {
   } = useVisibility();
 
   const { reqCode, customerAbbr, vehiclePatent, carrierName } = useLocalSearchParams();
-  const { logStatusReq, isLoadingLogStatusReq } = useLogStatusReq(
-    reqCode as string
-  );
+  const { queryLogStatusReq } = useLogStatusReq(reqCode as string);
 
   const handleModal = (logStatusReq: LogStatusReq) => {
     setLogStatusModal(logStatusReq);
@@ -41,7 +39,7 @@ const LogEstadosScreen = () => {
 
   return (
     <ThemedView className="my-4" margin>
-      {isLoadingLogStatusReq ? (
+      {queryLogStatusReq.isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <>
@@ -69,7 +67,7 @@ const LogEstadosScreen = () => {
           </View>
 
           <ThemedDataTable<LogStatusReq>
-            data={logStatusReq}
+            data={queryLogStatusReq.data!}
             columns={LOG_STATUS_REQ_COLUMNS}
             getRowKey={(item) => item.id}
             handleRowPress={handleModal}
