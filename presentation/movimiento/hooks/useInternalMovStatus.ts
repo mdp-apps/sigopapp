@@ -2,21 +2,19 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/movimiento/use-cases";
 
-import { StatusInternalMov } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
+import { useQuery } from "@tanstack/react-query";
+
 export const useInternalMovStatus = () => {
-  const [internalMovStatus, setInternalMovStatus] = useState<StatusInternalMov[]>([]);
-  const [dropdownInternalMovStatus, setDropdownInternalMovStatus] = useState<DropdownResponse[]>(
-    []
-  );
+  const [dropdownInternalMovStatus, setDropdownInternalMovStatus] = useState<
+    DropdownResponse[]
+  >([]);
 
-  const [isLoadingInternalMovStatus, setIsLoadingInternalMovStatus] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingInternalMovStatus(true);
+  const queryInternalMovStatus = useQuery({
+    queryKey: ["internal-mov-status"],
+    queryFn: async () => {
       const response = await UseCases.getInternalMovStatusUseCase(
         sigopApiFetcher,
         {
@@ -24,21 +22,26 @@ export const useInternalMovStatus = () => {
         }
       );
 
-      const dropdownInternalMovStatusResult = response.map((typeReq) => ({
-        code: typeReq.code.toString(),
-        name: typeReq.name,
-      }));
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
-      setInternalMovStatus(response);
-      setDropdownInternalMovStatus(dropdownInternalMovStatusResult);
-      setIsLoadingInternalMovStatus(false);
-    })();
-  }, []);
+  useEffect(() => {
+    if (queryInternalMovStatus.isSuccess) {
+      const dropdownInternalMovTypeResult = queryInternalMovStatus.data.map(
+        (statusReq) => ({
+          code: statusReq.code.toString(),
+          name: statusReq.name,
+        })
+      );
+
+      setDropdownInternalMovStatus(dropdownInternalMovTypeResult);
+    }
+  }, [queryInternalMovStatus.isSuccess]);
 
   return {
-    internalMovStatus,
-    isLoadingInternalMovStatus,
+    queryInternalMovStatus,
     dropdownInternalMovStatus,
   };
 };
-

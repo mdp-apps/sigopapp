@@ -79,17 +79,25 @@ const MovInternosClienteScreen = () => {
   const { user } = useAuthStore();
   const customerCode = (user as UserSession)?.companyCode;
 
-  const {
-    internalMovements,
-    isLoadingInternalMovements,
-    getInternalMovements,
-  } = useInternalMovements();
+  const { queryInternalMovements } = useInternalMovements({
+    code: filters.code,
+    detailCode: filters.detailCode,
+    internalMovementType: filters.internalMovementType,
+    internalMovementStatus: filters.internalMovementStatus,
+    date: filters.date,
+    turn: filters.turn,
+    customer: customerCode,
+  });
 
-  const { dropdownTurns, isLoadingTurns } = useTurns();
-  const { dropdownInternalMovTypes, isLoadingInternalMovTypes } =
-    useInternalMovTypes();
-  const { dropdownInternalMovStatus, isLoadingInternalMovStatus } =
-    useInternalMovStatus();
+  const { queryTurns, dropdownTurns } = useTurns();
+  const {
+    queryInternalMovTypes,
+    dropdownInternalMovTypes, 
+  } = useInternalMovTypes();
+  const { 
+    queryInternalMovStatus,
+    dropdownInternalMovStatus, 
+  } = useInternalMovStatus();
 
   const searchInternalMovements = async () => {
     const areThereFilters = Object.values(filters).every(
@@ -100,16 +108,6 @@ const MovInternosClienteScreen = () => {
       Alert.alert("Atención", "Debe seleccionar algún filtro.");
       return;
     }
-
-    await getInternalMovements({
-      code: filters.code,
-      detailCode: filters.detailCode,
-      internalMovementType: filters.internalMovementType,
-      internalMovementStatus: filters.internalMovementStatus,
-      date: filters.date,
-      turn: filters.turn,
-      customer: customerCode,
-    });
 
     showCards();
   };
@@ -136,7 +134,7 @@ const MovInternosClienteScreen = () => {
         <ThemedButton
           className="flex-1 bg-blue-800 rounded-md py-3"
           onPress={searchInternalMovements}
-          disabled={isLoadingInternalMovements}
+          disabled={queryInternalMovements.isLoading}
         >
           <ThemedText variant="h3" className="text-white font-ruda-bold">
             Buscar
@@ -157,7 +155,7 @@ const MovInternosClienteScreen = () => {
       </View>
 
       <ThemedView className="mt-4">
-        {isLoadingInternalMovements ? (
+        {queryInternalMovements.isLoading ? (
           <ThemedView className="flex justify-center items-center mt-3">
             <ActivityIndicator
               size={100}
@@ -166,9 +164,10 @@ const MovInternosClienteScreen = () => {
             />
           </ThemedView>
         ) : isVisibleCards ? (
-          internalMovements.length > 0 ? (
+          queryInternalMovements.data &&
+          queryInternalMovements.data.length > 0 ? (
             <FlatList
-              data={internalMovements}
+              data={queryInternalMovements.data}
               renderItem={({ item }) => <InternalMovCard movement={item} />}
               keyExtractor={(_, index) => index.toString()}
               onEndReachedThreshold={0.5}
@@ -216,7 +215,7 @@ const MovInternosClienteScreen = () => {
         {selectedFilter === "internalMovementType" && (
           <ThemedDropdown
             data={dropdownInternalMovTypes}
-            isLoading={isLoadingInternalMovTypes}
+            isLoading={queryInternalMovTypes.isLoading}
             onChange={(items) => updateFilter("internalMovementType", items)}
             selected={filters.internalMovementType}
             placeholder="Seleccione tipo de mov. interno"
@@ -226,7 +225,7 @@ const MovInternosClienteScreen = () => {
         {selectedFilter === "internalMovementStatus" && (
           <ThemedDropdown
             data={dropdownInternalMovStatus}
-            isLoading={isLoadingInternalMovStatus}
+            isLoading={queryInternalMovStatus.isLoading}
             onChange={(item) => updateFilter("internalMovementStatus", item)}
             selected={filters.internalMovementStatus}
             placeholder="Seleccione estado"
@@ -249,7 +248,7 @@ const MovInternosClienteScreen = () => {
         {selectedFilter === "turn" && (
           <ThemedDropdown
             data={dropdownTurns}
-            isLoading={isLoadingTurns}
+            isLoading={queryTurns.isLoading}
             onChange={(item) => updateFilter("turn", item)}
             selected={filters.turn}
             placeholder="Seleccione turno"

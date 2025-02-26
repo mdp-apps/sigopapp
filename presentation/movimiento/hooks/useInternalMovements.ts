@@ -1,9 +1,7 @@
-import { useState } from "react";
-
 import * as UseCases from "@/core/movimiento/use-cases";
 
-import { InternalMovement } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
+import { useQuery } from "@tanstack/react-query";
 
 type InternalMovementBody = {
   code: string;
@@ -13,35 +11,40 @@ type InternalMovementBody = {
   internalMovementStatus: string;
   internalMovementType: string;
   customer: string;
-}
-
-
-export const useInternalMovements = () => {
-  const [internalMovements, setInternalMovements] = useState<InternalMovement[]>([]);
-  const [isLoadingInternalMovements, setIsLoadingInternalMovements] = useState(false);
-
-  const getInternalMovements = async (internalMovsBody: InternalMovementBody) => {
-    setIsLoadingInternalMovements(true);
-      
-    const response = await UseCases.getInternalMovsUseCase(sigopApiFetcher, {
-      accion: "Consultar movimientos internos",
-      codigo: internalMovsBody.code,
-      codigo_detalle: internalMovsBody.detailCode,
-      fecha: internalMovsBody.date,
-      turno: internalMovsBody.turn,
-      estado: internalMovsBody.internalMovementStatus,
-      tipo_movimiento_interno: internalMovsBody.internalMovementType,
-      cliente: internalMovsBody.customer,
-    });
-
-    setInternalMovements(response);
-    setIsLoadingInternalMovements(false);
-  }
-
-  return {
-    internalMovements,
-    isLoadingInternalMovements,
-    getInternalMovements,
-  };
 };
 
+export const useInternalMovements = (
+  internalMovsBody?: InternalMovementBody
+) => {
+  const queryInternalMovements = useQuery({
+    queryKey: ["internal-movs", internalMovsBody ? internalMovsBody : "all"],
+    queryFn: async () => {
+      const {
+        code = "",
+        detailCode = "",
+        date = "",
+        turn = "",
+        internalMovementStatus = "",
+        internalMovementType = "",
+        customer = "",
+      } = internalMovsBody || {};
+
+      const response = await UseCases.getInternalMovsUseCase(sigopApiFetcher, {
+        accion: "Consultar movimientos internos",
+        codigo: code,
+        codigo_detalle: detailCode,
+        fecha: date,
+        turno: turn,
+        estado: internalMovementStatus,
+        tipo_movimiento_interno: internalMovementType,
+        cliente: customer,
+      });
+
+      return response;
+    },
+  });
+
+  return {
+    queryInternalMovements,
+  };
+};

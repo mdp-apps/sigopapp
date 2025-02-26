@@ -2,21 +2,19 @@ import { useEffect, useState } from "react";
 
 import * as UseCases from "@/core/movimiento/use-cases";
 
-import { TypeInternalMov } from "@/infrastructure/entities";
 import { DropdownResponse } from "@/infrastructure/interfaces";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
+import { useQuery } from "@tanstack/react-query";
+
 export const useInternalMovTypes = () => {
-  const [internalMovTypes, setInternalMovTypes] = useState<TypeInternalMov[]>([]);
   const [dropdownInternalMovTypes, setDropdownInternalMovTypes] = useState<
     DropdownResponse[]
   >([]);
 
-  const [isLoadingInternalMovTypes, setIsLoadingInternalMovTypes] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingInternalMovTypes(true);
+  const queryInternalMovTypes = useQuery({
+    queryKey: ["internal-mov-types"],
+    queryFn: async () => {
       const response = await UseCases.getInternalMovTypesUseCase(
         sigopApiFetcher,
         {
@@ -24,21 +22,26 @@ export const useInternalMovTypes = () => {
         }
       );
 
-      const dropdownInternalMovTypeResult = response.map((statusReq) => ({
-        code: statusReq.code.toString(),
-        name: statusReq.name,
-      }));
+      return response;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
 
-      setInternalMovTypes(response);
+  useEffect(() => {
+    if (queryInternalMovTypes.isSuccess) {
+      const dropdownInternalMovTypeResult = queryInternalMovTypes.data.map(
+        (statusReq) => ({
+          code: statusReq.code.toString(),
+          name: statusReq.name,
+        })
+      );
+
       setDropdownInternalMovTypes(dropdownInternalMovTypeResult);
-      setIsLoadingInternalMovTypes(false);
-    })();
-  }, []);
+    }
+  }, [queryInternalMovTypes.isSuccess]);
 
   return {
-    internalMovTypes,
-    isLoadingInternalMovTypes,
+    queryInternalMovTypes,
     dropdownInternalMovTypes,
   };
 };
-
