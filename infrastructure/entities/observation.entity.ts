@@ -8,3 +8,8 @@ export interface ObservationReq {
   tokenCode: number;
   userComment: string;
 }
+
+export interface ObservationImage{
+  imageUrl: string;
+  base64Str: string;
+}

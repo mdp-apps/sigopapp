@@ -1,6 +1,6 @@
 import { HttpAdapter } from "@/config/adapters";
+import { ObservationImage } from "@/infrastructure/entities";
 
-import { AxiosResponse } from "axios";
 import base64 from "base64-js";
 
 interface Body {
@@ -9,10 +9,12 @@ interface Body {
   method: string;
 }
 
+
+
 export const getReqObservationImageUseCase = async (
   fetcher: HttpAdapter,
   body: Body
-): Promise<string[]> => {
+): Promise<ObservationImage> => {
   try {
     const observationImage = await fetcher.post<ArrayBuffer, Body>(
       `/requerimientos/observaciones/obtenerfoto`,
@@ -26,7 +28,7 @@ export const getReqObservationImageUseCase = async (
     const base64Str = base64.fromByteArray(base64Array);
     const imageUrl = `data:image/jpeg;base64,${base64Str}`;
 
-    return [imageUrl, base64Str];
+    return { imageUrl, base64Str };
   } catch (error) {
     throw new Error(
       "Error al obtener la imagen de la observación del requerimiento"

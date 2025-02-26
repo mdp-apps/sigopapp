@@ -2,7 +2,6 @@ import React from "react";
 import { View } from "react-native";
 import { Icon } from "react-native-paper";
 
-import { useObservationImage } from "../hooks";
 import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 
 import { DateAdapter } from "@/config/adapters";
@@ -17,21 +16,10 @@ interface ObservationCardProps extends ObservationtextProps {
 }
 
 export const ObservationCard = ({ observation, showModal }: ObservationCardProps) => {
-  const { getObservationImage } = useObservationImage();
-
   return (
     <View>
       {observation.path ? (
-        <ThemedButton
-          onPress={async () => {
-            await getObservationImage(
-              observation.reqCode,
-              observation.path,
-              "POST"
-            );
-            showModal();
-          }}
-        >
+        <ThemedButton onPress={showModal}>
           <ObservationText observation={observation} />
         </ThemedButton>
       ) : (

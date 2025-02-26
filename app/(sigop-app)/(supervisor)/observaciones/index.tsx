@@ -13,10 +13,10 @@ import { useThemeColor } from "@/presentation/theme/hooks";
 import { useFilters, useVisibility } from "@/presentation/shared/hooks";
 import { useReqByCode } from "@/presentation/req/hooks";
 import {
-  useInsertObservation,
+  useObservationMutation,
   useObservationImage,
   useReqObservations,
-  useUploadObservationImage,
+  useUploadObservationImgMutation,
 } from "@/presentation/observacion/hooks";
 
 import {
@@ -88,18 +88,11 @@ const ObservacionesScreen = () => {
     handleCloseModal,
   } = useFilters(initialFilterValues, FILTERS);
 
-  const { req, isLoadingReq, getReqByCode } = useReqByCode();
-  const { reqObservations, isLoadingReqObservations } = useReqObservations(
-    filters.req
-  );
-  const { uploadObservationImage, isLoadingUploadImage } =
-    useUploadObservationImage();
-  const { insertObservation } = useInsertObservation();
-  const {
-    imageObservation,
-    imageObservationBase64,
-    isLoadingObservationImage,
-  } = useObservationImage();
+  const { queryReqByCode } = useReqByCode(filters.req);
+  const { queryObservations } = useReqObservations(filters.req);
+  const { uploadObservationImage } = useUploadObservationImgMutation();
+  const { createObservation } = useObservationMutation();
+  const { queryObservationImage } = useObservationImage();
 
   const { user } = useAuthStore();
 
@@ -136,14 +129,14 @@ const ObservacionesScreen = () => {
     }
 
     if (values.observation) {
-      const responseData = await insertObservation({
+      createObservation.mutate({
         reqCode: filters.req,
         commment: values.observation,
         path: imageName,
         userCode: user?.code || 0,
       });
 
-      if (responseData.result === "OK") {
+      if (createObservation.data && createObservation.data.result === "OK") {
         setImage(null);
         setValue("observation", "");
 
@@ -167,13 +160,13 @@ const ObservacionesScreen = () => {
 
   const uploadImage = async () => {
     if (image) {
-      const responseData = await uploadObservationImage(
-        image,
-        filters.req,
-        imageName
-      );
+      uploadObservationImage.mutate({
+        fileImage: image,
+        reqCode: filters.req,
+        fileName: imageName,
+      });
 
-      if (responseData === "OK") {
+      if (uploadObservationImage.data === "OK") {
         setImage(null);
         setValue("observation", "");
 
@@ -209,9 +202,15 @@ const ObservacionesScreen = () => {
       const path = `${FileSystem.documentDirectory}${fileName}`;
 
       // Guardar la imagen en el dispositivo
-      await FileSystem.writeAsStringAsync(path, imageObservationBase64, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+      if (queryObservationImage.data) {
+        await FileSystem.writeAsStringAsync(
+          path,
+          queryObservationImage.data?.base64Str,
+          {
+            encoding: FileSystem.EncodingType.Base64,
+          }
+        );
+      }
 
       const asset = await MediaLibrary.createAssetAsync(path);
       const album = await MediaLibrary.getAlbumAsync("Download");
@@ -231,7 +230,7 @@ const ObservacionesScreen = () => {
   return (
     <ThemedView className="px-3">
       <FlatList
-        data={reqObservations}
+        data={queryObservations.data}
         renderItem={({ item }) => (
           <ObservationCard observation={item} showModal={showModal} />
         )}
@@ -252,10 +251,7 @@ const ObservacionesScreen = () => {
 
             <FilterModal
               isModalVisible={isModalVisible}
-              handleCloseModal={async () => {
-                await getReqByCode(filters.req);
-                handleCloseModal();
-              }}
+              handleCloseModal={handleCloseModal}
             >
               {selectedFilter === "req" && (
                 <ThemedInput
@@ -270,13 +266,13 @@ const ObservacionesScreen = () => {
 
             <Divider />
 
-            {Object.keys(req).length > 0 && (
+            {queryReqByCode.data && (
               <View className="flex-1 mt-3">
                 <View className="flex flex-row flex-wrap gap-2">
                   <ThemedChip
                     tooltipTitle="Tipo requerimiento"
                     iconSource="format-list-bulleted-type"
-                    text={req.nameReqFormat}
+                    text={queryReqByCode.data.nameReqFormat}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -284,7 +280,7 @@ const ObservacionesScreen = () => {
                   <ThemedChip
                     tooltipTitle="Fecha y turno"
                     iconSource="calendar-clock-outline"
-                    text={`${req.date} - [T${req.turn}]`}
+                    text={`${queryReqByCode.data.date} - [T${queryReqByCode.data.turn}]`}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -292,7 +288,7 @@ const ObservacionesScreen = () => {
                   <ThemedChip
                     tooltipTitle="Rut conductor"
                     iconSource="steering"
-                    text={req.rutDriver}
+                    text={queryReqByCode.data.rutDriver}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -300,7 +296,7 @@ const ObservacionesScreen = () => {
                   <ThemedChip
                     tooltipTitle="Cliente"
                     iconSource="account-tie"
-                    text={req.customerAbbr}
+                    text={queryReqByCode.data.customerAbbr}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -308,7 +304,7 @@ const ObservacionesScreen = () => {
                   <ThemedChip
                     tooltipTitle="Patente"
                     iconSource="car-info"
-                    text={req.vehiclePatent}
+                    text={queryReqByCode.data.vehiclePatent}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -316,7 +312,7 @@ const ObservacionesScreen = () => {
                   <ThemedChip
                     tooltipTitle="Transportista"
                     iconSource="truck-delivery"
-                    text={req.carrierName}
+                    text={queryReqByCode.data.carrierName}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -324,7 +320,7 @@ const ObservacionesScreen = () => {
                   <ThemedChip
                     tooltipTitle="Estado"
                     iconSource="debug-step-over"
-                    text={req.statusName}
+                    text={queryReqByCode.data.statusName}
                     textStyle={{ fontSize: 16 }}
                     style={{ backgroundColor: quaternaryColor }}
                   />
@@ -365,7 +361,7 @@ const ObservacionesScreen = () => {
                     <ThemedButton
                       className="flex-1 bg-blue-800 rounded-md py-3"
                       onPress={handleSubmit(onSubmit)}
-                      disabled={isLoadingReqObservations}
+                      disabled={queryObservations.isLoading}
                     >
                       <ThemedText
                         variant="h3"
@@ -406,23 +402,23 @@ const ObservacionesScreen = () => {
         }
         ListFooterComponent={
           <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
-            {isLoadingReqObservations ? (
+            {queryObservations.isLoading ? (
               <ActivityIndicator size="large" color="#0000ff" />
             ) : (
               <View>
                 <Image
-                  source={{ uri: imageObservation }}
+                  source={{ uri: queryObservationImage.data?.imageUrl }}
                   className="w-80 h-80"
                 />
 
                 <ThemedButton
                   text={
-                    isLoadingObservationImage
+                    queryObservationImage.isLoading
                       ? "Descargando..."
                       : "Descargar Imagen"
                   }
                   onPress={descargarImagen}
-                  disabled={isLoadingObservationImage}
+                  disabled={queryObservationImage.isLoading}
                 />
               </View>
             )}

@@ -8,6 +8,6 @@ export * from "./get-req-status-by-code.use-case";
 export * from "./get-reqs.use-case";
 export * from "./get-status-requirements.use-case";
 export * from "./get-type-requirements.use-case";
-export * from "./insert-req-observation.use-case";
+export * from "./create-req-observation.use-case";
 export * from "./upload-req-observation-image.use-case";
 export * from "./validate-active-reqs.use-case";

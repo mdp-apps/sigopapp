@@ -1,4 +1,4 @@
-export * from './useInsertObservation';
+export * from './useObservationMutation';
 export * from './useObservationImage';
 export * from './useReqObservations';
-export * from './useUploadObservationImage';
+export * from './useUploadObservationImgMutation';

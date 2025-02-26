@@ -1,34 +1,22 @@
-import { useEffect, useState } from "react";
-
 import * as UseCases from "@/core/req/use-cases";
 
-import { ObservationReq } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
+import { useQuery } from "@tanstack/react-query";
 
 
 export const useReqObservations = (reqCode: string) => {
-  const [reqObservations, setReqObservations] = useState<ObservationReq[]>([]);
+  const queryObservations = useQuery({
+    queryKey: ["observations", reqCode],
+    queryFn: () =>
+      UseCases.getReqObservationsUseCase(sigopApiFetcher, {
+        accion: "Consultar observaciones requerimiento",
+        requerimiento: reqCode,
+      }),
+    enabled: !!reqCode,
+  });
 
-  const [isLoadingReqObservations, setIsLoadingReqObservations] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingReqObservations(true);
-      const response = await UseCases.getReqObservationsUseCase(
-        sigopApiFetcher,
-        {
-          accion: "Consultar observaciones requerimiento",
-          requerimiento: reqCode,
-        }
-      );
-
-      setReqObservations(response);
-      setIsLoadingReqObservations(false);
-    })();
-  }, [reqCode]);
 
   return {
-    reqObservations,
-    isLoadingReqObservations,
+    queryObservations,
   };
 };
