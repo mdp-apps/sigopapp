@@ -41,11 +41,11 @@ export interface Req {
   description: string;
   driverName: string;
   formatType: number;
-  internalCode: number;
   name: string;
   nameReqFormat: string;
   observation: string;
   patent: string;
+  reqCode: number;
   reqType: number;
   rutDriver: string;
   status: number;

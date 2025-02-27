@@ -9,7 +9,7 @@ export const usePalletizedProduction = (reqCode: number) => {
     queryFn: () =>
       UseCases.getPalletizedProductionUseCase(sigopApiFetcher, {
         accion: "Consultar produccion paletizado",
-        requerimiento: reqCode,
+        requerimiento: String(reqCode),
       }),
     enabled: !!reqCode,
   });

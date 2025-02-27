@@ -13,6 +13,7 @@ export const useReqByCode = (reqCode: string) => {
         codigo: reqCode,
       }),
     enabled: !!reqCode,
+    staleTime: 1000 * 60 * 5,
   });
 
   return {

@@ -5,21 +5,18 @@ import { useThemeColor } from "@/presentation/theme/hooks";
 const SupervisorLayout = () => {
   const { reqCode } = useGlobalSearchParams();
 
-  const primaryColor = useThemeColor({}, "primary");
   const backgroundColor = useThemeColor({}, "background");
 
   return (
     <Stack
       screenOptions={{
+        headerShadowVisible: false,
         contentStyle: { backgroundColor: backgroundColor },
-        headerShadowVisible: true,
-        headerTintColor: backgroundColor,
-        headerStyle: {
-          backgroundColor: primaryColor,
-        },
         headerTitleStyle: {
           fontFamily: "Ruda",
+          fontWeight: "bold",
         },
+      
       }}
     >
       <Stack.Screen
@@ -74,12 +71,7 @@ const SupervisorLayout = () => {
       <Stack.Screen
         name="configurar-pallets-req/index"
         options={{
-          headerTitle: reqCode
-            ? `Req. ${reqCode}`
-            : "Requerimiento de pallets",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
+          headerTitle: reqCode ? `Req. ${reqCode}` : "Requerimiento de pallets",
           headerTitleAlign: "center",
         }}
       />
