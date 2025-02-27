@@ -37,7 +37,7 @@ export const ThemedButton = ({
     <Pressable
       onPress={onPress}
       className={[
-        "active:opacity-80 flex-row items-center justify-center",
+        "active:opacity-80 flex-row justify-center items-center",
         variant === "icon" ? "gap-4 p-4" : "px-6 py-3",
         outlineStyle,
         roundedStyle,

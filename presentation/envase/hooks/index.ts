@@ -1,2 +1,2 @@
 export * from "./usePackagingByCustomer";
-export * from "./useUpdatePackaging";
+export * from "./useUpdatePackagingMutation";

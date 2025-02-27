@@ -1,9 +1,9 @@
-import { useState } from "react";
 
 import * as UseCases from "@/core/supervisor/use-cases";
 
-import { Stock } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
+
+import { useQuery } from "@tanstack/react-query";
 
 
 type StockBody = {
@@ -13,31 +13,24 @@ type StockBody = {
   operation: string;
 };
 
-export const useCurrentStock = () => {
-  const [currentStock, setCurrentStock] = useState<Stock[]>([]);
-  const [isLoadingCurrentStock, setIsLoadingCurrentStock] = useState(false);
+export const useCurrentStock = (stockBody: StockBody) => {
+  const queryCurrentStock = useQuery({
+    queryKey: ["current-stock"],
+    queryFn: async () => {
+      const { customer = "", warehouse, product, operation } = stockBody;
 
-
-    const getCurrentStock = async (reqsBody: StockBody) => {
-      setIsLoadingCurrentStock(true);
-
-      const body: UseCases.StockBody = {
+      const response = await UseCases.getStockUseCase(sigopApiFetcher, {
         accion: "Consultar stock",
-        cliente: reqsBody.customer || "",
-        bodega: reqsBody.warehouse,
-        producto: reqsBody.product,
-        operacion: reqsBody.operation,
-      };
-
-      const response = await UseCases.getStockUseCase(sigopApiFetcher, body);
-
-      setCurrentStock(response);
-      setIsLoadingCurrentStock(false);
-    };
+        cliente: customer,
+        bodega: warehouse,
+        producto: product,
+        operacion: operation,
+      });
+      return response;
+    },
+  });
 
   return {
-    currentStock,
-    isLoadingCurrentStock,
-    getCurrentStock,
+    queryCurrentStock,
   };
 };
