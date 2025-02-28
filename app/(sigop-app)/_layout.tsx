@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Redirect, Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useAuthStore } from "@/presentation/auth/store";
@@ -18,32 +18,40 @@ const CheckAuthenticationLayout = () => {
     checkStatus();
   }, []);
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/auth/(profiles)");
+    }
+  }, [status]);
+
+
   if (status === "checking") {
     return <GlobalLoader />;
   }
-
-  if (status === "unauthenticated") {
-    return <Redirect href="/auth/(profiles)" />;
-  }
   
-  return (
-    <PermissionsCheckerProvider>
-      <Stack
-        screenOptions={{
-          headerShadowVisible: false,
-          headerShown: false,
-          contentStyle: { backgroundColor: backgroundColor },
-        }}
-      >
-        <Stack.Screen
-          name="(home)/index"
-          options={{
+  if (status === "authenticated") {
+    return (
+      <PermissionsCheckerProvider>
+        <Stack
+          screenOptions={{
+            headerShadowVisible: false,
             headerShown: false,
+            contentStyle: { backgroundColor: backgroundColor },
           }}
-        />
-      </Stack>
-    </PermissionsCheckerProvider>
-  );
+        >
+          <Stack.Screen
+            name="(home)/index"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </PermissionsCheckerProvider>
+    );
+  }
+
+
+  return null;
 };
 
 export default CheckAuthenticationLayout;

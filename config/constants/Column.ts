@@ -15,3 +15,9 @@ export const CURRENT_STOCK_COLUMNS: Column<Stock>[] = [
   { title: " Bod.", key: "warehouseAbbr" },
   { title: "Cant. KG.", key: "quantity" },
 ];
+
+export const MIXES_REQ_COLUMNS: Column<any>[] = [
+  { title: "Lote", key: "batch" },
+  { title: "Cod mezcla", key: "mixCode" },
+  {title: "KG", key: "totalMixWeight"},
+];
