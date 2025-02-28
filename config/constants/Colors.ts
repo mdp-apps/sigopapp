@@ -3,7 +3,6 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-
 export const Colors = {
   light: {
     primary: "#337AB7",
@@ -16,17 +15,18 @@ export const Colors = {
     background: "#e2e8f0",
     text: "#000000",
 
-    tomato: "#D9534F",
-    pink: "#F5B7B1",
-    lightWhite: "#FDFEFE",
-    lightGray: "#D6EAF8",
-    gray: "#8b9cb5",
-    darkGray: "#34495e",
-    yellow: "#F9E79F",
-    lightGreen: "#ABEBC6",
-    green: "#52d49b",
     blue: "#1e40af",
     darkBlue: "#0000ff",
+    darkGray: "#34495e",
+    gray: "#8b9cb5",
+    green: "#52d49b",
+    lightGray: "#D6EAF8",
+    lightGreen: "#ABEBC6",
+    lightWhite: "#FDFEFE",
+    orange: "#DEA241",
+    pink: "#F5B7B1",
+    tomato: "#D9534F",
+    yellow: "#F9E79F",
   },
   dark: {
     primary: "#3498db",
@@ -39,16 +39,17 @@ export const Colors = {
     background: "white",
     text: "#ECEDEE",
 
-    tomato: "#D9534F",
-    pink: "#F5B7B1",
-    lightWhite: "#FDFEFE",
-    lightGray: "#D6EAF8",
-    gray: "#D6EAF8",
-    darkGray: "#34495e",
-    yellow: "#F9E79F",
-    lightGreen: "#ABEBC6",
-    green: "#52d49b",
     blue: "#1e40af",
     darkBlue: "#0000ff",
+    darkGray: "#34495e",
+    gray: "#D6EAF8",
+    green: "#52d49b",
+    lightGray: "#D6EAF8",
+    lightGreen: "#ABEBC6",
+    lightWhite: "#FDFEFE",
+    orange: "#DEA241",
+    pink: "#F5B7B1",
+    tomato: "#D9534F",
+    yellow: "#F9E79F",
   },
 };

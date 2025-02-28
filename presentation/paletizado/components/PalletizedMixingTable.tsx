@@ -20,7 +20,6 @@ export const PalletizedMixingTable = () => {
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  console.log({ selectedIds,selectAll });
 
   const handleToggleRow = (id: number) => {
     setSelectedIds((prev) =>

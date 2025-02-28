@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { ScrollView, StyleProp, TextStyle, ViewStyle } from "react-native";
+import { ScrollView, StyleProp, TextStyle, View, ViewStyle } from "react-native";
 
 import { DataTable } from "react-native-paper";
 
@@ -90,7 +90,7 @@ export const ThemedDataTable = <T,>({
   const showColAction = typeof renderColAction === "function";
 
   return (
-    <ScrollView>
+    <View>
       <DataTable>
         <DataTable.Header style={headerStyle}>
           {columns.map((column) => {
@@ -102,7 +102,6 @@ export const ThemedDataTable = <T,>({
                 }
                 onPress={() => handleSort(column.key)}
                 style={{ flex: 2, justifyContent: "center" }}
-                
               >
                 <ThemedText style={columnCellStyle}>{column.title}</ThemedText>
               </DataTable.Title>
@@ -160,6 +159,6 @@ export const ThemedDataTable = <T,>({
           showFastPaginationControls
         />
       )}
-    </ScrollView>
+    </View>
   );
 };

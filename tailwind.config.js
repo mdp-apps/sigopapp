@@ -21,6 +21,7 @@ module.exports = {
           tomato: Colors.light.tomato,
           white: Colors.light.lightWhite,
           green: Colors.light.green,
+          orange: Colors.light.orange,
         },
         dark: {
           primary: Colors.dark.primary,
@@ -32,6 +33,7 @@ module.exports = {
           tomato: Colors.dark.tomato,
           white: Colors.dark.lightWhite,
           green: Colors.dark.green,
+          orange: Colors.dark.orange,
         },
       },
       fontFamily: {
