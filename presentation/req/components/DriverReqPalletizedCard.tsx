@@ -17,6 +17,9 @@ export const DriverReqPalletizedCard = ({
   handlePalletizedDataLoaded,
 }: DriverReqPalletizedCardProps) => {
   const { queryPalletizedProduction } = usePalletizedProductionByCode(req.reqCode);
+  console.log(
+    JSON.stringify({ palletized: queryPalletizedProduction.data }, null, 2)
+  );
 
   useEffect(() => {
     if (queryPalletizedProduction.isSuccess) {

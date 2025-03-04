@@ -1,5 +1,5 @@
 import { Column } from "@/presentation/theme/components";
-import { LogStatusReq, Stock } from "@/infrastructure/entities";
+import { LogStatusReq, PalletizingMix, Stock } from "@/infrastructure/entities";
 
 export const LOG_STATUS_REQ_COLUMNS: Column<LogStatusReq>[] = [
   { title: "Estado", key: "reqStatusName" },
@@ -16,8 +16,8 @@ export const CURRENT_STOCK_COLUMNS: Column<Stock>[] = [
   { title: "Cant. KG.", key: "quantity" },
 ];
 
-export const MIXES_REQ_COLUMNS: Column<any>[] = [
+export const MIXES_REQ_COLUMNS: Column<PalletizingMix>[] = [
   { title: "Lote", key: "batch" },
   { title: "Cod mezcla", key: "mixCode" },
-  {title: "KG", key: "totalMixWeight"},
+  { title: "KG", key: "formattedTotalKg" },
 ];

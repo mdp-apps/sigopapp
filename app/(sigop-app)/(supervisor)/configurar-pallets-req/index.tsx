@@ -1,28 +1,38 @@
 import React from "react";
 
 import { View } from "react-native";
+import { Checkbox } from "react-native-paper";
 
 import { useGlobalSearchParams } from "expo-router";
 
+import { useCheckboxSelector } from "@/presentation/shared/hooks";
+import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode } from "@/presentation/req/hooks";
 import { usePalletizingMixesByCode } from "@/presentation/paletizado/hooks";
 
 import {
   ThemedButton,
+  ThemedDataTable,
   ThemedHelperText,
   ThemedInput,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
-import { PalletizedMixingTable } from "@/presentation/paletizado/components";
 
 import { palletSchema } from "@/presentation/shared/validations";
+import { MIXES_REQ_COLUMNS } from "@/config/constants";
 
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PalletizingMix } from "@/infrastructure/entities";
 
 const ConfigurarPalletsScreen = () => {
+  const primaryColor = useThemeColor({}, "primary");
+  const grayColor = useThemeColor({}, "gray");
+  const grayDarkColor = useThemeColor({}, "darkGray");
+  const textColor = useThemeColor({}, "text");
+  
   const { reqCode } = useGlobalSearchParams();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
@@ -42,6 +52,15 @@ const ConfigurarPalletsScreen = () => {
       totalPalletWeight: "",
     },
   });
+
+  const { 
+    isSelectedAll, 
+    selectedIds, 
+    selectedCount,
+    handleToggleRow,
+    handleToggleAll,
+  } = useCheckboxSelector(palletizingMixes);
+ 
 
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
     console.log(values);
@@ -69,7 +88,36 @@ const ConfigurarPalletsScreen = () => {
         </ThemedText>
       </View>
 
-      <PalletizedMixingTable />
+      <ThemedDataTable<PalletizingMix>
+        data={palletizingMixes}
+        columns={MIXES_REQ_COLUMNS}
+        getRowKey={(item) => item.id}
+        headerStyle={{
+          borderBottomColor: grayColor,
+          marginBottom: 10,
+        }}
+        columnCellStyle={{
+          fontWeight: "700",
+          color: grayDarkColor,
+          textTransform: "uppercase",
+        }}
+        rowStyle={{ borderBottomColor: grayColor }}
+        cellStyle={{ fontWeight: "400", color: textColor }}
+        renderColAction={() => (
+          <Checkbox
+            status={isSelectedAll ? "checked" : "unchecked"}
+            onPress={() => handleToggleAll(!isSelectedAll)}
+            color={primaryColor}
+          />
+        )}
+        renderActions={(row) => (
+          <Checkbox
+            status={selectedIds.includes(row.id) ? "checked" : "unchecked"}
+            onPress={() => handleToggleRow(row.id)}
+            color={primaryColor}
+          />
+        )}
+      />
 
       <ThemedView margin className="flex-1 items-center gap-4 mt-10">
         <Controller

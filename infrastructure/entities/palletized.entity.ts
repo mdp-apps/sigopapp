@@ -5,9 +5,11 @@ export interface Palletized{
   totalWeight: number;
 }
 
-export interface  PalletizingMix {
+export interface PalletizingMix {
+  id: string;
   batch: number;
   mixCode: string;
   mixName: string;
   totalKg: number;
+  formattedTotalKg: string;
 };

@@ -19,7 +19,7 @@ const MenuScreen = () => {
 
       {profile === UserProfile.supervisor && <SupervisorMenu />}
 
-      {profile === UserProfile.customer && (
+      {profile !== UserProfile.customer && (
         <ThemedView className="justify-center items-center" margin safe>
           <View className="flex-row gap-2 justify-between my-2">
             <MenuCard
