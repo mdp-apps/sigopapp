@@ -1,4 +1,6 @@
 
+import React from "react";
+
 import { View, FlatList } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -170,7 +172,7 @@ const VerReqSupervisorScreen = () => {
                         customerAbbr: item.customerAbbr,
                         carrierName: item.carrierName,
                         reqType: `${item.reqType}${item.formatType}`,
-                        reqCode: item.internalCode,
+                        reqCode: item.reqCode,
                       },
                     }}
                   >

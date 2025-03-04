@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Text } from "react-native";
 import { Card } from "react-native-paper";
 
@@ -26,7 +28,7 @@ export const PatentReqCard = ({ req }: PatentReqCardProps) => {
             params: {
               carrierName: req.carrierName,
               customerAbbr: req.customerAbbr,
-              reqCode: req.internalCode,
+              reqCode: req.reqCode,
               reqType: `${req.reqType}${req.formatType}`,
               vehiclePatent: req.vehiclePatent,
             },
@@ -42,7 +44,7 @@ export const PatentReqCard = ({ req }: PatentReqCardProps) => {
             params: {
               carrierName: req.carrierName,
               customerAbbr: req.customerAbbr,
-              reqCode: req.internalCode,
+              reqCode: req.reqCode,
               vehiclePatent: req.vehiclePatent,
             },
           }}

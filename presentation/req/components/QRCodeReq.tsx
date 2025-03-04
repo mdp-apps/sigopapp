@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View } from "react-native";
 import { router } from "expo-router";
 
@@ -11,7 +13,6 @@ interface QRCodeReqProps {
 }
 
 export const QRCodeReq = ({ reqCode, dataToEncode }: QRCodeReqProps) => {
-
   return (
     <View className="flex-1 justify-center items-center">
       <ThemedButton

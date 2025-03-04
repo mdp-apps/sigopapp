@@ -1,5 +1,6 @@
+import React from "react";
 
-import {  TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Icon } from "react-native-paper";
 
 import { Href, router } from "expo-router";

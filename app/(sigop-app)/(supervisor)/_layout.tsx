@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Stack, useGlobalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -16,7 +18,6 @@ const SupervisorLayout = () => {
           fontFamily: "Ruda",
           fontWeight: "bold",
         },
-      
       }}
     >
       <Stack.Screen

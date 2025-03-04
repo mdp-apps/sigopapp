@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React,{ useEffect } from "react";
 
 import { useColorScheme, useThemeColor } from "@/presentation/theme/hooks";
 

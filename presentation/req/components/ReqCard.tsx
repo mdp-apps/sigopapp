@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ScrollView, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 
@@ -15,12 +17,8 @@ interface SupervisorReqCardProps {
   req: Req;
 }
 
-
-export const ReqCard = ({
-  children,
-  req,
-}: SupervisorReqCardProps) => {
-  const { showObservationModal,showModalExitTicket } = useReqStore();
+export const ReqCard = ({ children, req }: SupervisorReqCardProps) => {
+  const { showObservationModal, showModalExitTicket } = useReqStore();
 
   return (
     <Card
@@ -33,7 +31,7 @@ export const ReqCard = ({
       ]}
     >
       <Card.Title
-        title={`Req. ${req.internalCode}`}
+        title={`Req. ${req.reqCode}`}
         titleStyle={{ fontSize: 22, fontFamily: "Ruda-Bold" }}
         subtitle={`${req.date} [T${req.turn}]  - ${req.nameReqFormat}`}
         subtitleStyle={{ fontSize: 15, fontFamily: "Ruda-Bold" }}
@@ -88,7 +86,7 @@ export const ReqCard = ({
             href={{
               pathname: "/log-estados",
               params: {
-                reqCode: req.internalCode,
+                reqCode: req.reqCode,
                 customerAbbr: req.customerAbbr,
                 vehiclePatent: req.vehiclePatent,
                 carrierName: req.carrierName,

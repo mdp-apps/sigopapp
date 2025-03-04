@@ -1,3 +1,5 @@
+import React from "react";
+
 import Barcode from "@kichiyaki/react-native-barcode-generator";
 
 interface BarCodeReqProps {
@@ -18,4 +20,3 @@ export const BarCodeReq = ({ dataToEncode, dataToShow }: BarCodeReqProps) => {
     )
   );
 };
-

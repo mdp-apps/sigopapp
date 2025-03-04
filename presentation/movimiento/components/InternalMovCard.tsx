@@ -1,4 +1,6 @@
-import {  ScrollView, StyleSheet, View } from "react-native";
+import React from "react";
+
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Card, Divider } from "react-native-paper";
 
 import { useReqStore } from "@/presentation/req/store";

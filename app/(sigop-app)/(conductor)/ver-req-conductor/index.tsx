@@ -122,9 +122,9 @@ const VerReqConductorScreen = () => {
     resolver: zodResolver(palletSchema),
     defaultValues: {
       hasPallets: false,
-      nroPallets: 0,
-      totalPalletWeight: 0,
-      quantityMix: 0,
+      nroPallets: "",
+      totalPalletWeight: "",
+      quantityMix: "",
     },
   });
 
@@ -149,15 +149,15 @@ const VerReqConductorScreen = () => {
 
   const handlePalletizedDataLoaded = (data: Palletized) => {
     setValue("hasPallets", data?.hasPallet === 1);
-    setValue("nroPallets", data?.palletQuantity);
-    setValue("totalPalletWeight", data?.totalWeight);
-    setValue("quantityMix", data?.mixQuantity);
+    setValue("nroPallets", String(data?.palletQuantity));
+    setValue("totalPalletWeight", String(data?.totalWeight));
+    setValue("quantityMix", String(data?.mixQuantity));
   };
 
   const handleModalPallets = (item: Req) => {
     showModalPallets();
     setReqType(+`${item.reqType}${item.formatType}`);
-    setReqCode(item.internalCode);
+    setReqCode(item.reqCode);
   };
 
   const handleModalPackaging = (item: Req) => {
@@ -165,18 +165,18 @@ const VerReqConductorScreen = () => {
 
     setCustomerReq(item.customerCode);
     setReqType(+`${item.reqType}${item.formatType}`);
-    setReqCode(item.internalCode);
+    setReqCode(item.reqCode);
   };
 
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
-    if (values.nroPallets === 0 || values.totalPalletWeight === 0) {
+    if (values.nroPallets === "" || values.totalPalletWeight === "") {
       showSnackbar();
       return;
     }
 
     if (
       reqType !== REQ_TYPE_FORMAT.despachoEnvasado &&
-      values.quantityMix === 0
+      values.quantityMix === ""
     ) {
       showSnackbar();
       return;
@@ -189,10 +189,10 @@ const VerReqConductorScreen = () => {
       option: 1,
       reqCode: reqCode,
       userCode: String(user?.code),
-      palletQuantity: values.hasPallets ? values.nroPallets : undefined,
-      totalWeight: values.hasPallets ? values.totalPalletWeight : undefined,
+      palletQuantity: values.hasPallets ? Number(values.nroPallets) : undefined,
+      totalWeight: values.hasPallets ? Number(values.totalPalletWeight) : undefined,
       mixQuantity:
-        reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 0 : values.quantityMix,
+        reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 0 : Number(values.quantityMix),
       batch: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 1 : undefined,
       mix: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? "" : undefined,
     };

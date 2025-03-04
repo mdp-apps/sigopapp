@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View } from "react-native";
 import { List, Divider } from "react-native-paper";
 
@@ -13,7 +15,7 @@ export const AccordionProduct = ({
   accordionTitle,
 }: ProductoOtrosProps) => {
   const secondaryColor = useThemeColor({}, "secondary");
-  
+
   return (
     <View className="flex-1">
       <List.Accordion

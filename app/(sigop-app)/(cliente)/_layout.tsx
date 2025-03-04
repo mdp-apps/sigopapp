@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Colors } from "@/config/constants";
 import { Stack } from "expo-router";
 

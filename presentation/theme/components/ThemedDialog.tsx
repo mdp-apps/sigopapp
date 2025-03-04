@@ -1,8 +1,9 @@
+import React from "react";
 import Dialog from "react-native-dialog";
 import { DialogInputProps } from "react-native-dialog/lib/Input";
 import { Control, Controller } from "react-hook-form";
 
-interface DialogInput extends DialogInputProps{
+interface DialogInput extends DialogInputProps {
   control: Control<any>;
 }
 
@@ -54,4 +55,3 @@ export const ThemedDialog = ({
     </Dialog.Container>
   );
 };
-

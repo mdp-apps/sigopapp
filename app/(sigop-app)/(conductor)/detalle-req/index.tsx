@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ScrollView, View } from "react-native";
 
 import { ActivityIndicator } from "react-native-paper";
@@ -19,19 +21,18 @@ import { REQ_TYPE_FORMAT } from "@/config/constants";
 const DetalleReqScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
 
-  const {
+  const { 
     carrierName,
     customerAbbr,
     reqCode,
     reqType,
-    vehiclePatent
+    vehiclePatent,
   } = useLocalSearchParams();
 
-  const {
-    queryProductsReq,
-    totalKg,
-    productsPerBatch
-  } = useProductsReqByCode(reqCode as string, reqType as string);
+  const { queryProductsReq, totalKg, productsPerBatch } = useProductsReqByCode(
+    reqCode as string,
+    reqType as string
+  );
 
   return (
     <ThemedView className="py-3 mt-4" margin>

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { FlatList } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -25,7 +27,7 @@ const ReqPatenteScreen = () => {
       <FlatList
         data={queryReqs.data}
         renderItem={({ item }) => <PatentReqCard req={item} />}
-        keyExtractor={(item) => String(item.internalCode)}
+        keyExtractor={(item) => String(item.reqCode)}
       />
     </ThemedView>
   );

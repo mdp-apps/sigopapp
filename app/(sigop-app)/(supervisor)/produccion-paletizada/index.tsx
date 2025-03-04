@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   ThemedButton,
   ThemedHelperText,
@@ -14,7 +16,7 @@ import { router } from "expo-router";
 const ProduccionPalizadaScreen = () => {
   const {
     control,
-    formState: { errors},
+    formState: { errors },
     handleSubmit,
   } = useForm<z.infer<typeof palletizingProductionReqSchema>>({
     resolver: zodResolver(palletizingProductionReqSchema),
@@ -23,10 +25,7 @@ const ProduccionPalizadaScreen = () => {
     },
   });
 
-  const onSubmit = (
-    values: z.infer<typeof palletizingProductionReqSchema>
-  ) => {
-
+  const onSubmit = (values: z.infer<typeof palletizingProductionReqSchema>) => {
     router.navigate("/(sigop-app)/(supervisor)/configurar-pallets-req");
     router.setParams({ reqCode: values.reqCode });
   };

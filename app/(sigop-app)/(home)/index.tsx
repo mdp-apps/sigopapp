@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View } from "react-native";
 
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
@@ -21,7 +23,7 @@ const MenuScreen = () => {
         <ThemedView className="justify-center items-center" margin safe>
           <View className="flex-row gap-2 justify-between my-2">
             <MenuCard
-              text="Requerimientos"
+              text="Req. Cliente"
               route="/req-cliente"
               iconSource="playlist-play"
             />

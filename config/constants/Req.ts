@@ -44,5 +44,7 @@ export const REQ_TYPE = {
 
 export const REQ_TYPE_FORMAT = {
   despachoEnvasado: Number(`${REQ_TYPE.despacho}${REQ_FORMAT.envasado}`),
+  recepcionEnvasado: Number(`${REQ_TYPE.recepcion}${REQ_FORMAT.envasado}`),
+  despachoEnvasadoApelcha: Number(`${REQ_TYPE.despacho}${REQ_FORMAT.envasadoApelcha}`),
 };
 

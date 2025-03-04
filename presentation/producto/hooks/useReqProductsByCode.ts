@@ -19,7 +19,10 @@ export const useProductsReqByCode = (reqCode: string, reqType: string) => {
         requerimiento: reqCode,
         tipo_requerimiento: reqType,
       }),
+    enabled: !!reqCode && !!reqType,
+    staleTime: 1000 * 60 * 5,
   });
+
 
   const totalKg = useMemo(() => {
     return (

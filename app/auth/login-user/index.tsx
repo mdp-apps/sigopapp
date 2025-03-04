@@ -1,6 +1,8 @@
-import { Alert, Keyboard } from "react-native";
+import React from "react";
 
-import { Link, router } from "expo-router";
+import { Alert } from "react-native";
+
+import { router } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
 
@@ -46,8 +48,13 @@ const LoginSigopScreen = () => {
   };
 
   return (
-    <AuthBaseLayout profile={USER_PROFILES[profile as keyof typeof USER_PROFILES]}>
-      <ThemedText variant="h2" className="font-ruda-bold text-light-primary mb-2">
+    <AuthBaseLayout
+      profile={USER_PROFILES[profile as keyof typeof USER_PROFILES]}
+    >
+      <ThemedText
+        variant="h2"
+        className="font-ruda-bold text-light-primary mb-2"
+      >
         Iniciar sesión
       </ThemedText>
 
@@ -88,7 +95,6 @@ const LoginSigopScreen = () => {
         text="INGRESAR"
         className="bg-light-primary mt-4 w-5/6"
       />
-
     </AuthBaseLayout>
   );
 };

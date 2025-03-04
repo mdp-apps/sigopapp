@@ -1,3 +1,4 @@
+import React from "react";
 import { View, ViewProps } from "react-native";
 
 interface Props extends ViewProps {

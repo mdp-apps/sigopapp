@@ -1,4 +1,10 @@
-import { KeyboardTypeOptions, StyleSheet, TextStyle,TextInput as NativeTextInput } from "react-native";
+import React from "react";
+import {
+  KeyboardTypeOptions,
+  StyleSheet,
+  TextStyle,
+  TextInput as NativeTextInput,
+} from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { Colors } from "@/config/constants";
@@ -24,7 +30,7 @@ interface ThemedInputProps {
   returnKeyType?: "done" | "go" | "next" | "search" | "send";
   secureTextEntry?: boolean;
   value?: string;
-  
+
   className?: string;
   isNative?: boolean;
   style?: TextStyle;
@@ -75,10 +81,7 @@ const ThemedInput: React.FC<ThemedInputProps> = ({
   ) : (
     <TextInput
       multiline={multiline}
-      style={[
-        styles.input,
-        style,
-      ]}
+      style={[styles.input, style]}
       keyboardType={keyboardType}
       label={label}
       value={value}
@@ -110,4 +113,3 @@ const styles = StyleSheet.create({
 });
 
 export { ThemedInput };
-

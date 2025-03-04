@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Stack, useLocalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -7,7 +9,6 @@ const ReqLayout = () => {
 
   const primaryColor = useThemeColor({}, "primary");
   const backgroundColor = useThemeColor({}, "background");
-
 
   return (
     <Stack
@@ -39,7 +40,6 @@ const ReqLayout = () => {
           },
         }}
       />
-
     </Stack>
   );
 };

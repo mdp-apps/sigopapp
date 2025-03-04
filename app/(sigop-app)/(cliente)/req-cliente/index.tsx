@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View, FlatList } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -85,9 +87,9 @@ const ReqClienteScreen = () => {
     status: filters.reqStatus,
     turn: filters.turn,
   });
-  const { queryTurns,dropdownTurns } = useTurns();
-  const { queryTypeReqs,dropdownTypeReqs } = useTypeReqs();
-  const { queryStatusReqs,dropdownStatusReqs } = useStatusReqs();
+  const { queryTurns, dropdownTurns } = useTurns();
+  const { queryTypeReqs, dropdownTypeReqs } = useTypeReqs();
+  const { queryStatusReqs, dropdownStatusReqs } = useStatusReqs();
 
   return (
     <ThemedView className="px-3">
@@ -155,7 +157,7 @@ const ReqClienteScreen = () => {
                         customerAbbr: item.customerAbbr,
                         carrierName: item.carrierName,
                         reqType: `${item.reqType}${item.formatType}`,
-                        reqCode: item.internalCode,
+                        reqCode: item.reqCode,
                       },
                     }}
                   >

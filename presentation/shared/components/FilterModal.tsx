@@ -1,7 +1,9 @@
+import React from "react";
+
 import { Button } from "react-native-paper";
 import { ThemedModal } from "@/presentation/theme/components";
 
-interface FilterModalProps { 
+interface FilterModalProps {
   children: React.ReactNode;
   isModalVisible: boolean;
   handleCloseModal: () => void;
@@ -19,7 +21,7 @@ export const FilterModal = ({
       isNativeModal
     >
       {children}
-      
+
       <Button
         mode="contained"
         onPress={handleCloseModal}

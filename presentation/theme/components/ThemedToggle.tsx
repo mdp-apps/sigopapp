@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Dimensions } from "react-native";
 import { useThemeColor } from "../hooks";
 import Toggle from "react-native-toggle-element";
@@ -17,8 +19,8 @@ export const ThemedToggle = ({
   leftTitle,
   rightTitle,
 }: ThemedtoggleProps) => {
-  const primaryColor = useThemeColor({},"primary");
-  const lightGraycolor = useThemeColor({},"lightGray");
+  const primaryColor = useThemeColor({}, "primary");
+  const lightGraycolor = useThemeColor({}, "lightGray");
 
   return (
     <Toggle

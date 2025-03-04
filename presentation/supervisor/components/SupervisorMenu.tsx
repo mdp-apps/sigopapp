@@ -1,9 +1,8 @@
+import React from "react";
+
 import { router } from "expo-router";
 
-import {
-  ThemedButton,
-  ThemedView,
-} from "@/presentation/theme/components";
+import { ThemedButton, ThemedView } from "@/presentation/theme/components";
 
 export const SupervisorMenu = () => {
   return (

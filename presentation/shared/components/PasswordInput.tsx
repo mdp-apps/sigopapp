@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View, Keyboard } from "react-native";
 
 import { useVisibility } from "../hooks";
@@ -16,10 +18,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   name = "password",
   placeholder,
 }) => {
-  const {
-    isVisible: isPasswordVisible,
-    toggle: togglePasswordVisibility
-  } = useVisibility();
+  const { isVisible: isPasswordVisible, toggle: togglePasswordVisibility } =
+    useVisibility();
 
   return (
     <View className="flex-row items-center border border-light-primary rounded-full my-2">
@@ -49,4 +49,3 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
     </View>
   );
 };
-

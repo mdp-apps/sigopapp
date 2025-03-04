@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ThemedText, ThemedView } from "@/presentation/theme/components";
 
 const MovInternosScreen = () => {

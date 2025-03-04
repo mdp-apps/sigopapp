@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 import { useThemeColor } from "@/presentation/theme/hooks";
 

@@ -1,6 +1,6 @@
-import  { useEffect } from "react";
+import  React,{ useEffect } from "react";
 
-import { usePalletizedProduction } from "@/presentation/paletizado/hooks";
+import { usePalletizedProductionByCode } from "@/presentation/paletizado/hooks";
 import { ReqCard } from "./ReqCard";
 
 import { Palletized, Req } from "@/infrastructure/entities";
@@ -16,7 +16,7 @@ export const DriverReqPalletizedCard = ({
   req,
   handlePalletizedDataLoaded,
 }: DriverReqPalletizedCardProps) => {
-  const { queryPalletizedProduction } = usePalletizedProduction(req.internalCode);
+  const { queryPalletizedProduction } = usePalletizedProductionByCode(req.reqCode);
 
   useEffect(() => {
     if (queryPalletizedProduction.isSuccess) {

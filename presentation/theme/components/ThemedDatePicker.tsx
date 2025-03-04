@@ -1,11 +1,9 @@
 import React from "react";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+
 
 interface ThemedDatePickerProps {
   value: string;
-  onChange: (event: DateTimePickerEvent, date?: Date) => void;
+  onChange: (event: any, date?: Date) => void;
   onClose: () => void;
 }
 
@@ -14,17 +12,13 @@ export const ThemedDatePicker = ({
   onChange,
   onClose,
 }: ThemedDatePickerProps) => {
-  const handleChange = (event: DateTimePickerEvent, date?: Date) => {
+  const handleChange = (event: any, date?: Date) => {
     onChange(event, date);
     onClose();
   };
   
   return (
-    <DateTimePicker
-      value={value ? new Date(value) : new Date()}
-      mode="date"
-      display="calendar"
-      onChange={handleChange}
-    />
+    <>
+    </>
   );
 };

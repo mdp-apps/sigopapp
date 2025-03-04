@@ -3,7 +3,7 @@ import * as UseCases from "@/core/supervisor/use-cases";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const usePalletizedProduction = (reqCode: number) => {
+export const usePalletizedProductionByCode = (reqCode: number) => {
   const queryPalletizedProduction = useQuery({
     queryKey: ["palletized-production", reqCode],
     queryFn: () =>

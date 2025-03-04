@@ -48,6 +48,7 @@ export const Colors = {
     lightGreen: "#ABEBC6",
     lightWhite: "#FDFEFE",
     orange: "#DEA241",
+    
     pink: "#F5B7B1",
     tomato: "#D9534F",
     yellow: "#F9E79F",

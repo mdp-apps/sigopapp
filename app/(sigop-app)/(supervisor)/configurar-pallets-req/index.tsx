@@ -1,8 +1,11 @@
+import React from "react";
+
 import { View } from "react-native";
 
 import { useGlobalSearchParams } from "expo-router";
 
 import { useReqByCode } from "@/presentation/req/hooks";
+import { usePalletizingMixesByCode } from "@/presentation/paletizado/hooks";
 
 import {
   ThemedButton,
@@ -22,7 +25,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const ConfigurarPalletsScreen = () => {
   const { reqCode } = useGlobalSearchParams();
 
-  const { queryReqByCode } = useReqByCode(reqCode as string);
+  const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
+  const { palletizingMixes } = usePalletizingMixesByCode(
+    reqCode as string,
+    reqType
+  );
 
   const {
     control,

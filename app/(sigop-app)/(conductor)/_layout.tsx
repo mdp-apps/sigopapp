@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useThemeColor } from "@/presentation/theme/hooks";
 
 import { Stack, useLocalSearchParams } from "expo-router";

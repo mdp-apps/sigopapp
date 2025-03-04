@@ -1,3 +1,5 @@
+import React from "react";
+
 import { PropsWithChildren, useEffect } from "react";
 import { router } from "expo-router";
 
