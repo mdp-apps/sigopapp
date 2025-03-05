@@ -9,14 +9,14 @@ interface Body {
   ingresa_kiosco: number;
   opcion: number;
   requerimiento: number;
-  tiene_pallet: number;
   usuario: string;
-
-  cant_mezcla?: number;
-  lote?: number;
-  mezcla?: string;
-  n_pallet?: number;
-  peso_total?: number;
+  
+  tiene_pallet?: number;
+  cant_mezcla: number;
+  lote: number;
+  mezcla: string;
+  n_pallet: number;
+  peso_total: number;
 }
 
 export const configurePalletsUseCase = async (
@@ -30,6 +30,7 @@ export const configurePalletsUseCase = async (
         ...body,
         // codigo de producto que no se usa pero es requerido por el endpoint
         id: 0,
+        tiene_pallet: 1,
       }
     );
 

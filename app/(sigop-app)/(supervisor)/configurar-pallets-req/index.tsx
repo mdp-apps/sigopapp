@@ -47,16 +47,22 @@ const ConfigurarPalletsScreen = () => {
     reqType
   );
 
-  const {
-    isSelectedAll,
-    selectedIds,
-    selectedCount,
-    handleToggleRow,
-    handleToggleAll,
-  } = useCheckboxSelector(palletizingMixes);
+  const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
+    useCheckboxSelector<PalletizingMix>(palletizingMixes);
   const { configurePallets } = useConfigurePalletsMutation();
   const { queryPalletizedProduction } = usePalletizedProductionByCode(
     Number(reqCode)
+  );
+  console.log(
+    JSON.stringify(
+      {
+        palletizedProduction: queryPalletizedProduction.data,
+        selectedRows,
+        isSelectedAll,
+      },
+      null,
+      2
+    )
   );
 
   const {
@@ -72,28 +78,18 @@ const ConfigurarPalletsScreen = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
-    console.log(
-      JSON.stringify(
-        {
-          configurePallets: configurePallets.data,
-          palletizedProduction: queryPalletizedProduction.data,
-        },
-        null,
-        2
-      )
-    );
+    selectedRows.forEach((mix) => {
+      configurePallets.mutate({
+        reqCode: Number(reqCode),
+        userCode: String(user?.code),
 
-    configurePallets.mutate({
-      reqCode: Number(reqCode),
-      userCode: String(user?.code),
+        mixQuantityKG: mix.totalKg,
+        batch: mix.batch,
+        mixCode: mix.mixCode,
 
-      hasPallet: 1,
-      mixQuantityKG: 2500,
-      batch: 1,
-      mixCode: "1059763",
-
-      palletQuantity: Number(values.nroPallets),
-      palletTotalWeight: Number(values.totalPalletWeight),
+        palletQuantity: Number(values.nroPallets),
+        palletTotalWeight: Number(values.totalPalletWeight),
+      });
     });
   };
 
@@ -143,7 +139,7 @@ const ConfigurarPalletsScreen = () => {
         )}
         renderActions={(row) => (
           <Checkbox
-            status={selectedIds.includes(row.id) ? "checked" : "unchecked"}
+            status={selectedRows.includes(row) ? "checked" : "unchecked"}
             onPress={() => handleToggleRow(row.id)}
             color={primaryColor}
           />

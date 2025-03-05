@@ -11,7 +11,6 @@ type ConfigurePalletBody = {
   reqCode: number;
   userCode: string;
   
-  hasPallet: number;
   mixQuantityKG: number;
   batch: number;
   mixCode: string;
@@ -27,7 +26,6 @@ export const useConfigurePalletsMutation = () => {
         reqCode,
         userCode,
 
-        hasPallet,
         mixQuantityKG,
         batch,
         mixCode,
@@ -42,7 +40,6 @@ export const useConfigurePalletsMutation = () => {
         ingresa_kiosco: PALLETIZING_INPUT.mobile,
         opcion: CRUD_OPTIONS.insert,
         requerimiento: reqCode,
-        tiene_pallet: hasPallet,
         usuario: userCode,
 
         cant_mezcla: mixQuantityKG,
