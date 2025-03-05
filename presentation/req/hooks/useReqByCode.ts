@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export const useReqByCode = (reqCode: string) => {
-  const [reqType, setReqType] = useState("");
+  const [reqType, setReqType] = useState(0);
 
   const queryReqByCode = useQuery({
     queryKey: ["reqs", reqCode],
@@ -22,7 +22,7 @@ export const useReqByCode = (reqCode: string) => {
   useEffect(() => {
     if (queryReqByCode.data) {
       const formatTypeReq = `${queryReqByCode.data.reqType}${queryReqByCode.data.formatType}`;
-      setReqType(formatTypeReq);
+      setReqType(Number(formatTypeReq));
     }
   }, [queryReqByCode.data, reqType]);
 

@@ -1,5 +1,8 @@
 import React from "react";
 
+import { Keyboard } from "react-native";
+import { router } from "expo-router";
+
 import {
   ThemedButton,
   ThemedHelperText,
@@ -11,13 +14,13 @@ import { palletizingProductionReqSchema } from "@/presentation/shared/validation
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { router } from "expo-router";
 
 const ProduccionPalizadaScreen = () => {
   const {
     control,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm<z.infer<typeof palletizingProductionReqSchema>>({
     resolver: zodResolver(palletizingProductionReqSchema),
     defaultValues: {
@@ -25,7 +28,10 @@ const ProduccionPalizadaScreen = () => {
     },
   });
 
+
   const onSubmit = (values: z.infer<typeof palletizingProductionReqSchema>) => {
+    Keyboard.dismiss();
+
     router.navigate("/(sigop-app)/(supervisor)/configurar-pallets-req");
     router.setParams({ reqCode: values.reqCode });
   };

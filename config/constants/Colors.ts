@@ -27,6 +27,7 @@ export const Colors = {
     pink: "#F5B7B1",
     tomato: "#D9534F",
     yellow: "#F9E79F",
+    lightRed: "#F1948A",
   },
   dark: {
     primary: "#3498db",
@@ -52,5 +53,6 @@ export const Colors = {
     pink: "#F5B7B1",
     tomato: "#D9534F",
     yellow: "#F9E79F",
+    lightRed: "#F1948A",
   },
 };
