@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { StyleProp, TextStyle, View, ViewStyle } from "react-native";
 
-import { DataTable } from "react-native-paper";
+import { ActivityIndicator, DataTable } from "react-native-paper";
 
 import { ThemedText } from "./ThemedText";
 
@@ -21,6 +21,7 @@ interface ThemedDataTableProps<T> extends TableStyle<T> {
   data: T[];
   columns: Column<T>[];
   getRowKey: (item: T) => string | number;
+  isLoading?: boolean;
   handleRowPress?: (item: T) => void;
   enablePagination?: boolean;
   itemsPerPageOptions?: number[];
@@ -35,6 +36,7 @@ export const ThemedDataTable = <T,>({
   data,
   columns,
   getRowKey,
+  isLoading,
   handleRowPress,
   enablePagination = false,
   itemsPerPageOptions = [5, 10, 15, 20],
@@ -113,37 +115,43 @@ export const ThemedDataTable = <T,>({
           )}
         </DataTable.Header>
 
-        {dataToRender.map((item, index) => {
-          const computedRowStyle =
-            typeof rowStyle === "function" ? rowStyle(item, index) : rowStyle;
+        {isLoading ? (
+          <DataTable.Row style={{ margin: "auto" }}>
+            <ActivityIndicator size="small" color="gray" />
+          </DataTable.Row>
+        ) : (
+          dataToRender.map((item, index) => {
+            const computedRowStyle =
+              typeof rowStyle === "function" ? rowStyle(item, index) : rowStyle;
 
-          return (
-            <DataTable.Row
-              key={getRowKey(item)}
-              onPress={() => handleRowPress?.(item)}
-              style={computedRowStyle}
-            >
-              {columns.map((column) => {
-                return (
-                  <DataTable.Cell
-                    key={String(column.key)}
-                    style={{ flex: 2, justifyContent: "center" }}
-                  >
-                    <ThemedText style={cellStyle}>
-                      {String(item[column.key])}
-                    </ThemedText>
+            return (
+              <DataTable.Row
+                key={getRowKey(item)}
+                onPress={() => handleRowPress?.(item)}
+                style={computedRowStyle}
+              >
+                {columns.map((column) => {
+                  return (
+                    <DataTable.Cell
+                      key={String(column.key)}
+                      style={{ flex: 2, justifyContent: "center" }}
+                    >
+                      <ThemedText style={cellStyle}>
+                        {String(item[column.key])}
+                      </ThemedText>
+                    </DataTable.Cell>
+                  );
+                })}
+
+                {showActions && (
+                  <DataTable.Cell key="actions">
+                    {renderActions?.(item)}
                   </DataTable.Cell>
-                );
-              })}
-
-              {showActions && (
-                <DataTable.Cell key="actions">
-                  {renderActions?.(item)}
-                </DataTable.Cell>
-              )}
-            </DataTable.Row>
-          );
-        })}
+                )}
+              </DataTable.Row>
+            );
+          })
+        )}
       </DataTable>
 
       {enablePagination && (

@@ -37,12 +37,6 @@ const MenuScreen = () => {
 
           <View className="flex-row justify-between my-2">
             <MenuCard
-              text="Requerimiento en curso"
-              route="/ver-req-conductor"
-              iconSource="playlist-play"
-            />
-
-            <MenuCard
               text="Supervisor"
               route="/menu-supervisor"
               iconSource="account-hard-hat"

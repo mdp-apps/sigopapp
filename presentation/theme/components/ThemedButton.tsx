@@ -28,6 +28,7 @@ export const ThemedButton = ({
   text,
   textClassName,
   variant = "default",
+  disabled,
   ...rest
 }: Props) => {
   const outlineStyle =
@@ -37,8 +38,10 @@ export const ThemedButton = ({
   return (
     <Pressable
       onPress={onPress}
+      disabled={disabled}
       className={[
         "active:opacity-80 flex-row justify-center items-center",
+        disabled ? "opacity-70" : "",
         variant === "icon" ? "gap-4 p-4" : "px-6 py-3",
         outlineStyle,
         roundedStyle,

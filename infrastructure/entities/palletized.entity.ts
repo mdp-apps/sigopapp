@@ -1,8 +1,8 @@
 export interface Palletized{
   hasPallet: number;
-  mixQuantity: number;
+  mixQuantityKG: number;
   palletQuantity: number;
-  totalWeight: number;
+  palletTotalWeight: number;
 }
 
 export interface PalletizingMix {

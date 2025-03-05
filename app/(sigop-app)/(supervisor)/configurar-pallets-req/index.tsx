@@ -1,7 +1,7 @@
 import React from "react";
 
 import { View } from "react-native";
-import { Checkbox } from "react-native-paper";
+import { ActivityIndicator, Checkbox } from "react-native-paper";
 
 import { useGlobalSearchParams } from "expo-router";
 
@@ -41,33 +41,29 @@ const ConfigurarPalletsScreen = () => {
   const { reqCode } = useGlobalSearchParams();
   const { user } = useAuthStore();
 
+  
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
-  const { palletizingMixes } = usePalletizingMixesByCode(
+  const { palletizingMixes,isLoadingMixed } = usePalletizingMixesByCode(
     Number(reqCode),
     reqType
   );
-
-  const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
-    useCheckboxSelector<PalletizingMix>(palletizingMixes);
   const { configurePallets } = useConfigurePalletsMutation();
   const { queryPalletizedProduction } = usePalletizedProductionByCode(
     Number(reqCode)
   );
-  console.log(
-    JSON.stringify(
-      {
-        palletizedProduction: queryPalletizedProduction.data,
-        selectedRows,
-        isSelectedAll,
-      },
-      null,
-      2
-    )
-  );
+  const {
+    isSelectedAll,
+    selectedRows,
+    handleToggleRow,
+    handleToggleAll
+  } = useCheckboxSelector<PalletizingMix>(palletizingMixes);
+  console.log(JSON.stringify({ req: queryReqByCode.data }, null, 2));
+  // console.log(JSON.stringify(queryPalletizedProduction.data, null, 2));
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof palletSchema>>({
     resolver: zodResolver(palletSchema),
@@ -91,6 +87,10 @@ const ConfigurarPalletsScreen = () => {
         palletTotalWeight: Number(values.totalPalletWeight),
       });
     });
+
+    reset();
+
+
   };
 
   return (
@@ -123,6 +123,7 @@ const ConfigurarPalletsScreen = () => {
           borderBottomColor: grayColor,
           marginBottom: 10,
         }}
+        isLoading={isLoadingMixed}
         columnCellStyle={{
           fontWeight: "700",
           color: grayDarkColor,
@@ -196,13 +197,18 @@ const ConfigurarPalletsScreen = () => {
         <ThemedButton
           onPress={handleSubmit(onSubmit)}
           className="bg-orange-400 w-4/6 mt-2 rounded-lg"
+          disabled={selectedRows.length <= 0}
         >
-          <ThemedText
-            variant="h4"
-            className="text-white uppercase w-full text-center font-semibold tracking-widest"
-          >
-            Guardar
-          </ThemedText>
+          {configurePallets.isPending ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <ThemedText
+              variant="h4"
+              className="text-white uppercase w-full text-center font-semibold tracking-widest"
+            >
+              Guardar
+            </ThemedText>
+          )}
         </ThemedButton>
       </ThemedView>
     </ThemedView>

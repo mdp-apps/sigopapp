@@ -12,5 +12,4 @@ export * from './ThemedModal';
 export * from './ThemedMultiSelect';
 export * from './ThemedSnackbar';
 export * from './ThemedText';
-export * from './ThemedToggle';
 export * from './ThemedView';

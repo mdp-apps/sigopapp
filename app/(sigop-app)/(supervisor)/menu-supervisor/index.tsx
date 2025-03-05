@@ -22,15 +22,6 @@ const SupervisorScreen = () => {
 
         <ThemedButton
           className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
-          onPress={() => router.push("/ver-req-conductor")}
-        >
-          <ThemedText variant="h3" className="font-ruda text-white">
-            Requerimiento en curso
-          </ThemedText>
-        </ThemedButton>
-
-        <ThemedButton
-          className="bg-light-primary text-white px-4 py-6 rounded-xl w-full"
           onPress={() => router.push("/ver-req-supervisor")}
         >
           <ThemedText variant="h3" className="font-ruda text-white">

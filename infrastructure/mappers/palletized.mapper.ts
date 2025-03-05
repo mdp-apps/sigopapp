@@ -5,9 +5,9 @@ export class PalletizedMapper {
   static fromPalletizedProductionResultToEntity(result: PalletizedResponse): Palletized {
     return {
       hasPallet: result.tiene_pallet,
-      mixQuantity: result.cantidad_mezcla,
+      mixQuantityKG: result.cantidad_mezcla,
       palletQuantity: result.cantidad_pallet,
-      totalWeight: result.peso_total,
+      palletTotalWeight: result.peso_total,
     };
   }
 }

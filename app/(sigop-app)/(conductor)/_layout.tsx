@@ -6,14 +6,14 @@ import { Stack, useLocalSearchParams } from "expo-router";
 
 const ConductorLayout = () => {
   const { reqCode } = useLocalSearchParams();
-  const backgrounColor = useThemeColor({}, "background");
+  const backgroundColor = useThemeColor({}, "background");
 
   return (
     <Stack
       screenOptions={{
         headerShadowVisible: false,
         contentStyle: {
-          backgroundColor: backgrounColor,
+          backgroundColor: backgroundColor,
         },
       }}
     >
@@ -34,13 +34,6 @@ const ConductorLayout = () => {
           headerTitleStyle: {
             fontFamily: "Ruda",
           },
-        }}
-      />
-
-      <Stack.Screen
-        name="ver-req-conductor/index"
-        options={{
-          title: "Requerimientos",
         }}
       />
     </Stack>

@@ -1,7 +1,6 @@
 export * from './BarCodeReq';
 export * from './DriverReq';
 export * from './DriverReqCard';
-export * from './DriverReqPalletizedCard';
 export * from './PatentReqCard';
 export * from './PortAreaMap';
 export * from './QRCodeReq';

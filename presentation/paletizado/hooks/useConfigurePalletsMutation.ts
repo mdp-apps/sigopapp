@@ -3,6 +3,7 @@ import { Alert } from "react-native";
 import * as UseCases from "@/core/supervisor/use-cases";
 
 import { sigopApiFetcher } from "@/config/api/sigopApi";
+import { AlertNotifyAdapter, AlertType } from "@/config/adapters";
 import { CRUD_OPTIONS, PALLETIZING_INPUT } from "@/config/constants";
 
 import { useMutation } from "@tanstack/react-query";
@@ -10,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 type ConfigurePalletBody = {
   reqCode: number;
   userCode: string;
-  
+
   mixQuantityKG: number;
   batch: number;
   mixCode: string;
@@ -34,7 +35,6 @@ export const useConfigurePalletsMutation = () => {
         palletTotalWeight,
       } = data;
 
-
       return UseCases.configurePalletsUseCase(sigopApiFetcher, {
         accion: "Configurar pallets",
         ingresa_kiosco: PALLETIZING_INPUT.mobile,
@@ -51,13 +51,22 @@ export const useConfigurePalletsMutation = () => {
     },
     onSuccess: (data) => {
       if (data.result === "OK") {
-        Alert.alert("OK", "Pallets configurados correctamente en el requerimiento.");
-      } else {
-        Alert.alert(
-          "Error",
-          "Error al configurar pallets en el requerimiento. Revise los datos ingresados."
-        );
+        AlertNotifyAdapter.show({
+          type: AlertType.SUCCESS,
+          title: "Configuración de pallets",
+          textBody: "Pallets configurados correctamente en el requerimiento.",
+          button: "ACEPTAR",
+        });
+        return;
       }
+      
+      AlertNotifyAdapter.show({
+        type: AlertType.DANGER,
+        title: "Error",
+        textBody:
+          "Error al configurar pallets en el requerimiento. Revise los datos ingresados.",
+        button: "ACEPTAR",
+      });
     },
     onError: (error) => {
       Alert.alert("Error", error.message);
