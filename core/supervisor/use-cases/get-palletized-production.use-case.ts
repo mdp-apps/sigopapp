@@ -8,7 +8,7 @@ import { PalletizedMapper } from "@/infrastructure/mappers/palletized.mapper";
 
 interface Body {
   accion: "Consultar produccion paletizado";
-  requerimiento: string;
+  requerimiento: number;
 }
 
 export const getPalletizedProductionUseCase = async (

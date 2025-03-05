@@ -5,10 +5,15 @@ import { Checkbox } from "react-native-paper";
 
 import { useGlobalSearchParams } from "expo-router";
 
+import { useAuthStore } from "@/presentation/auth/store";
 import { useCheckboxSelector } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode } from "@/presentation/req/hooks";
-import { usePalletizingMixesByCode } from "@/presentation/paletizado/hooks";
+import {
+  useConfigurePalletsMutation,
+  usePalletizedProductionByCode,
+  usePalletizingMixesByCode,
+} from "@/presentation/paletizado/hooks";
 
 import {
   ThemedButton,
@@ -20,25 +25,38 @@ import {
 } from "@/presentation/theme/components";
 
 import { palletSchema } from "@/presentation/shared/validations";
+import { PalletizingMix } from "@/infrastructure/entities";
 import { MIXES_REQ_COLUMNS } from "@/config/constants";
 
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PalletizingMix } from "@/infrastructure/entities";
 
 const ConfigurarPalletsScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
   const grayColor = useThemeColor({}, "gray");
   const grayDarkColor = useThemeColor({}, "darkGray");
   const textColor = useThemeColor({}, "text");
-  
+
   const { reqCode } = useGlobalSearchParams();
+  const { user } = useAuthStore();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
   const { palletizingMixes } = usePalletizingMixesByCode(
-    reqCode as string,
+    Number(reqCode),
     reqType
+  );
+
+  const {
+    isSelectedAll,
+    selectedIds,
+    selectedCount,
+    handleToggleRow,
+    handleToggleAll,
+  } = useCheckboxSelector(palletizingMixes);
+  const { configurePallets } = useConfigurePalletsMutation();
+  const { queryPalletizedProduction } = usePalletizedProductionByCode(
+    Number(reqCode)
   );
 
   const {
@@ -53,21 +71,34 @@ const ConfigurarPalletsScreen = () => {
     },
   });
 
-  const { 
-    isSelectedAll, 
-    selectedIds, 
-    selectedCount,
-    handleToggleRow,
-    handleToggleAll,
-  } = useCheckboxSelector(palletizingMixes);
- 
-
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
-    console.log(values);
+    console.log(
+      JSON.stringify(
+        {
+          configurePallets: configurePallets.data,
+          palletizedProduction: queryPalletizedProduction.data,
+        },
+        null,
+        2
+      )
+    );
+
+    configurePallets.mutate({
+      reqCode: Number(reqCode),
+      userCode: String(user?.code),
+
+      hasPallet: 1,
+      mixQuantityKG: 2500,
+      batch: 1,
+      mixCode: "1059763",
+
+      palletQuantity: Number(values.nroPallets),
+      palletTotalWeight: Number(values.totalPalletWeight),
+    });
   };
 
   return (
-    <ThemedView className="mx-2" safe>
+    <ThemedView className="mx-2" safe keyboardAvoiding>
       <View className="border-b border-t border-gray-300 py-5 mb-6">
         <ThemedText
           variant="h3"
@@ -119,7 +150,7 @@ const ConfigurarPalletsScreen = () => {
         )}
       />
 
-      <ThemedView margin className="flex-1 items-center gap-4 mt-10">
+      <ThemedView className="flex-1 items-center gap-4 mt-10" margin>
         <Controller
           control={control}
           name="nroPallets"

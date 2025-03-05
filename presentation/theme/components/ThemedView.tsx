@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, ViewProps } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View, ViewProps } from "react-native";
 
 import { useThemeColor } from "../hooks";
 
@@ -11,6 +11,8 @@ interface Props extends ViewProps {
   margin?: boolean;
   safe?: boolean;
   bgColor?: string;
+  keyboardAvoiding?: boolean;
+
 }
 
 export const ThemedView = ({
@@ -19,12 +21,37 @@ export const ThemedView = ({
   margin = false,
   safe = false,
   bgColor,
+  keyboardAvoiding = false,
   children,
 }: Props) => {
   const backgroundColor = useThemeColor({}, "background");
   const safeArea = useSafeAreaInsets();
 
-  return (
+  return keyboardAvoiding ? (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1"
+      keyboardVerticalOffset={80}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View
+          style={[
+            {
+              flex: 1,
+              paddingTop: safe ? safeArea.top : 0,
+              paddingBottom: 12,
+              marginHorizontal: margin ? 15 : 0,
+              backgroundColor: bgColor ? bgColor : backgroundColor,
+            },
+            style,
+          ]}
+          className={className}
+        >
+          {children}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  ) : (
     <View
       style={[
         {

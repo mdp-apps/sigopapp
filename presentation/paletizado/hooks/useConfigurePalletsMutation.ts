@@ -3,65 +3,62 @@ import { Alert } from "react-native";
 import * as UseCases from "@/core/supervisor/use-cases";
 
 import { sigopApiFetcher } from "@/config/api/sigopApi";
+import { CRUD_OPTIONS, PALLETIZING_INPUT } from "@/config/constants";
 
 import { useMutation } from "@tanstack/react-query";
 
 type ConfigurePalletBody = {
-  id: number;
-  enterKiosk: number;
-  option: number;
   reqCode: number;
-  hasPallet: number;
   userCode: string;
+  
+  hasPallet: number;
+  mixQuantityKG: number;
+  batch: number;
+  mixCode: string;
 
-  mixQuantity?: number;
-  batch?: number;
-  mix?: string;
-  palletQuantity?: number;
-  totalWeight?: number;
+  palletQuantity: number;
+  palletTotalWeight: number;
 };
 
 export const useConfigurePalletsMutation = () => {
   const configurePallets = useMutation({
     mutationFn: (data: ConfigurePalletBody) => {
       const {
-        id,
-        enterKiosk,
-        option,
         reqCode,
-        hasPallet,
         userCode,
 
-        mixQuantity = 0,
-        batch = 0,
-        mix = "",
-        palletQuantity = 0,
-        totalWeight = 0,
+        hasPallet,
+        mixQuantityKG,
+        batch,
+        mixCode,
+
+        palletQuantity,
+        palletTotalWeight,
       } = data;
+
 
       return UseCases.configurePalletsUseCase(sigopApiFetcher, {
         accion: "Configurar pallets",
-        id: id,
-        ingresa_kiosco: enterKiosk,
-        opcion: option,
+        ingresa_kiosco: PALLETIZING_INPUT.mobile,
+        opcion: CRUD_OPTIONS.insert,
         requerimiento: reqCode,
         tiene_pallet: hasPallet,
         usuario: userCode,
 
-        cant_mezcla: mixQuantity,
+        cant_mezcla: mixQuantityKG,
         lote: batch,
-        mezcla: mix,
+        mezcla: mixCode,
         n_pallet: palletQuantity,
-        peso_total: totalWeight,
+        peso_total: palletTotalWeight,
       });
     },
     onSuccess: (data) => {
       if (data.result === "OK") {
-        Alert.alert("OK", "Datos actualizados.");
+        Alert.alert("OK", "Pallets configurados correctamente en el requerimiento.");
       } else {
         Alert.alert(
           "Error",
-          "No se han encontrado requerimientos con estos datos."
+          "Error al configurar pallets en el requerimiento. Revise los datos ingresados."
         );
       }
     },

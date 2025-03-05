@@ -5,7 +5,7 @@ import { ResultMapper } from "@/infrastructure/mappers";
 
 interface Body {
   accion: "Configurar pallets";
-  id: number;
+  id?: number;
   ingresa_kiosco: number;
   opcion: number;
   requerimiento: number;
@@ -26,7 +26,11 @@ export const configurePalletsUseCase = async (
   try {
     const configurePallets = await fetcher.post<ApiResponse<string>, Body>(
       `/supervisor/configurarpallets`,
-      body
+      {
+        ...body,
+        // codigo de producto que no se usa pero es requerido por el endpoint
+        id: 0,
+      }
     );
 
     return ResultMapper.fromResultToEntity(configurePallets);

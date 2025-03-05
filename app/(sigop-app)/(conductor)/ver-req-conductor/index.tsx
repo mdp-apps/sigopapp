@@ -175,8 +175,8 @@ const VerReqConductorScreen = () => {
     }
 
     if (
-      reqType !== REQ_TYPE_FORMAT.despachoEnvasado &&
-      values.quantityMix === ""
+      reqType !== REQ_TYPE_FORMAT.despachoEnvasado /* &&
+      values.quantityMix === "" */
     ) {
       showSnackbar();
       return;
@@ -184,17 +184,21 @@ const VerReqConductorScreen = () => {
 
     const newData = {
       enterKiosk: 0,
-      hasPallet: values.hasPallets ? 1 : 0,
+      // hasPallet: values.hasPallets ? 1 : 0,
       id: 0,
       option: 1,
       reqCode: reqCode,
       userCode: String(user?.code),
-      palletQuantity: values.hasPallets ? Number(values.nroPallets) : undefined,
-      totalWeight: values.hasPallets ? Number(values.totalPalletWeight) : undefined,
+      palletQuantity: Number(values.nroPallets),
+      palletTotalWeight: values.hasPallets
+        ? Number(values.totalPalletWeight)
+        : 0,
       mixQuantity:
-        reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 0 : Number(values.quantityMix),
-      batch: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 1 : undefined,
-      mix: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? "" : undefined,
+        reqType === REQ_TYPE_FORMAT.despachoEnvasado
+          ? 0
+          : Number(values.quantityMix),
+      batch: reqType === REQ_TYPE_FORMAT.despachoEnvasado ? 1 : 0,
+      mixCode: "",
     };
 
     configurePallets.mutate(newData);

@@ -8,7 +8,7 @@ import { ProductMapper } from "@/infrastructure/mappers";
 
 interface Body {
   accion: "Consultar productos requerimiento";
-  requerimiento: string;
+  requerimiento: number;
   tipo_requerimiento: string;
 }
 

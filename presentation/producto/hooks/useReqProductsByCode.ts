@@ -6,7 +6,7 @@ import { ProductReq } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const useProductsReqByCode = (reqCode: string, reqType: string) => {
+export const useProductsReqByCode = (reqCode: number, reqType: string) => {
   const [productsPerBatch, setProductsPerBatch] = useState<{
     [key: string]: ProductReq[];
   }>({});

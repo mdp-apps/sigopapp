@@ -6,7 +6,7 @@ import { PalletizingMix, ProductReq } from "@/infrastructure/entities";
 import { Formatter } from "@/config/helpers";
 
 
-export const usePalletizingMixesByCode = (reqCode: string, reqType: string) => {
+export const usePalletizingMixesByCode = (reqCode: number, reqType: string) => {
   const { queryProductsReq } = useProductsReqByCode(reqCode, reqType);
 
   const palletizingMixes = useMemo(() => {
