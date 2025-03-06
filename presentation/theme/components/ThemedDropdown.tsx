@@ -19,7 +19,6 @@ interface ThemedDropdownProps {
 export const ThemedDropdown = ({ data, isLoading,onChange, selected,placeholder }: ThemedDropdownProps) => {
 
   const [value, setValue] = useState<string | null>(null);
-  console.log(`select: ${selected}`);
 
   useEffect(() => {
     if (data.length > 0 && selected) {

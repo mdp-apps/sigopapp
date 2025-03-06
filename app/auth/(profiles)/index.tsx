@@ -36,21 +36,19 @@ const ProfileMenuScreen = () => {
             </ThemedText>
           </View>
 
-          {STAGE === "dev" && (
-            <View className="flex flex-col items-center gap-1">
-              <ThemedButton
-                variant="icon"
-                onPress={() => selectProfile(UserProfile.supervisor)}
-                className="rounded-full bg-light-primary "
-                iconName="account-hard-hat"
-                iconSize={60}
-                iconColor="white"
-              />
-              <ThemedText className="font-semibold text-md text-center text-light-primary">
-                Supervisor
-              </ThemedText>
-            </View>
-          )}
+          <View className="flex flex-col items-center gap-1">
+            <ThemedButton
+              variant="icon"
+              onPress={() => selectProfile(UserProfile.supervisor)}
+              className="rounded-full bg-light-primary "
+              iconName="account-hard-hat"
+              iconSize={60}
+              iconColor="white"
+            />
+            <ThemedText className="font-semibold text-md text-center text-light-primary">
+              Supervisor
+            </ThemedText>
+          </View>
         </View>
 
         {STAGE === "dev" && (
@@ -85,6 +83,23 @@ const ProfileMenuScreen = () => {
             </View>
           </View>
         )}
+
+        <View className="flex flex-row justify-evenly">
+          <View className="flex flex-col items-center gap-1">
+            <ThemedButton
+              variant="icon"
+              onPress={() => selectProfile(UserProfile.foreman)}
+              className="rounded-full bg-light-primary"
+              iconName="account-filter"
+              iconSize={60}
+              iconColor="white"
+            />
+
+            <ThemedText className="font-semibold text-md text-center text-light-primary">
+              Capataz
+            </ThemedText>
+          </View>
+        </View>
       </View>
     </AuthBaseLayout>
   );

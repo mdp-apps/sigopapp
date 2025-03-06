@@ -17,7 +17,8 @@ const MenuScreen = () => {
     <>
       {profile === UserProfile.driver && <DriverReq />}
 
-      {profile === UserProfile.supervisor && <SupervisorMenu />}
+      {(profile === UserProfile.supervisor ||
+        profile === UserProfile.foreman) && <SupervisorMenu />}
 
       {profile === UserProfile.customer && (
         <ThemedView className="justify-center items-center" margin safe>

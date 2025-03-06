@@ -24,7 +24,6 @@ export const ThemedMultiSelect = ({
   placeholder,
 }: DropdownComponentProps) => {
   const [values, setValues] = useState<string[]>([]);	
-  console.log(`selected: ${selected}`);
 
   useEffect(() => {
     if (data.length > 0 && selected.length > 0) {

@@ -5,4 +5,5 @@ export const USER_PROFILES = {
   [UserProfile.supervisor]: "Supervisor",
   [UserProfile.customer]: "Cliente",
   [UserProfile.planner]: "Planificador",
+  [UserProfile.foreman]: "Capataz",
 };

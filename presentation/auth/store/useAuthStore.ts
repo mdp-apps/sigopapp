@@ -22,6 +22,7 @@ export enum UserProfile {
   customer = "customer",
   supervisor = "supervisor",
   planner = "planner",
+  foreman = "foreman",
 }
 
 type Session = { session: UserSession | DriverSession; profile: UserProfile };
