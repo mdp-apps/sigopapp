@@ -11,7 +11,7 @@ export const SupervisorMenu = () => {
       <ThemedButton
         variant="icon"
         className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-        textClassName="text-2xl font-ruda-bold uppercase"
+        textClassName="text-xl font-ruda-bold uppercase"
         onPress={() =>
           router.push("/(sigop-app)/(supervisor)/produccion-paletizada")
         }
@@ -20,26 +20,27 @@ export const SupervisorMenu = () => {
         iconColor="white"
         text=" Producción paletizada"
       />
+      
+      <ThemedButton
+        variant="icon"
+        className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
+        textClassName="text-xl font-ruda-bold uppercase"
+        onPress={() =>
+          router.push("/(sigop-app)/(supervisor)/estados-req")
+        }
+        iconName="alpha-r-circle"
+        iconSize={34}
+        iconColor="white"
+        text="Estados de requerimiento"
+      />
 
       {STAGE === "dev" && (
         <>
-          <ThemedButton
-            variant="icon"
-            className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-            textClassName="text-2xl font-ruda-bold uppercase"
-            onPress={() =>
-              router.push("/(sigop-app)/(supervisor)/requerimientos")
-            }
-            iconName="alpha-r-circle"
-            iconSize={34}
-            iconColor="white"
-            text="Requerimientos"
-          />
 
           <ThemedButton
             variant="icon"
             className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-            textClassName="text-2xl font-ruda-bold uppercase"
+            textClassName="text-xl font-ruda-bold uppercase"
             onPress={() =>
               router.push("/(sigop-app)/(supervisor)/mov-internos")
             }
@@ -52,7 +53,7 @@ export const SupervisorMenu = () => {
           <ThemedButton
             variant="icon"
             className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-            textClassName="text-2xl font-ruda-bold uppercase"
+            textClassName="text-xl font-ruda-bold uppercase"
             onPress={() => router.push("/(sigop-app)/(supervisor)/saldos")}
             iconName="cash-fast"
             iconSize={34}

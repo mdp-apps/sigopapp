@@ -114,7 +114,6 @@ const ConfigurarPalletsScreen = () => {
         );
       },
     });
-    
   };
 
   if (queryReqByCode.isLoading) {
@@ -167,7 +166,7 @@ const ConfigurarPalletsScreen = () => {
             className="font-semibold text-slate-800 text-center"
             adjustsFontSizeToFit
           >
-            {queryReqByCode.data?.date} (T{queryReqByCode.data?.turn}){" "}
+            {queryReqByCode.data?.date} - T{queryReqByCode.data?.turn} -{" "}
             {queryReqByCode.data?.nameReqFormat}
           </ThemedText>
         </View>

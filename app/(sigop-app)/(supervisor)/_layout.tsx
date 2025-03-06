@@ -49,9 +49,25 @@ const SupervisorLayout = () => {
       />
 
       <Stack.Screen
-        name="requerimientos/index"
+        name="configurar-pallets-req/index"
         options={{
-          headerTitle: "Requerimientos",
+          headerTitle: reqCode ? `Req. ${reqCode}` : "Requerimiento de pallets",
+          headerTitleAlign: "center",
+        }}
+      />
+
+      <Stack.Screen
+        name="estados-req/index"
+        options={{
+          headerTitle: "Estados de requerimiento",
+        }}
+      />
+
+      <Stack.Screen
+        name="ver-estados-req/index"
+        options={{
+          headerTitle: reqCode ? `Req. ${reqCode}` : "Estados de requerimiento",
+          headerTitleAlign: "center",
         }}
       />
 
@@ -66,14 +82,6 @@ const SupervisorLayout = () => {
         name="saldos/index"
         options={{
           headerTitle: "Saldos",
-        }}
-      />
-
-      <Stack.Screen
-        name="configurar-pallets-req/index"
-        options={{
-          headerTitle: reqCode ? `Req. ${reqCode}` : "Requerimiento de pallets",
-          headerTitleAlign: "center",
         }}
       />
     </Stack>

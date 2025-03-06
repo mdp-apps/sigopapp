@@ -1,14 +1,5 @@
 import { z } from "zod";
 
-export const palletizingProductionReqSchema = z.object({
-  reqCode: z
-    .string()
-    .min(1, "El código de requerimiento es requerido")
-    .refine((val) => !isNaN(Number(val)), {
-      message: "El código de requerimiento debe ser un número",
-    }),
-});
-
 export const palletSchema = z.object({
   nroPallets: z
     .string()

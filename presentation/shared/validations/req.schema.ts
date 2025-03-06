@@ -9,3 +9,12 @@ export const driverReqSchema = z.object({
       message: "El rut debe tener el formato: 12345678-9",
     }),
 });
+
+export const searchReqSchema = z.object({
+  reqCode: z
+    .string()
+    .min(1, "El código de requerimiento es requerido")
+    .refine((val) => !isNaN(Number(val)), {
+      message: "El código de requerimiento debe ser un número",
+    }),
+});
