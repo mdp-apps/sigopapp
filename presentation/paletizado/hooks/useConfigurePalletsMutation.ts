@@ -21,6 +21,7 @@ type ConfigurePalletBody = {
 };
 
 export const useConfigurePalletsMutation = () => {
+
   const configurePallets = useMutation({
     mutationFn: (data: ConfigurePalletBody) => {
       const {
@@ -53,12 +54,12 @@ export const useConfigurePalletsMutation = () => {
       if (data.result === "OK") {
         AlertNotifyAdapter.show({
           type: AlertType.SUCCESS,
-          title: "Configuración de pallets",
-          textBody: "Pallets configurados correctamente en el requerimiento.",
-          button: "ACEPTAR",
+          title: "Éxito",
+          textBody: "Pallets configurados correctamente.",
+          button: "Salir",
         });
         return;
-      }
+      };
       
       AlertNotifyAdapter.show({
         type: AlertType.DANGER,
@@ -66,6 +67,7 @@ export const useConfigurePalletsMutation = () => {
         textBody:
           "Error al configurar pallets en el requerimiento. Revise los datos ingresados.",
         button: "ACEPTAR",
+        
       });
     },
     onError: (error) => {

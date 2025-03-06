@@ -1,7 +1,7 @@
 import React from "react";
 
 import { View } from "react-native";
-import { ActivityIndicator, Checkbox } from "react-native-paper";
+import { ActivityIndicator, Checkbox, Icon } from "react-native-paper";
 
 import { useGlobalSearchParams } from "expo-router";
 
@@ -19,6 +19,7 @@ import {
   ThemedButton,
   ThemedDataTable,
   ThemedHelperText,
+  ThemedIconTooltip,
   ThemedInput,
   ThemedText,
   ThemedView,
@@ -26,18 +27,22 @@ import {
 import { NoDataCard } from "@/presentation/shared/components";
 
 import { palletSchema } from "@/presentation/shared/validations";
-import { PalletizingMix } from "@/infrastructure/entities";
-import { MIXES_REQ_COLUMNS, REQ_TYPE_FORMAT } from "@/config/constants";
+import { Palletized, PalletizingMix } from "@/infrastructure/entities";
+import { AlertNotifyAdapter, AlertType } from "@/config/adapters";
+import { MIXES_REQ_COLUMNS } from "@/config/constants";
 
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ConfigurarPalletsScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
   const grayColor = useThemeColor({}, "gray");
   const grayDarkColor = useThemeColor({}, "darkGray");
   const textColor = useThemeColor({}, "text");
+
+  const queryClient = useQueryClient();
 
   const { reqCode } = useGlobalSearchParams();
   const { user } = useAuthStore();
@@ -48,27 +53,19 @@ const ConfigurarPalletsScreen = () => {
     String(reqType)
   );
   const { configurePallets } = useConfigurePalletsMutation();
-  const { queryPalletizedProduction } = usePalletizedProductionByCode(
-    Number(reqCode)
-  );
+  const {
+    queryPalletizedProduction,
+    isProductionWithPallet,
+    palletQuantity,
+    palletTotalWeight,
+  } = usePalletizedProductionByCode(Number(reqCode));
+
   const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
     useCheckboxSelector<PalletizingMix>(palletizingMixes);
-  console.log(
-    JSON.stringify(
-      {
-        req: queryReqByCode.data,
-        reqType,
-        isEnvasado: REQ_TYPE_FORMAT.despachoEnvasado === reqType,
-      },
-      null,
-      2
-    )
-  );
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<z.infer<typeof palletSchema>>({
     resolver: zodResolver(palletSchema),
@@ -79,21 +76,45 @@ const ConfigurarPalletsScreen = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
-    selectedRows.forEach((mix) => {
-      configurePallets.mutate({
-        reqCode: Number(reqCode),
-        userCode: String(user?.code),
+    AlertNotifyAdapter.show({
+      type: AlertType.WARNING,
+      title: "Configuración de pallets",
+      textBody: "¿Confirma que los datos ingresados son los correctos?",
+      button: "Aceptar",
+      onPressButton: () => {
+        selectedRows.forEach((mix) => {
+          configurePallets.mutate({
+            reqCode: Number(reqCode),
+            userCode: String(user?.code),
 
-        mixQuantityKG: mix.totalKg,
-        batch: mix.batch,
-        mixCode: mix.mixCode,
+            mixQuantityKG: mix.totalKg,
+            batch: mix.batch,
+            mixCode: mix.mixCode,
 
-        palletQuantity: Number(values.nroPallets),
-        palletTotalWeight: Number(values.totalPalletWeight),
-      });
+            palletQuantity: Number(values.nroPallets),
+            palletTotalWeight: Number(values.totalPalletWeight),
+          });
+        });
+
+        queryClient.setQueryData<Palletized[]>(
+          ["palletized-production", Number(reqCode)],
+          (oldData) => {
+            if (!oldData) return [];
+
+            const newPalletized: Palletized[] = selectedRows.map((mix) => ({
+              hasPallet: true,
+              mixQuantityKG: mix.totalKg,
+              palletQuantity: Number(values.nroPallets),
+              palletTotalWeight: Number(values.totalPalletWeight),
+              reqCode: Number(reqCode),
+            }));
+
+            return [...oldData, ...newPalletized];
+          }
+        );
+      },
     });
-
-    reset();
+    
   };
 
   if (queryReqByCode.isLoading) {
@@ -152,6 +173,17 @@ const ConfigurarPalletsScreen = () => {
         </View>
       )}
 
+      {queryReqByCode.data && isProductionWithPallet && (
+        <ThemedText
+          variant="h2"
+          className="font-semibold text-zinc-950 text-center mb-4"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+        >
+          Producción Paletizada
+        </ThemedText>
+      )}
+
       {queryReqByCode.data && (
         <ThemedDataTable<PalletizingMix>
           data={palletizingMixes}
@@ -169,24 +201,91 @@ const ConfigurarPalletsScreen = () => {
           }}
           rowStyle={{ borderBottomColor: grayColor }}
           cellStyle={{ fontWeight: "400", color: textColor }}
-          renderColAction={() => (
-            <Checkbox
-              status={isSelectedAll ? "checked" : "unchecked"}
-              onPress={() => handleToggleAll(!isSelectedAll)}
-              color={primaryColor}
-            />
-          )}
-          renderActions={(row) => (
-            <Checkbox
-              status={selectedRows.includes(row) ? "checked" : "unchecked"}
-              onPress={() => handleToggleRow(row.id)}
-              color={primaryColor}
-            />
-          )}
+          renderColAction={() =>
+            isProductionWithPallet ? (
+              <ThemedIconTooltip
+                tooltipTitle="Pallets"
+                iconStyles={{
+                  name: "shipping-pallet",
+                  color: grayDarkColor,
+                  size: 30,
+                }}
+              />
+            ) : (
+              <Checkbox
+                status={isSelectedAll ? "checked" : "unchecked"}
+                onPress={() => handleToggleAll(!isSelectedAll)}
+                color={primaryColor}
+              />
+            )
+          }
+          renderActions={(row) => {
+            const isMixPalletized = queryPalletizedProduction.data?.some(
+              (p) => p.mixQuantityKG === row.totalKg
+            );
+
+            return (
+              <Checkbox
+                status={
+                  isProductionWithPallet
+                    ? isMixPalletized
+                      ? "checked"
+                      : "unchecked"
+                    : selectedRows.includes(row)
+                    ? "checked"
+                    : "unchecked"
+                }
+                onPress={() => handleToggleRow(row.id)}
+                color={primaryColor}
+                disabled={isProductionWithPallet}
+              />
+            );
+          }}
         />
       )}
 
-      {queryReqByCode.data && (
+      {queryReqByCode.data && isProductionWithPallet ? (
+        <ThemedView
+          className="flex-1 flex-row justify-evenly items-center"
+          margin
+        >
+          <View>
+            <ThemedText
+              variant="h3"
+              className="uppercase font-semibold text-slate-900 text-center"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              N° Pallets
+            </ThemedText>
+            <ThemedText
+              variant="h2"
+              className="text-slate-800 text-center"
+              adjustsFontSizeToFit
+            >
+              {palletQuantity}
+            </ThemedText>
+          </View>
+
+          <View>
+            <ThemedText
+              variant="h3"
+              className="uppercase font-semibold text-slate-900 text-center"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              Peso Total
+            </ThemedText>
+            <ThemedText
+              variant="h2"
+              className="text-slate-800 text-center"
+              adjustsFontSizeToFit
+            >
+              {palletTotalWeight}
+            </ThemedText>
+          </View>
+        </ThemedView>
+      ) : (
         <ThemedView className="flex-1 items-center gap-4 mt-10" margin>
           <Controller
             control={control}

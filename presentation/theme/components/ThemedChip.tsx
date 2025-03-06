@@ -6,11 +6,11 @@ import {
   ViewStyle,
   TouchableWithoutFeedback,
   View,
-  Text,
 } from "react-native";
 import { Chip, Icon } from "react-native-paper";
 
 import { useVisibility } from "@/presentation/shared/hooks";
+import { ThemedTooltip } from "./ThemedTooltip";
 
 import { Colors } from "@/config/constants";
 
@@ -58,11 +58,7 @@ export const ThemedChip = ({
           {text}
         </Chip>
 
-        {isTooltipVisible && (
-          <View className="absolute top-0.5 right-0 bg-slate-800 p-2 rounded-xl z-50">
-            <Text className="text-white text-center">{tooltipTitle}</Text>
-          </View>
-        )}
+        {isTooltipVisible && <ThemedTooltip title={tooltipTitle} />}
       </View>
     </TouchableWithoutFeedback>
   );

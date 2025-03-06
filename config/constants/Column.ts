@@ -21,3 +21,4 @@ export const MIXES_REQ_COLUMNS: Column<PalletizingMix>[] = [
   { title: "Cod mezcla", key: "mixCode" },
   { title: "KG", key: "formattedTotalKg" },
 ];
+

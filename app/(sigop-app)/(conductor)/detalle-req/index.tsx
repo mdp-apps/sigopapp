@@ -30,7 +30,7 @@ const DetalleReqScreen = () => {
   } = useLocalSearchParams();
 
   const { queryProductsReq, totalKg, productsPerBatch } = useProductsReqByCode(
-    reqCode as string,
+    Number(reqCode),
     reqType as string
   );
 

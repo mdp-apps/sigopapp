@@ -1,6 +1,6 @@
 export interface PalletizedResponse{
   cantidad_mezcla: number;
-  cantidad_pallet: number;
+  cantidad_palet: number;
   codigo_requerimiento: number;
   codigo_usuario: number;
   codigo: number;
