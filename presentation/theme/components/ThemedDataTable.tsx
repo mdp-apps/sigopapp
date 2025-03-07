@@ -1,9 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { ScrollView, StyleProp, TextStyle, View, ViewStyle } from "react-native";
+import { ScrollView, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 import { DataTable } from "react-native-paper";
 
-import { ThemedLoader,ThemedText } from "./";
+import { useThemeColor } from "../hooks";
+import { ThemedLoader, ThemedText } from "./";
+
+import { Formatter } from "@/config/helpers";
 
 export type Column<T> = { title: string; key: keyof T };
 
@@ -30,7 +33,7 @@ interface ThemedDataTableProps<T> extends TableStyle<T> {
 }
 
 const initialPage = 0;
-const initialItemsPerPage = 10;
+const initialItemsPerPage = 5;
 
 export const ThemedDataTable = <T,>({
   data,
@@ -52,6 +55,8 @@ export const ThemedDataTable = <T,>({
     useState<SortDirection>("ascending");
   const [page, setPage] = useState(initialPage);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
+
+  const backgroundColor = useThemeColor({}, "background");
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => {
@@ -92,72 +97,71 @@ export const ThemedDataTable = <T,>({
   const showColAction = typeof renderColAction === "function";
 
   return (
-    <View>
+    <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
+      <DataTable.Header style={[headerStyle, { backgroundColor }]}>
+        {columns.map((column) => {
+          return (
+            <DataTable.Title
+              key={column.key as string}
+              sortDirection={
+                sortColumn === column.key ? sortDirection : undefined
+              }
+              onPress={() => handleSort(column.key)}
+              style={{ flex: 2, justifyContent: "center" }}
+            >
+              <ThemedText style={columnCellStyle}>{column.title}</ThemedText>
+            </DataTable.Title>
+          );
+        })}
+
+        {showColAction && <DataTable.Cell>{renderColAction()}</DataTable.Cell>}
+      </DataTable.Header>
       <DataTable>
-        <DataTable.Header style={headerStyle}>
-          {columns.map((column) => {
+        {isLoading ? (
+          <DataTable.Row style={{ margin: "auto" }}>
+            <ThemedLoader color="gray" size="small" />
+          </DataTable.Row>
+        ) : (
+          dataToRender.map((item, index) => {
+            const computedRowStyle =
+              typeof rowStyle === "function" ? rowStyle(item, index) : rowStyle;
+
             return (
-              <DataTable.Title
-                key={column.key as string}
-                sortDirection={
-                  sortColumn === column.key ? sortDirection : undefined
-                }
-                onPress={() => handleSort(column.key)}
-                style={{ flex: 2, justifyContent: "center" }}
+              <DataTable.Row
+                key={getRowKey(item)}
+                onPress={() => handleRowPress?.(item)}
+                style={computedRowStyle}
               >
-                <ThemedText style={columnCellStyle}>{column.title}</ThemedText>
-              </DataTable.Title>
-            );
-          })}
-
-          {showColAction && (
-            <DataTable.Cell>{renderColAction()}</DataTable.Cell>
-          )}
-        </DataTable.Header>
-
-        <ScrollView className="h-52">
-          {isLoading ? (
-            <DataTable.Row style={{ margin: "auto" }}>
-              <ThemedLoader color="gray" size="small"/>
-            </DataTable.Row>
-          ) : (
-            dataToRender.map((item, index) => {
-              const computedRowStyle =
-                typeof rowStyle === "function"
-                  ? rowStyle(item, index)
-                  : rowStyle;
-
-              return (
-                <DataTable.Row
-                  key={getRowKey(item)}
-                  onPress={() => handleRowPress?.(item)}
-                  style={computedRowStyle}
-                >
-                  {columns.map((column) => {
-                    return (
-                      <DataTable.Cell
-                        key={String(column.key)}
-                        style={{ flex: 2, justifyContent: "center" }}
+                {columns.map((column) => {
+                  return (
+                    <DataTable.Cell
+                      key={String(column.key)}
+                      style={{ flex: 2, justifyContent: "center" }}
+                    >
+                      <ThemedText
+                        style={cellStyle}
+                        adjustsFontSizeToFit={
+                          String(item[column.key]).length <= 10
+                        }
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
                       >
-                        <ThemedText style={cellStyle}>
-                          {String(item[column.key])}
-                        </ThemedText>
-                      </DataTable.Cell>
-                    );
-                  })}
-
-                  {showActions && (
-                    <DataTable.Cell key="actions">
-                      {renderActions?.(item)}
+                        {Formatter.truncateText(String(item[column.key]),20)}
+                      </ThemedText>
                     </DataTable.Cell>
-                  )}
-                </DataTable.Row>
-              );
-            })
-          )}
-        </ScrollView>
-      </DataTable>
+                  );
+                })}
 
+                {showActions && (
+                  <DataTable.Cell key="actions">
+                    {renderActions?.(item)}
+                  </DataTable.Cell>
+                )}
+              </DataTable.Row>
+            );
+          })
+        )}
+      </DataTable>
       {enablePagination && (
         <DataTable.Pagination
           page={page}
@@ -169,8 +173,9 @@ export const ThemedDataTable = <T,>({
           onItemsPerPageChange={setItemsPerPage}
           selectPageDropdownLabel="Filas por página"
           showFastPaginationControls
+          style={{ backgroundColor }}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };

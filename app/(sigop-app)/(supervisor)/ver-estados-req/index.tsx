@@ -6,14 +6,20 @@ import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode, useLogStatusReq } from "@/presentation/req/hooks";
 
 import {
+  ThemedDataTable,
   ThemedLoader,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
 
+import { LogStatusReq } from "@/infrastructure/entities";
+import { REQ_STATUS_COLUMNS } from "@/config/constants";
+
 const VerEstadosReqScreen = () => {
   const grayColor = useThemeColor({}, "gray");
+  const grayDarkColor = useThemeColor({}, "darkGray");
+    const textColor = useThemeColor({}, "text");
   const { reqCode } = useGlobalSearchParams();
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
@@ -56,8 +62,8 @@ const VerEstadosReqScreen = () => {
   }
 
   return (
-    <ThemedView margin safe>
-      <View className="gap-2 py-5 mb-6">
+    <ThemedView safe>
+      <View className="gap-2 py-5 mb-6 mx-3">
         <View className="border-b border-gray-300 p-2">
           <ThemedText
             variant="h4"
@@ -118,6 +124,26 @@ const VerEstadosReqScreen = () => {
           </ThemedText>
         </View>
       </View>
+
+      <ThemedDataTable<LogStatusReq>
+        data={queryLogStatusReq.data ?? []}
+        columns={REQ_STATUS_COLUMNS}
+        getRowKey={(item) => item.id}
+        headerStyle={{
+          borderBottomColor: grayColor,
+          marginBottom: 10,
+        }}
+        isLoading={queryLogStatusReq.isLoading}
+        columnCellStyle={{
+          fontWeight: "700",
+          color: grayDarkColor,
+          textTransform: "uppercase",
+          fontSize: 11,
+        }}
+        rowStyle={{ borderBottomColor: grayColor }}
+        cellStyle={{ fontWeight: "400", color: textColor, fontSize: 11 }}
+        enablePagination
+      />
     </ThemedView>
   );
 };

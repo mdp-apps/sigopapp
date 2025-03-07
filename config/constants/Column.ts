@@ -22,3 +22,10 @@ export const MIXES_REQ_COLUMNS: Column<PalletizingMix>[] = [
   { title: "KG", key: "formattedTotalKg" },
 ];
 
+export const REQ_STATUS_COLUMNS: Column<LogStatusReq>[] = [
+  { title: "Usuario", key: "fullUserName" },
+  { title: "Estado", key: "reqStatusName" },
+  { title: "Descripción", key: "description" },
+  { title: "Fecha y hora", key: "eventDate" },
+];
+

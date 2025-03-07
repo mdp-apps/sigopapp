@@ -30,7 +30,14 @@ export class Formatter {
 
   static numberWithDots(number: number): string {
     if (!number) return "0";
-    
+
     return number.toLocaleString("de-DE");
   }
+
+  static truncateText(text: string, maxLength: number) {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
 }
