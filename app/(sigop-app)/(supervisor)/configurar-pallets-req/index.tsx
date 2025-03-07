@@ -1,7 +1,7 @@
 import React from "react";
 
 import { View } from "react-native";
-import { ActivityIndicator, Checkbox, Icon } from "react-native-paper";
+import { Checkbox } from "react-native-paper";
 
 import { useGlobalSearchParams } from "expo-router";
 
@@ -21,6 +21,7 @@ import {
   ThemedHelperText,
   ThemedIconTooltip,
   ThemedInput,
+  ThemedLoader,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
@@ -118,9 +119,7 @@ const ConfigurarPalletsScreen = () => {
 
   if (queryReqByCode.isLoading) {
     return (
-      <ThemedView safe className="items-center justify-center">
-        <ActivityIndicator size="large" color={grayColor} />
-      </ThemedView>
+      <ThemedLoader color={grayColor} size="large"/>
     );
   }
 
@@ -336,17 +335,14 @@ const ConfigurarPalletsScreen = () => {
             onPress={handleSubmit(onSubmit)}
             className="bg-orange-400 w-4/6 mt-2 rounded-lg"
             disabled={selectedRows.length <= 0}
+            isLoading={configurePallets.isPending}
           >
-            {configurePallets.isPending ? (
-              <ActivityIndicator size="small" color="white" />
-            ) : (
-              <ThemedText
-                variant="h4"
-                className="text-white uppercase w-full text-center font-semibold tracking-widest"
-              >
-                Guardar
-              </ThemedText>
-            )}
+            <ThemedText
+              variant="h4"
+              className="text-white uppercase w-full text-center font-semibold tracking-widest"
+            >
+              Guardar
+            </ThemedText>
           </ThemedButton>
         </ThemedView>
       )}

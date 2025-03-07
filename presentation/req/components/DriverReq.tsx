@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 
 import { View, ScrollView, Alert } from "react-native";
-import { ActivityIndicator, Divider } from "react-native-paper";
+import { Divider } from "react-native-paper";
 
 import { useVisibility } from "@/presentation/shared/hooks";
+import { useThemeColor } from "@/presentation/theme/hooks";
 import { useDriverReqsByRut } from "@/presentation/req/hooks";
 import { useAuthStore, UserProfile } from "@/presentation/auth/store";
 
 import {
   ThemedButton,
   ThemedDialog,
+  ThemedLoader,
   ThemedModal,
   ThemedText,
   ThemedView,
@@ -18,12 +20,14 @@ import { NoDataCard } from "@/presentation/shared/components";
 import { DriverReqCard } from "@/presentation/req/components";
 import { driverReqSchema } from "@/presentation/shared/validations";
 
-import { Colors, REQ_TYPE } from "@/config/constants";
+import { REQ_TYPE } from "@/config/constants";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 export const DriverReq = () => {
+  const primaryColor = useThemeColor({}, "primary");
+
   const {
     control,
     handleSubmit,
@@ -115,12 +119,7 @@ export const DriverReq = () => {
       <ScrollView className="w-full">
         <View className="w-full min-h-56">
           {queryDriverReqs.isLoading ? (
-            <ActivityIndicator
-              animating={true}
-              color={Colors.light.tomato}
-              size="large"
-              className="mx-auto"
-            />
+            <ThemedLoader color={primaryColor} size="large"/>
           ) : (
             isVisibleCard && (
               <View className="gap-5">

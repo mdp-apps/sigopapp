@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { ScrollView, StyleProp, TextStyle, View, ViewStyle } from "react-native";
 
-import { ActivityIndicator, DataTable } from "react-native-paper";
+import { DataTable } from "react-native-paper";
 
-import { ThemedText } from "./ThemedText";
+import { ThemedLoader,ThemedText } from "./";
 
 export type Column<T> = { title: string; key: keyof T };
 
@@ -118,7 +118,7 @@ export const ThemedDataTable = <T,>({
         <ScrollView className="h-52">
           {isLoading ? (
             <DataTable.Row style={{ margin: "auto" }}>
-              <ActivityIndicator size="small" color="gray" />
+              <ThemedLoader color="gray" size="small"/>
             </DataTable.Row>
           ) : (
             dataToRender.map((item, index) => {

@@ -6,13 +6,13 @@ import { useThemeColor } from "@/presentation/theme/hooks";
 import { useAuthStore } from "@/presentation/auth/store";
 import { PermissionsCheckerProvider } from "@/presentation/shared/providers";
 
-import { GlobalLoader } from "@/presentation/shared/components";
+import { ThemedLoader } from "@/presentation/theme/components";
 
 const CheckAuthenticationLayout = () => {
   const backgroundColor = useThemeColor({}, "background");
+  const primaryColor = useThemeColor({}, "primary");
 
   const { status, checkStatus } = useAuthStore();
-  // console.log(JSON.stringify({ status, user, profile }, null, 2));
 
   useEffect(() => {
     checkStatus();
@@ -26,7 +26,7 @@ const CheckAuthenticationLayout = () => {
 
 
   if (status === "checking") {
-    return <GlobalLoader />;
+    return <ThemedLoader color={primaryColor} size="large" />;
   }
   
   if (status === "authenticated") {

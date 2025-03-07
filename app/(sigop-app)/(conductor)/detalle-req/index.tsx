@@ -2,14 +2,12 @@ import React from "react";
 
 import { ScrollView, View } from "react-native";
 
-import { ActivityIndicator } from "react-native-paper";
-
 import { useLocalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useProductsReqByCode } from "@/presentation/producto/hooks";
 
-import { ThemedChip, ThemedView } from "@/presentation/theme/components";
+import { ThemedChip, ThemedLoader, ThemedView } from "@/presentation/theme/components";
 import {
   PackagingDispatchProducts,
   OtherProducts,
@@ -37,7 +35,7 @@ const DetalleReqScreen = () => {
   return (
     <ThemedView className="py-3 mt-4" margin>
       {queryProductsReq.isLoading ? (
-        <ActivityIndicator size="large" className="bg-blue-800" />
+         <ThemedLoader color={primaryColor} size="large"/>
       ) : (
         <ScrollView>
           <View className="mb-4">

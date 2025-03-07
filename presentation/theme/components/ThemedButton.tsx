@@ -1,7 +1,7 @@
 import React from "react";
-import { Pressable, PressableProps } from "react-native";
+import { Pressable, PressableProps, View } from "react-native";
 
-import { Icon } from "react-native-paper";
+import { ActivityIndicator, Icon } from "react-native-paper";
 
 import { ThemedText } from "./ThemedText";
 
@@ -13,6 +13,7 @@ interface Props extends PressableProps {
   iconColor?: string;
   iconName?: string;
   iconSize?: number;
+  isLoading?: boolean;
   text?: string;
   textClassName?: string;
   variant?: "outline" | "default" | "rounded" | "icon";
@@ -24,6 +25,7 @@ export const ThemedButton = ({
   iconColor = Colors.light.gray,
   iconName,
   iconSize = 24,
+  isLoading,
   onPress,
   text,
   textClassName,
@@ -52,7 +54,18 @@ export const ThemedButton = ({
       {variant === "icon" && !text ? (
         <Icon source={iconName} size={iconSize} color={iconColor} />
       ) : children ? (
-        children
+        isLoading ? (
+          <View className="flex-row justify-center items-center gap-2">
+            <ActivityIndicator size="small" color="white" />
+            <ThemedText
+              className={["text-white text-center", textClassName].join(" ")}
+            >
+              Cargando...
+            </ThemedText>
+          </View>
+        ) : (
+          children
+        )
       ) : (
         <>
           {iconName && (

@@ -16,7 +16,7 @@ const SupervisorScreen = () => {
         onPress={() => router.push("/req-patente")}
       >
         <ThemedText variant="h3" className="font-ruda text-white">
-          Requerimientos
+          Requerimientos estados
         </ThemedText>
       </ThemedButton>
 
