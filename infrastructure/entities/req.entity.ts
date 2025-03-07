@@ -45,6 +45,7 @@ export interface Req {
   nameReqFormat: string;
   observation: string;
   patent: string;
+  plantCode: number;
   reqCode: number;
   reqType: number;
   rutDriver: string;
@@ -52,6 +53,7 @@ export interface Req {
   statusName: string;
   turn: number;
   vehiclePatent: string;
+  warehouseCode: number;
 }
 
 export interface StatusReq extends TypeReq {}

@@ -129,7 +129,7 @@ const ConfigurarPalletsScreen = () => {
         <NoDataCard
           message={`No existe el requerimiento ${reqCode}`}
           iconSource="alert-circle"
-          iconColor={"red"}
+          iconColor="red"
         />
       </ThemedView>
     );
@@ -148,7 +148,7 @@ const ConfigurarPalletsScreen = () => {
   }
 
   return (
-    <ThemedView className="mx-2" safe keyboardAvoiding>
+    <ThemedView margin safe keyboardAvoiding>
       {queryReqByCode.data && (
         <View className="border-b border-t border-gray-300 py-5 mb-6">
           <ThemedText
