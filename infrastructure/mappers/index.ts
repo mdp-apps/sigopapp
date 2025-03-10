@@ -8,6 +8,7 @@ export * from './palletized.mapper';
 export * from './product.mapper';
 export * from './req.mapper';
 export * from './result.mapper';
+export * from './section-list.mapper';
 export * from './stock.mapper';
 export * from './turn.mapper';
 export * from './warehouse.mapper';

@@ -40,4 +40,9 @@ export interface FilterMovValues {
   Operacion: string;
 };
 
+export interface SectionListResponse{
+  title: string;
+  data: string[];
+}
+
 
