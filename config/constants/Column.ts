@@ -26,6 +26,6 @@ export const REQ_STATUS_COLUMNS: Column<LogStatusReq>[] = [
   { title: "Usuario", key: "fullUserName" },
   { title: "Estado", key: "reqStatusName" },
   { title: "Descripción", key: "description" },
-  { title: "Fecha y hora", key: "eventDate" },
+  { title: "Fecha", key: "eventDate" },
 ];
 

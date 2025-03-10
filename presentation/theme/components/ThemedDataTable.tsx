@@ -4,7 +4,7 @@ import { ScrollView, StyleProp, TextStyle, ViewStyle } from "react-native";
 import { DataTable } from "react-native-paper";
 
 import { useThemeColor } from "../hooks";
-import { ThemedLoader, ThemedText } from "./";
+import { ThemedLoader, ThemedText, ThemedTooltip } from "./";
 
 import { Formatter } from "@/config/helpers";
 
@@ -27,6 +27,7 @@ interface ThemedDataTableProps<T> extends TableStyle<T> {
   isLoading?: boolean;
   handleRowPress?: (item: T) => void;
   enablePagination?: boolean;
+  enableColumnTooltip?: boolean;
   itemsPerPageOptions?: number[];
   renderColAction?: () => React.ReactNode;
   renderActions?: (item: T) => React.ReactNode;
@@ -41,6 +42,7 @@ export const ThemedDataTable = <T,>({
   getRowKey,
   isLoading,
   handleRowPress,
+  enableColumnTooltip = false,
   enablePagination = false,
   itemsPerPageOptions = [5, 10, 15, 20],
   headerStyle,
@@ -109,7 +111,15 @@ export const ThemedDataTable = <T,>({
               onPress={() => handleSort(column.key)}
               style={{ flex: 2, justifyContent: "center" }}
             >
-              <ThemedText style={columnCellStyle}>{column.title}</ThemedText>
+              {enableColumnTooltip ? (
+                <ThemedTooltip title={column.title}>
+                  <ThemedText style={columnCellStyle}>
+                    {column.title}
+                  </ThemedText>
+                </ThemedTooltip>
+              ) : (
+                <ThemedText style={columnCellStyle}>{column.title}</ThemedText>
+              )}
             </DataTable.Title>
           );
         })}
@@ -146,7 +156,7 @@ export const ThemedDataTable = <T,>({
                         numberOfLines={1}
                         ellipsizeMode="tail"
                       >
-                        {Formatter.truncateText(String(item[column.key]),20)}
+                        {Formatter.truncateText(String(item[column.key]), 20)}
                       </ThemedText>
                     </DataTable.Cell>
                   );

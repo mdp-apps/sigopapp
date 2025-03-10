@@ -279,7 +279,7 @@ const ConfigurarPalletsScreen = () => {
               className="text-slate-800 text-center"
               adjustsFontSizeToFit
             >
-              {palletTotalWeight}
+              {palletTotalWeight} KG
             </ThemedText>
           </View>
         </ThemedView>

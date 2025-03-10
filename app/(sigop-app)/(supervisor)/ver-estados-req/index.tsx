@@ -163,7 +163,6 @@ const VerEstadosReqScreen = () => {
         isNativeModal
       >
         <SectionList
-          contentContainerStyle={{ height: 500 }}
           sections={SectionListMapper.fromReqStatusToSectionList(
             logStatusModal!
           )}
