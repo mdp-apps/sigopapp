@@ -20,14 +20,12 @@ export const SupervisorMenu = () => {
         iconColor="white"
         text=" Producción paletizada"
       />
-      
+
       <ThemedButton
         variant="icon"
         className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
         textClassName="text-xl font-ruda-bold uppercase"
-        onPress={() =>
-          router.push("/(sigop-app)/(supervisor)/estados-req")
-        }
+        onPress={() => router.push("/(sigop-app)/(supervisor)/estados-req")}
         iconName="alpha-r-circle"
         iconSize={34}
         iconColor="white"
@@ -36,7 +34,6 @@ export const SupervisorMenu = () => {
 
       {STAGE === "dev" && (
         <>
-
           <ThemedButton
             variant="icon"
             className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"

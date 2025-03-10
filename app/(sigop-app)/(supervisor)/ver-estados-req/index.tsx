@@ -18,7 +18,6 @@ import { NoDataCard } from "@/presentation/shared/components";
 import { LogStatusReq } from "@/infrastructure/entities";
 import { REQ_STATUS_COLUMNS } from "@/config/constants";
 import { SectionListMapper } from "@/infrastructure/mappers";
-import { Divider } from "react-native-paper";
 
 const VerEstadosReqScreen = () => {
   const [logStatusModal, setLogStatusModal] = useState<LogStatusReq | null>(
@@ -160,7 +159,6 @@ const VerEstadosReqScreen = () => {
       <ThemedModal
         isVisible={isVisibleModal}
         hideModal={hideModal}
-        isNativeModal
       >
         <SectionList
           sections={SectionListMapper.fromReqStatusToSectionList(

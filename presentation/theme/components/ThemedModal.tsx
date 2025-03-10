@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Dimensions,
   Modal as NativeModal,
@@ -6,8 +6,11 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  Animated,
 } from "react-native";
 import { Modal, Portal } from "react-native-paper";
+
+import { ThemedButton } from "./ThemedButton";
 
 interface ThemedModalContentProps extends ModalProps {
   children: React.ReactNode;
@@ -35,6 +38,26 @@ export const ThemedModal = ({
   className,
   ...rest
 }: ThemedModalProps) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isVisible) {
+      // Animar aparición
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      // Animar desaparición
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isVisible, fadeAnim]);
+
   return isNativeModal ? (
     <NativeModal
       animationType="slide"
@@ -81,8 +104,20 @@ export const ThemedModal = ({
         dismissable={true}
       >
         <TouchableWithoutFeedback onPress={hideModal}>
-          <View style={styles.modalContent}>{children}</View>
+          <View style={styles.overlay} />
         </TouchableWithoutFeedback>
+
+        <Animated.View style={[styles.modalContent, { opacity: fadeAnim }]}>
+          <ThemedButton
+            style={styles.closeButton}
+            onPress={hideModal}
+            className="!p-0"
+            variant="icon"
+            iconName="close"
+          />
+
+          {children}
+        </Animated.View>
       </Modal>
     </Portal>
   );
@@ -96,11 +131,27 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
+  overlayContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
   modalContent: {
     justifyContent: "center",
     width: width * 0.9,
     backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
+  },
+  closeButton: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    zIndex: 2,
   },
 });
