@@ -166,7 +166,7 @@ const VerReqSupervisorScreen = () => {
                   <Link
                     className="bg-blue-800 px-6 py-3 rounded-full text-white"
                     href={{
-                      pathname: "/detalle-req",
+                      pathname: "/ver-detalle-req",
                       params: {
                         vehiclePatent: item.vehiclePatent,
                         customerAbbr: item.customerAbbr,

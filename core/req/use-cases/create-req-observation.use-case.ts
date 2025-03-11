@@ -20,7 +20,6 @@ export const createReqObservationUseCase = async (
       ApiResponse<string>,
       ObservationBody
       >(`/requerimientos/observaciones/insertar`, body);
-    console.log(JSON.stringify(createObservation, null, 2));
 
     return ResultMapper.fromResultToEntity(createObservation);
   } catch (error) {

@@ -5,9 +5,15 @@ import { ScrollView, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
+import { useReqByCode } from "@/presentation/req/hooks";
 import { useProductsReqByCode } from "@/presentation/producto/hooks";
 
-import { ThemedChip, ThemedLoader, ThemedView } from "@/presentation/theme/components";
+import {
+  ThemedChip,
+  ThemedLoader,
+  ThemedView,
+} from "@/presentation/theme/components";
+import { NoDataCard } from "@/presentation/shared/components";
 import {
   PackagingDispatchProducts,
   OtherProducts,
@@ -16,26 +22,40 @@ import {
 import { Formatter } from "@/config/helpers";
 import { REQ_TYPE_FORMAT } from "@/config/constants";
 
-const DetalleReqScreen = () => {
+const VerDetalleReqScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
+  const grayColor = useThemeColor({}, "gray");
 
-  const { 
-    carrierName,
-    customerAbbr,
-    reqCode,
-    reqType,
-    vehiclePatent,
-  } = useLocalSearchParams();
+  const { reqCode } = useLocalSearchParams();
 
+  const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
   const { queryProductsReq, totalKg, productsPerBatch } = useProductsReqByCode(
     Number(reqCode),
-    reqType as string
+    String(reqType)
   );
+
+  if (queryReqByCode.isLoading) {
+      return (
+        <ThemedLoader color={grayColor} size="large"/>
+      );
+    }
+  
+    if (queryReqByCode.isError) {
+      return (
+        <ThemedView safe className="items-center justify-center">
+          <NoDataCard
+            message={`No existe el requerimiento ${reqCode}`}
+            iconSource="alert-circle"
+            iconColor="red"
+          />
+        </ThemedView>
+      );
+    }
 
   return (
     <ThemedView className="py-3 mt-4" margin>
       {queryProductsReq.isLoading ? (
-         <ThemedLoader color={primaryColor} size="large"/>
+        <ThemedLoader color={primaryColor} size="large" />
       ) : (
         <ScrollView>
           <View className="mb-4">
@@ -43,7 +63,7 @@ const DetalleReqScreen = () => {
               <ThemedChip
                 tooltipTitle="Cliente"
                 iconSource="account-tie"
-                text={customerAbbr as string}
+                text={queryReqByCode.data?.customerAbbr!}
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
@@ -52,7 +72,7 @@ const DetalleReqScreen = () => {
               <ThemedChip
                 tooltipTitle="Patente"
                 iconSource="car-info"
-                text={vehiclePatent as string}
+                text={queryReqByCode.data?.vehiclePatent!}
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
@@ -61,7 +81,7 @@ const DetalleReqScreen = () => {
               <ThemedChip
                 tooltipTitle="Transportista"
                 iconSource="truck-delivery"
-                text={carrierName as string}
+                text={queryReqByCode.data?.carrierName!}
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
@@ -89,4 +109,4 @@ const DetalleReqScreen = () => {
   );
 };
 
-export default DetalleReqScreen;
+export default VerDetalleReqScreen;

@@ -36,12 +36,27 @@ export const SupervisorMenu = () => {
         variant="icon"
         className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
         textClassName="text-xl font-ruda-bold uppercase"
-        onPress={() => router.push("/(sigop-app)/(supervisor)/observaciones-req")}
-        iconName="comment-eye"
+        onPress={() => router.push("/(sigop-app)/(home)/detalle-req")}
+        iconName="form-select"
         iconSize={34}
         iconColor="white"
-        text="Ingresar Observaciones"
+        text="Detalle de requerimiento"
       />
+
+      {STAGE === "dev" && (
+        <ThemedButton
+          variant="icon"
+          className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
+          textClassName="text-xl font-ruda-bold uppercase"
+          onPress={() =>
+            router.push("/(sigop-app)/(supervisor)/observaciones-req")
+          }
+          iconName="comment-eye"
+          iconSize={34}
+          iconColor="white"
+          text="Ingresar Observaciones"
+        />
+      )}
 
       {STAGE === "dev" && (
         <>

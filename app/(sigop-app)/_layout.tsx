@@ -1,6 +1,6 @@
-import React,{ useEffect } from "react";
+import React, { useEffect } from "react";
 
-import { router, Stack } from "expo-router";
+import { router, Stack, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useAuthStore } from "@/presentation/auth/store";
@@ -11,6 +11,7 @@ import { ThemedLoader } from "@/presentation/theme/components";
 const CheckAuthenticationLayout = () => {
   const backgroundColor = useThemeColor({}, "background");
   const primaryColor = useThemeColor({}, "primary");
+  const { reqCode } = useGlobalSearchParams();
 
   const { status, checkStatus } = useAuthStore();
 
@@ -24,18 +25,16 @@ const CheckAuthenticationLayout = () => {
     }
   }, [status]);
 
-
   if (status === "checking") {
     return <ThemedLoader color={primaryColor} size="large" />;
   }
-  
+
   if (status === "authenticated") {
     return (
       <PermissionsCheckerProvider>
         <Stack
           screenOptions={{
             headerShadowVisible: false,
-            headerShown: false,
             contentStyle: { backgroundColor: backgroundColor },
           }}
         >
@@ -45,11 +44,28 @@ const CheckAuthenticationLayout = () => {
               headerShown: false,
             }}
           />
+
+          <Stack.Screen
+            name="(home)/detalle-req/index"
+            options={{
+              headerShown: true,
+              headerTitle: "Detalle de Requerimiento",
+            }}
+          />
+
+          <Stack.Screen
+            name="(home)/ver-detalle-req/index"
+            options={{
+              headerShown: true,
+              headerTitle: reqCode
+                ? `Detalle de Req. ${reqCode}`
+                : "Detalle de Requerimiento",
+            }}
+          />
         </Stack>
       </PermissionsCheckerProvider>
     );
   }
-
 
   return null;
 };

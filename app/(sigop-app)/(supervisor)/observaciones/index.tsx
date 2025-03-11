@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { SectionList } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
+import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode } from "@/presentation/req/hooks";
 import {
@@ -12,21 +14,32 @@ import {
 import { NoDataCard } from "@/presentation/shared/components";
 import {
   ThemedButton,
+  ThemedDataTable,
   ThemedHelperText,
   ThemedInput,
   ThemedLoader,
+  ThemedModal,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
 import { ReqInfo } from "@/presentation/req/components";
 import { observationSchema } from "@/presentation/shared/validations";
 
+import { ObservationReq } from "@/infrastructure/entities";
+import { SectionListMapper } from "@/infrastructure/mappers";
+import { REQ_OBSERVATIONS_COLUMNS } from "@/config/constants";
+
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const ObservacionesScreen = () => {
+  const [observationModal, setObservationModal] =
+    useState<ObservationReq | null>(null);
+
+  const textColor = useThemeColor({}, "text");
   const grayColor = useThemeColor({}, "gray");
+  const grayDarkColor = useThemeColor({}, "darkGray");
 
   const {
     control,
@@ -41,9 +54,20 @@ const ObservacionesScreen = () => {
 
   const { reqCode } = useGlobalSearchParams();
 
+  const {
+    isVisible: isVisibleModal,
+    show: showModal,
+    hide: hideModal,
+  } = useVisibility();
+
   const { queryReqByCode } = useReqByCode(reqCode as string);
   const { queryObservations } = useReqObservations(reqCode as string);
   const { createObservation } = useObservationMutation();
+
+  const handleModal = (logStatusReq: ObservationReq) => {
+    setObservationModal(logStatusReq);
+    showModal();
+  };
 
   console.log(
     JSON.stringify(
@@ -83,7 +107,7 @@ const ObservacionesScreen = () => {
   }
 
   return (
-    <ThemedView safe>
+    <ThemedView safe keyboardAvoiding>
       <ReqInfo req={queryReqByCode.data!} />
 
       <ThemedView className="flex-1 items-center gap-4" margin>
@@ -121,6 +145,62 @@ const ObservacionesScreen = () => {
           </ThemedText>
         </ThemedButton>
       </ThemedView>
+
+      <ThemedDataTable<ObservationReq>
+        handleRowPress={handleModal}
+        data={queryObservations.data ?? []}
+        columns={REQ_OBSERVATIONS_COLUMNS}
+        getRowKey={(item) => item.observationId}
+        headerStyle={{
+          borderBottomColor: grayColor,
+          marginBottom: 10,
+        }}
+        isLoading={queryObservations.isLoading}
+        textData="No hay observaciones para mostrar"
+        columnCellStyle={{
+          fontWeight: "700",
+          color: grayDarkColor,
+          textTransform: "uppercase",
+        }}
+        rowStyle={{ borderBottomColor: grayColor }}
+        cellStyle={{ fontWeight: "400", color: textColor }}
+      />
+
+      <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
+        <SectionList
+          sections={SectionListMapper.fromObservationToSectionList(
+            observationModal!
+          )}
+          keyExtractor={(item, index) => item + index}
+          ListHeaderComponent={() => (
+            <ThemedText
+              variant="h3"
+              className="uppercase font-semibold !text-slate-900 mb-6"
+              adjustsFontSizeToFit
+            >
+              Detalle observación
+            </ThemedText>
+          )}
+          renderSectionHeader={({ section }) => (
+            <ThemedText
+              variant="h4"
+              className="uppercase font-semibold !text-slate-700"
+              adjustsFontSizeToFit
+            >
+              {section.title}
+            </ThemedText>
+          )}
+          renderItem={({ item }) => (
+            <ThemedText
+              variant="h5"
+              className="!text-slate-800 py-3"
+              adjustsFontSizeToFit
+            >
+              {item}
+            </ThemedText>
+          )}
+        />
+      </ThemedModal>
     </ThemedView>
   );
 };

@@ -80,12 +80,8 @@ export const DriverReqCard = ({ req }: DriverReqCardProps) => {
           <Link
             className="bg-blue-600 px-4 py-2 rounded-full text-white font-semibold"
             href={{
-              pathname: "/detalle-req",
+              pathname: "/ver-detalle-req",
               params: {
-                vehiclePatent: req.vehiclePatent,
-                customerAbbr: req.customerAbbr,
-                carrierName: req.carrierName,
-                reqType: `${req.reqType}${req.formatType}`,
                 reqCode: req.internalCode,
               },
             }}

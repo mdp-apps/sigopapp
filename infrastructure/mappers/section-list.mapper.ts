@@ -1,5 +1,5 @@
 import { SectionListResponse } from "../interfaces";
-import { LogStatusReq } from "../entities";
+import { LogStatusReq, ObservationReq } from "../entities";
 
 export class SectionListMapper {
   static fromReqStatusToSectionList = (
@@ -21,6 +21,25 @@ export class SectionListMapper {
       {
         title: "Fecha y hora",
         data: [reqStatus?.eventDate ?? ""],
+      }
+    ];
+  };
+
+  static fromObservationToSectionList = (
+    observation: ObservationReq
+  ): SectionListResponse[] => {
+    return [
+      {
+        title: "Comentario",
+        data: [observation?.comment ?? ""],
+      },
+      {
+        title: "Usuario",
+        data: [observation?.userComment ?? ""],
+      },
+      {
+        title: "Fecha y hora",
+        data: [observation?.dateComment ?? ""],
       }
     ];
   };

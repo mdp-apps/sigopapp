@@ -26,6 +26,7 @@ interface ThemedDataTableProps<T> extends TableStyle<T> {
   getRowKey: (item: T) => string | number;
   isLoading?: boolean;
   handleRowPress?: (item: T) => void;
+  textData?: string;
   enablePagination?: boolean;
   enableColumnTooltip?: boolean;
   itemsPerPageOptions?: number[];
@@ -42,6 +43,7 @@ export const ThemedDataTable = <T,>({
   getRowKey,
   isLoading,
   handleRowPress,
+  textData,
   enableColumnTooltip = false,
   enablePagination = false,
   itemsPerPageOptions = [5, 10, 15, 20],
@@ -131,6 +133,14 @@ export const ThemedDataTable = <T,>({
           <DataTable.Row style={{ margin: "auto" }}>
             <ThemedLoader color="gray" size="small" />
           </DataTable.Row>
+        ) : dataToRender.length === 0 ? (
+          <DataTable.Row>
+            <DataTable.Cell
+              textStyle={{ textAlign: "center", width: "100%", fontSize: 15 }}
+            >
+              {textData ?? "No hay datos para mostrar"}
+            </DataTable.Cell>
+          </DataTable.Row>
         ) : (
           dataToRender.map((item, index) => {
             const computedRowStyle =
@@ -172,6 +182,7 @@ export const ThemedDataTable = <T,>({
           })
         )}
       </DataTable>
+
       {enablePagination && (
         <DataTable.Pagination
           page={page}
