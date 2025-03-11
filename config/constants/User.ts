@@ -1,4 +1,4 @@
-import { UserProfile } from "@/presentation/auth/store";
+import { UserProfile } from "@/infrastructure/entities";
 
 export const USER_PROFILES = {
   [UserProfile.driver]: "Conductor",

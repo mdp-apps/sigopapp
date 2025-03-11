@@ -4,7 +4,7 @@ import { Alert, Keyboard } from "react-native";
 
 import { router } from "expo-router";
 
-import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+import { useAuthStore } from "@/presentation/auth/store";
 
 import { useLocationPermissionsStore } from "@/presentation/shared/store";
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
@@ -18,6 +18,7 @@ import { loginRutSchema } from "@/presentation/shared/validations";
 
 import { Formatter } from "@/config/helpers";
 import { USER_PROFILES } from "@/config/constants";
+import { UserProfile } from "@/infrastructure/entities";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -2,11 +2,12 @@ import React from "react";
 
 import { View } from "react-native";
 
-import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+import { useAuthStore } from "@/presentation/auth/store";
 
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 import { STAGE } from "@/config/api/sigopApi";
+import { UserProfile } from "@/infrastructure/entities";
 
 const ProfileMenuScreen = () => {
   const { selectProfile } = useAuthStore();
@@ -51,40 +52,22 @@ const ProfileMenuScreen = () => {
           </View>
         </View>
 
-        {STAGE === "dev" && (
-          <View className="flex flex-row justify-evenly">
-            <View className="flex flex-col items-center gap-1">
-              <ThemedButton
-                variant="icon"
-                onPress={() => selectProfile(UserProfile.customer)}
-                className="rounded-full bg-light-primary"
-                iconName="account-tie"
-                iconSize={60}
-                iconColor="white"
-              />
-              <ThemedText className="font-semibold text-md text-center text-light-primary">
-                Cliente
-              </ThemedText>
-            </View>
-
-            <View className="flex flex-col items-center gap-1">
-              <ThemedButton
-                variant="icon"
-                onPress={() => selectProfile(UserProfile.planner)}
-                className="rounded-full bg-light-primary"
-                iconName="account-edit"
-                iconSize={60}
-                iconColor="white"
-              />
-
-              <ThemedText className="font-semibold text-md text-center text-light-primary">
-                Planificador
-              </ThemedText>
-            </View>
-          </View>
-        )}
-
         <View className="flex flex-row justify-evenly">
+          <View className="flex flex-col items-center gap-1">
+            <ThemedButton
+              variant="icon"
+              onPress={() => selectProfile(UserProfile.planner)}
+              className="rounded-full bg-light-primary"
+              iconName="account-edit"
+              iconSize={60}
+              iconColor="white"
+            />
+
+            <ThemedText className="font-semibold text-md text-center text-light-primary">
+              Planificador
+            </ThemedText>
+          </View>
+
           <View className="flex flex-col items-center gap-1">
             <ThemedButton
               variant="icon"
@@ -100,6 +83,22 @@ const ProfileMenuScreen = () => {
             </ThemedText>
           </View>
         </View>
+
+        {STAGE === "dev" && (
+          <View className="flex flex-col items-center gap-1">
+            <ThemedButton
+              variant="icon"
+              onPress={() => selectProfile(UserProfile.customer)}
+              className="rounded-full bg-light-primary"
+              iconName="account-tie"
+              iconSize={60}
+              iconColor="white"
+            />
+            <ThemedText className="font-semibold text-md text-center text-light-primary">
+              Cliente
+            </ThemedText>
+          </View>
+        )}
       </View>
     </AuthBaseLayout>
   );

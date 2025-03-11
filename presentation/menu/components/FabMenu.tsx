@@ -12,13 +12,13 @@ import {
 } from "react-native";
 import { FAB } from "react-native-paper";
 
-import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+import { useAuthStore } from "@/presentation/auth/store";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
 
 import { ThemedButton, ThemedModal } from "@/presentation/theme/components";
 
-import { UserSession } from "@/infrastructure/entities";
+import { UserProfile, UserSession } from "@/infrastructure/entities";
 import { PRIVACY_POLICY } from "@/config/constants";
 
 import { IconSource } from "react-native-paper/lib/typescript/components/Icon";

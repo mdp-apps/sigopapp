@@ -2,25 +2,45 @@ import React from "react";
 
 import { View } from "react-native";
 
-import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+import { useAuthStore } from "@/presentation/auth/store";
 
-import { ThemedView } from "@/presentation/theme/components";
+import { ThemedText, ThemedView } from "@/presentation/theme/components";
 import { FabMenu, MenuCard } from "@/presentation/menu/components";
-
-import { DriverReq } from "@/presentation/req/components";
 import { SupervisorMenu } from "@/presentation/supervisor/components";
+import { DriverReq } from "@/presentation/req/components";
+
+import { UserProfile } from "@/infrastructure/entities";
+import { USER_PROFILES } from "@/config/constants";
 
 const MenuScreen = () => {
-  const { profile } = useAuthStore();
+  const { profile, user } = useAuthStore();
 
   return (
-    <>
+    <ThemedView safe={profile !== UserProfile.driver}>
+      {profile !== UserProfile.driver && (
+        <View className="justify-center items-center m-4 mb-0">
+          <ThemedText
+            variant="h1"
+            className="font-bold text-light-primary uppercase w-full text-center"
+          >
+            {USER_PROFILES[profile as keyof typeof USER_PROFILES]}
+          </ThemedText>
+          <ThemedText
+            variant="h4"
+            className="font-semibold text-slate-600 w-full text-center"
+          >
+            {user?.name} {user?.paternalLastname} {user?.maternalLastname}
+          </ThemedText>
+        </View>
+      )}
+
       {profile === UserProfile.driver && <DriverReq />}
 
       {(profile === UserProfile.supervisor ||
-        profile === UserProfile.foreman) && <SupervisorMenu />}
+        profile === UserProfile.foreman ||
+        profile === UserProfile.planner) && <SupervisorMenu />}
 
-      {profile !== UserProfile.customer && (
+      {profile === UserProfile.customer && (
         <ThemedView className="justify-center items-center" margin safe>
           <View className="flex-row gap-2 justify-between my-2">
             <MenuCard
@@ -47,7 +67,7 @@ const MenuScreen = () => {
       )}
 
       <FabMenu />
-    </>
+    </ThemedView>
   );
 };
 

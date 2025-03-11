@@ -6,7 +6,7 @@ import { Divider } from "react-native-paper";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useDriverReqsByRut } from "@/presentation/req/hooks";
-import { useAuthStore, UserProfile } from "@/presentation/auth/store";
+import { useAuthStore } from "@/presentation/auth/store";
 
 import {
   ThemedButton,
@@ -20,7 +20,9 @@ import { NoDataCard } from "@/presentation/shared/components";
 import { DriverReqCard } from "@/presentation/req/components";
 import { driverReqSchema } from "@/presentation/shared/validations";
 
+import { UserProfile } from "@/infrastructure/entities";
 import { REQ_TYPE } from "@/config/constants";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

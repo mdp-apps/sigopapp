@@ -14,9 +14,9 @@ import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { create } from "zustand";
 
-export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
+type AuthStatus = "authenticated" | "unauthenticated" | "checking";
 
-export enum UserProfile {
+enum UserProfile {
   default = "",
   driver = "driver",
   customer = "customer",

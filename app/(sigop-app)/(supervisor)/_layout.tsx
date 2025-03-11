@@ -72,6 +72,14 @@ const SupervisorLayout = () => {
       />
 
       <Stack.Screen
+        name="observaciones-req/index"
+        options={{
+          headerTitle: reqCode ? `Req. ${reqCode}` : "Observaciones",
+          headerTitleAlign: "center",
+        }}
+      />
+
+      <Stack.Screen
         name="mov-internos/index"
         options={{
           headerTitle: "Movimientos internos",

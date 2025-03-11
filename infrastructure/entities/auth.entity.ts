@@ -1,4 +1,6 @@
 
+export type AuthStatus = "authenticated" | "unauthenticated" | "checking";
+
 export interface AuthSession<T>{
   isSessionSaved: "SI" | "NO";
   user: T;
@@ -24,6 +26,16 @@ export interface Driver extends BaseUser {
   isDriverBlocked: 1 | 0; // Si el conductor puede entrar al muelle o no
   typeCI: number;
 }
+
+export enum UserProfile {
+  default = "",
+  driver = "driver",
+  customer = "customer",
+  supervisor = "supervisor",
+  planner = "planner",
+  foreman = "foreman",
+}
+
 
 export interface UserSession extends BaseUser {
   companyCode: string;
