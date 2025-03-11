@@ -97,6 +97,8 @@ const ThemedInput: React.FC<ThemedInputProps> = ({
       right={iconRight ? <TextInput.Icon {...iconRight} /> : null}
       returnKeyType={returnKeyType}
       onSubmitEditing={onSubmitEditing}
+      
+      
     />
   );
 };

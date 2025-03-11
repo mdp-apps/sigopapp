@@ -7,8 +7,8 @@ interface ObservationBody {
   accion: "Insertar observacion requerimiento";
   requerimiento: string;
   comentario: string;
-  ruta: string;
-  usuario: number;
+  ruta?: string;
+  usuario: string;
 }
 
 export const createReqObservationUseCase = async (
@@ -19,7 +19,8 @@ export const createReqObservationUseCase = async (
     const createObservation = await fetcher.post<
       ApiResponse<string>,
       ObservationBody
-    >(`/requerimientos/observaciones/insertar`, body);
+      >(`/requerimientos/observaciones/insertar`, body);
+    console.log(JSON.stringify(createObservation, null, 2));
 
     return ResultMapper.fromResultToEntity(createObservation);
   } catch (error) {

@@ -18,6 +18,7 @@ import { NoDataCard } from "@/presentation/shared/components";
 import { LogStatusReq } from "@/infrastructure/entities";
 import { REQ_STATUS_COLUMNS } from "@/config/constants";
 import { SectionListMapper } from "@/infrastructure/mappers";
+import { ReqInfo } from "@/presentation/req/components";
 
 const VerEstadosReqScreen = () => {
   const [logStatusModal, setLogStatusModal] = useState<LogStatusReq | null>(
@@ -54,18 +55,6 @@ const VerEstadosReqScreen = () => {
     );
   }
 
-  if (queryReqByCode.isSuccess && !queryReqByCode.data) {
-    return (
-      <ThemedView safe className="items-center justify-center">
-        <NoDataCard
-          message={`No existe el requerimiento ${reqCode}`}
-          iconSource="alert-circle"
-          iconColor={grayColor}
-        />
-      </ThemedView>
-    );
-  }
-
   const handleModal = (logStatusReq: LogStatusReq) => {
     setLogStatusModal(logStatusReq);
     showModal();
@@ -73,44 +62,7 @@ const VerEstadosReqScreen = () => {
 
   return (
     <ThemedView safe>
-      <View className="gap-2 py-5 mb-6 mx-3">
-        <View className="border-b border-gray-300 p-2">
-          <ThemedText
-            variant="h4"
-            className="uppercase font-semibold !text-slate-900 text-center"
-            adjustsFontSizeToFit
-          >
-            {queryReqByCode.data?.nameReqFormat} de{" "}
-            {queryReqByCode.data?.customerAbbr}
-          </ThemedText>
-          <ThemedText
-            variant="h4"
-            className="uppercase font-semibold !text-slate-900 text-center"
-            adjustsFontSizeToFit
-          >
-            {queryReqByCode.data?.date} - T{queryReqByCode.data?.turn}
-          </ThemedText>
-        </View>
-
-        <View className="border-b border-gray-300 py-2">
-          <ThemedText
-            variant="semi-bold"
-            className="uppercase !text-slate-700 text-xl"
-            adjustsFontSizeToFit
-          >
-            Chofer:
-          </ThemedText>
-          <ThemedText
-            variant="h4"
-            className="!text-slate-800"
-            numberOfLines={1}
-            adjustsFontSizeToFit
-          >
-            {queryReqByCode.data?.driverName} | {queryReqByCode.data?.rutDriver}{" "}
-            | {queryReqByCode.data?.vehiclePatent}
-          </ThemedText>
-        </View>
-
+      <ReqInfo req={queryReqByCode.data!}>
         <View className="flex-row gap-6 py-2">
           <ThemedText
             variant="semi-bold"
@@ -133,8 +85,8 @@ const VerEstadosReqScreen = () => {
             </ThemedText>
           </ThemedText>
         </View>
-      </View>
-
+      </ReqInfo>
+      
       <ThemedDataTable<LogStatusReq>
         handleRowPress={handleModal}
         data={queryLogStatusReq.data ?? []}
@@ -156,10 +108,7 @@ const VerEstadosReqScreen = () => {
         enablePagination
       />
 
-      <ThemedModal
-        isVisible={isVisibleModal}
-        hideModal={hideModal}
-      >
+      <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
         <SectionList
           sections={SectionListMapper.fromReqStatusToSectionList(
             logStatusModal!

@@ -135,18 +135,6 @@ const ConfigurarPalletsScreen = () => {
     );
   }
 
-  if (queryReqByCode.isSuccess && !queryReqByCode.data) {
-    return (
-      <ThemedView safe className="items-center justify-center">
-        <NoDataCard
-          message={`No existe el requerimiento ${reqCode}`}
-          iconSource="alert-circle"
-          iconColor={grayColor}
-        />
-      </ThemedView>
-    );
-  }
-
   return (
     <ThemedView margin safe keyboardAvoiding>
       {queryReqByCode.data && (

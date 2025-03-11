@@ -28,13 +28,6 @@ const SupervisorLayout = () => {
       />
 
       <Stack.Screen
-        name="observaciones/index"
-        options={{
-          headerTitle: "Observaciones",
-        }}
-      />
-
-      <Stack.Screen
         name="ver-req-supervisor/index"
         options={{
           headerTitle: "Supervisor",
@@ -73,6 +66,13 @@ const SupervisorLayout = () => {
 
       <Stack.Screen
         name="observaciones-req/index"
+        options={{
+          headerTitle: "Observaciones de req.",
+        }}
+      />
+
+      <Stack.Screen
+        name="observaciones/index"
         options={{
           headerTitle: reqCode ? `Req. ${reqCode}` : "Observaciones",
           headerTitleAlign: "center",

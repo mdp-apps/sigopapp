@@ -4,6 +4,6 @@ export const observationSchema = z.object({
   observation: z
     .string()
     .nonempty(
-      "La observación no ha sido ingresada, favor revisar los campos requeridos."
+      "La observación es requerida. Por favor, ingrese una."
     ),
 });
