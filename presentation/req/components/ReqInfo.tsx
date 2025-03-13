@@ -39,7 +39,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
         </ThemedText>
 
         <View className="flex flex-row gap-2 items-center">
-          <ThemedTooltip title="Nombre">
+          <ThemedTooltip title="Nombre" position="top">
             <ThemedText
               variant="h4"
               className="!text-slate-800"
@@ -49,7 +49,8 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
               {req.driverName} |
             </ThemedText>
           </ThemedTooltip>
-          <ThemedTooltip title="Rut">
+          
+          <ThemedTooltip title="Rut" position="top">
             <ThemedText
               variant="h4"
               className="!text-slate-800"
@@ -60,7 +61,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
             </ThemedText>
           </ThemedTooltip>
 
-          <ThemedTooltip title="Patente">
+          <ThemedTooltip title="Patente" position="top">
             <ThemedText
               variant="h4"
               className="!text-slate-800"

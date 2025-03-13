@@ -10,7 +10,7 @@ export interface ProductMix {
   formattedTotalKg: string;
   mixCode: string;
   mixName: string;
-  // packagingName: string;
+  packagingName: string;
   totalKg: number;
   totalPackagingQuantity: number;
 };
