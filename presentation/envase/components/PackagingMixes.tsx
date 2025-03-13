@@ -16,7 +16,7 @@ export const PackagingMixes = ({ productMixes }: PackagingMixProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
 
   return (
-    <ScrollView className="mb-4">
+    <ScrollView className="mb-4" showsVerticalScrollIndicator={false}>
       {productMixes.length > 0 ? (
         productMixes.map((productMix) => (
           <ThemedAccordion

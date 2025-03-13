@@ -8,6 +8,7 @@ import { useUpdatePackagingMutation } from "@/presentation/envase/hooks";
 
 import {
   ThemedButton,
+  ThemedInput,
   ThemedModal,
   ThemedText,
 } from "@/presentation/theme/components";
@@ -64,7 +65,7 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
     <>
       <View className="relative flex-1 flex-col gap-5 px-4 py-6">
         <ThemedButton
-          className="absolute top-4 right-5 z-50 !p-0"
+          className="absolute top-3 right-3 z-50 !p-0"
           variant="icon"
           iconName="pencil"
           iconSize={28}
@@ -123,6 +124,38 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
         >
           Editar cantidad de sacos
         </ThemedText>
+
+        <Controller
+          control={control}
+          name="packagingQuantity"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <ThemedInput
+              className="text-black px-4 py-2 border border-orange-400 rounded-3xl bg-white"
+              style={{ height: 50 }}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="Ingrese N° de sacos"
+              keyboardType="number-pad"
+              returnKeyType="next"
+              value={String(value)}
+              isNative
+            />
+          )}
+        />
+
+        <ThemedButton
+          onPress={handleSubmit(onSubmit)}
+          className="bg-orange-400  mt-5 rounded-lg"
+          isLoading={updatePackaging.isPending}
+          disabled={updatePackaging.isPending}
+        >
+          <ThemedText
+            variant="h6"
+            className="text-white uppercase w-full text-center font-semibold tracking-widest"
+          >
+            Guardar
+          </ThemedText>
+        </ThemedButton>
       </ThemedModal>
     </>
   );

@@ -6,7 +6,7 @@ import { Formatter } from "@/config/helpers";
 import { COMPONENT_TYPE } from "@/config/constants";
 
 export const useProductMixesByCode = (reqCode: string, reqType: number) => {
-  const { queryProductsReq, totalKg } = useProductsReqByCode(
+  const { queryProductsReq } = useProductsReqByCode(
     Number(reqCode),
     String(reqType)
   );
@@ -53,8 +53,19 @@ export const useProductMixesByCode = (reqCode: string, reqType: number) => {
     return result;
   }, [queryProductsReq.data]);
 
+  const totalKgProductMixes = useMemo(() => {
+    return productMixes.reduce((total, mix) => total + mix.totalKg, 0);
+  }, [productMixes]);
+
+  const totalPackagingQuantity = useMemo(() => {
+    return productMixes.reduce((total, mix) => total + mix.totalPackagingQuantity, 0);
+  }, [productMixes]);
+  
+
   return {
     productMixes,
     isLoadingMixed: queryProductsReq.isLoading,
+    totalKgProductMixes,
+    totalPackagingQuantity,
   };
 };
