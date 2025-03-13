@@ -4,6 +4,7 @@ import { useGlobalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode } from "@/presentation/req/hooks";
+import { useProductMixesByCode } from "@/presentation/producto/hooks";
 
 import { ThemedLoader, ThemedView } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
@@ -14,7 +15,12 @@ const ModificarSacosScreen = () => {
 
   const { reqCode } = useGlobalSearchParams();
 
-  const { queryReqByCode } = useReqByCode(reqCode as string);
+  const { queryReqByCode,reqType } = useReqByCode(reqCode as string);
+   const { palletizingMixes, isLoadingMixed } = useProductMixesByCode(
+      reqCode as string,
+      reqType
+    );
+  console.log(JSON.stringify(palletizingMixes, null, 2));
 
   if (queryReqByCode.isLoading) {
       return <ThemedLoader color={grayColor} size="large" />;

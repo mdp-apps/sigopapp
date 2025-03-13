@@ -7,14 +7,14 @@ type ReactElement = React.ReactElement<any>;
 interface ThemedTooltipProps {
   children: React.ReactNode;
   title: string;
-  position?: "top" | "right" | "bottom" | "left";
+  position?: "default" | "top" | "right" | "bottom" | "left";
   openOnLongPress?: boolean;
 }
 
 export const ThemedTooltip = ({
   children,
   title,
-  position = "top",
+  position = "default",
   openOnLongPress = false,
 }: ThemedTooltipProps) => {
   const {
@@ -28,7 +28,6 @@ export const ThemedTooltip = ({
       const originalOnPress = (child as ReactElement).props.onPress;
       const originalOnLongPress = (child as ReactElement).props.onLongPress;
 
-      // Escoge el handler según openOnLongPress
       if (openOnLongPress) {
         return React.cloneElement(child as ReactElement, {
           onLongPress: (e: any) => {
@@ -49,6 +48,7 @@ export const ThemedTooltip = ({
   });
 
   const tooltipPositionStyle = {
+    default: {},
     top: styles.tooltipTop,
     right: styles.tooltipRight,
     bottom: styles.tooltipBottom,
@@ -78,14 +78,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#1e293b",
     padding: 6,
     borderRadius: 10,
-    zIndex: 50,
+    zIndex: 99,
+    elevation: 10,
     minWidth: 96,
     alignSelf: "center",
   },
   tooltipTop: {
     bottom: "100%",
-    left: "25%",
-    transform: [{ translateX: "-50%" }],
+    left: "0%",
+    transform: [{ translateX: "-0%" }],
     marginBottom: 8,
   },
   tooltipBottom: {

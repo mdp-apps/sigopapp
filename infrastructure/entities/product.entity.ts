@@ -4,6 +4,17 @@ export interface Product {
   customerCode: string;
 }
 
+export interface ProductMix {
+  id: string;
+  batch: number;
+  formattedTotalKg: string;
+  mixCode: string;
+  mixName: string;
+  // packagingName: string;
+  totalKg: number;
+  totalPackagingQuantity: number;
+};
+
 export interface ProductReq {
   abbrPlant: string;
   abbrWarehouse: string;

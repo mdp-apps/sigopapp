@@ -5,7 +5,7 @@ import * as UseCases from "@/core/supervisor/use-cases";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const usePalletizedProductionByCode = (reqCode: number) => {
+export const usePalletizedProductionByCode = (reqCode: string) => {
   const [isProductionWithPallet, setIsProductionWithPallet] = useState(false);
   const [palletQuantity, setPalletQuantity] = useState(0);
   const [palletTotalWeight, setPalletTotalWeight] = useState(0);
@@ -15,10 +15,9 @@ export const usePalletizedProductionByCode = (reqCode: number) => {
     queryFn: () =>
       UseCases.getPalletizedProductionUseCase(sigopApiFetcher, {
         accion: "Consultar produccion paletizado",
-        requerimiento: reqCode,
+        requerimiento: Number(reqCode),
       }),
     enabled: !!reqCode,
-    
   });
 
   useEffect(() => {

@@ -18,7 +18,7 @@ export const getPalletizedProductionUseCase = async (
   const palletizedProduction = await fetcher.post<
     ApiResponse<PalletizedResponse[]>,
     Body
-    >(`/supervisor/paletizado`, body);
+    >(`/supervisor/paletizado`, body);;
 
   return palletizedProduction.resultado.map(
     PalletizedMapper.fromPalletizedProductionResultToEntity

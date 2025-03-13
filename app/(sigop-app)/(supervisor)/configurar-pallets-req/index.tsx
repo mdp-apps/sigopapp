@@ -6,13 +6,13 @@ import { Checkbox } from "react-native-paper";
 import { useGlobalSearchParams } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
-import { useCheckboxSelector } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
+import { useCheckboxSelector } from "@/presentation/shared/hooks";
 import { useReqByCode } from "@/presentation/req/hooks";
+import { useProductMixesByCode } from "@/presentation/producto/hooks";
 import {
   useConfigurePalletsMutation,
   usePalletizedProductionByCode,
-  usePalletizingMixesByCode,
 } from "@/presentation/paletizado/hooks";
 
 import {
@@ -28,7 +28,7 @@ import {
 import { NoDataCard } from "@/presentation/shared/components";
 
 import { palletSchema } from "@/presentation/shared/validations";
-import { Palletized, PalletizingMix } from "@/infrastructure/entities";
+import { Palletized, ProductMix } from "@/infrastructure/entities";
 import { AlertNotifyAdapter, AlertType } from "@/config/adapters";
 import { MIXES_REQ_COLUMNS } from "@/config/constants";
 
@@ -49,9 +49,9 @@ const ConfigurarPalletsScreen = () => {
   const { user } = useAuthStore();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
-  const { palletizingMixes, isLoadingMixed } = usePalletizingMixesByCode(
-    Number(reqCode),
-    String(reqType)
+  const { palletizingMixes, isLoadingMixed } = useProductMixesByCode(
+    reqCode as string,
+    reqType
   );
   const { configurePallets } = useConfigurePalletsMutation();
   const {
@@ -59,10 +59,10 @@ const ConfigurarPalletsScreen = () => {
     isProductionWithPallet,
     palletQuantity,
     palletTotalWeight,
-  } = usePalletizedProductionByCode(Number(reqCode));
+  } = usePalletizedProductionByCode(reqCode as string);
 
   const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
-    useCheckboxSelector<PalletizingMix>(palletizingMixes);
+    useCheckboxSelector<ProductMix>(palletizingMixes);
 
   const {
     control,
@@ -118,9 +118,7 @@ const ConfigurarPalletsScreen = () => {
   };
 
   if (queryReqByCode.isLoading) {
-    return (
-      <ThemedLoader color={grayColor} size="large"/>
-    );
+    return <ThemedLoader color={grayColor} size="large" />;
   }
 
   if (queryReqByCode.isError) {
@@ -171,7 +169,7 @@ const ConfigurarPalletsScreen = () => {
       )}
 
       {queryReqByCode.data && (
-        <ThemedDataTable<PalletizingMix>
+        <ThemedDataTable<ProductMix>
           data={palletizingMixes}
           columns={MIXES_REQ_COLUMNS}
           getRowKey={(item) => item.id}
