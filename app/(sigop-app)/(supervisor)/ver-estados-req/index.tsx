@@ -39,6 +39,11 @@ const VerEstadosReqScreen = () => {
   const { queryReqByCode } = useReqByCode(reqCode as string);
   const { queryLogStatusReq } = useLogStatusReq(reqCode as string);
 
+  const handleModal = (logStatusReq: LogStatusReq) => {
+    setLogStatusModal(logStatusReq);
+    showModal();
+  };
+
   if (queryReqByCode.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
   }
@@ -54,11 +59,6 @@ const VerEstadosReqScreen = () => {
       </ThemedView>
     );
   }
-
-  const handleModal = (logStatusReq: LogStatusReq) => {
-    setLogStatusModal(logStatusReq);
-    showModal();
-  };
 
   return (
     <ThemedView safe>

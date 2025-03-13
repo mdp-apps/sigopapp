@@ -1,10 +1,11 @@
 import React from "react";
 
-import { ThemedAccordion, ThemedText } from "@/presentation/theme/components";
+import { ThemedAccordion, ThemedView } from "@/presentation/theme/components";
 import { ItemAccordionProduct } from "./";
 
 import { ProductReq } from "@/infrastructure/entities";
 import { COMPONENT_TYPE } from "@/config/constants";
+import { NoDataCard } from "@/presentation/shared/components";
 
 interface ProductosProps {
   productsPerBatch: { [key: string]: ProductReq[] };
@@ -42,9 +43,12 @@ export const PackagingDispatchProducts = ({
           ))}
         </>
       ) : (
-        <ThemedText className="text-xl font-semibold">
-          No hay datos disponibles
-        </ThemedText>
+        <ThemedView className="items-center justify-center">
+          <NoDataCard
+            message="No hay productos para este requerimiento"
+            iconSource="alert-circle"
+          />
+        </ThemedView>
       )}
     </>
   );

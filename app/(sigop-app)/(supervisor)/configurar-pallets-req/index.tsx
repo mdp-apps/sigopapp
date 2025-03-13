@@ -49,7 +49,7 @@ const ConfigurarPalletsScreen = () => {
   const { user } = useAuthStore();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
-  const { palletizingMixes, isLoadingMixed } = useProductMixesByCode(
+  const { productMixes, isLoadingMixed } = useProductMixesByCode(
     reqCode as string,
     reqType
   );
@@ -62,7 +62,7 @@ const ConfigurarPalletsScreen = () => {
   } = usePalletizedProductionByCode(reqCode as string);
 
   const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
-    useCheckboxSelector<ProductMix>(palletizingMixes);
+    useCheckboxSelector<ProductMix>(productMixes);
 
   const {
     control,
@@ -75,6 +75,7 @@ const ConfigurarPalletsScreen = () => {
       totalPalletWeight: "",
     },
   });
+
 
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
     AlertNotifyAdapter.show({
@@ -170,7 +171,7 @@ const ConfigurarPalletsScreen = () => {
 
       {queryReqByCode.data && (
         <ThemedDataTable<ProductMix>
-          data={palletizingMixes}
+          data={productMixes}
           columns={MIXES_REQ_COLUMNS}
           getRowKey={(item) => item.id}
           headerStyle={{

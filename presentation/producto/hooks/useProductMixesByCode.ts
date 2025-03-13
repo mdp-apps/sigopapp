@@ -10,9 +10,8 @@ export const useProductMixesByCode = (reqCode: string, reqType: number) => {
     Number(reqCode),
     String(reqType)
   );
-  console.log(JSON.stringify(queryProductsReq.data, null, 2));
 
-  const palletizingMixes = useMemo(() => {
+  const productMixes = useMemo(() => {
     if (!queryProductsReq.data) return [];
 
     const grouped = new Map<string, ProductMix>();
@@ -24,9 +23,11 @@ export const useProductMixesByCode = (reqCode: string, reqType: number) => {
         grouped.set(key, {
           id: key,
           batch: item.batch,
+          codeDetailReq: 0,
           mixCode: item.mixCode,
           mixName: item.mixName,
           packagingName: "",
+          productCode:  "",
           totalKg: 0,
           totalPackagingQuantity: 0,
           formattedTotalKg: "",
@@ -36,8 +37,11 @@ export const useProductMixesByCode = (reqCode: string, reqType: number) => {
       const existing = grouped.get(key)!;
       existing.totalKg += item.kgProduct;
       existing.totalPackagingQuantity += item.quantity;
+
       if (item.componentType === COMPONENT_TYPE.envasado) {
+        existing.codeDetailReq = item.codeDetailReq;
         existing.packagingName = item.productName;
+        existing.productCode = item.codeProduct;
       }
     });
 
@@ -50,7 +54,7 @@ export const useProductMixesByCode = (reqCode: string, reqType: number) => {
   }, [queryProductsReq.data]);
 
   return {
-    palletizingMixes,
+    productMixes,
     isLoadingMixed: queryProductsReq.isLoading,
   };
 };

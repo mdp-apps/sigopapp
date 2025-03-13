@@ -35,22 +35,21 @@ const VerDetalleReqScreen = () => {
   );
 
   if (queryReqByCode.isLoading) {
-      return (
-        <ThemedLoader color={grayColor} size="large"/>
-      );
-    }
-  
-    if (queryReqByCode.isError) {
-      return (
-        <ThemedView safe className="items-center justify-center">
-          <NoDataCard
-            message={`No existe el requerimiento ${reqCode}`}
-            iconSource="alert-circle"
-            iconColor="red"
-          />
-        </ThemedView>
-      );
-    }
+    return <ThemedLoader color={grayColor} size="large" />;
+  }
+
+  if (queryReqByCode.isError) {
+    return (
+      <ThemedView safe className="items-center justify-center">
+        <NoDataCard
+          message={`No existe el requerimiento ${reqCode}`}
+          iconSource="alert-circle"
+          iconColor="red"
+        />
+      </ThemedView>
+    );
+  }
+
 
   return (
     <ThemedView className="py-3 mt-4" margin>
@@ -64,7 +63,7 @@ const VerDetalleReqScreen = () => {
                 tooltipTitle="Cliente"
                 iconSource="account-tie"
                 text={queryReqByCode.data?.customerAbbr!}
-                style={{ backgroundColor: primaryColor, }}
+                style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
               />
@@ -88,14 +87,16 @@ const VerDetalleReqScreen = () => {
               />
             </View>
 
-            <ThemedChip
-              tooltipTitle="Total KG"
-              iconSource="plus-box-multiple"
-              text={`Total: ${Formatter.numberWithDots(totalKg)} KG.`}
-              style={{ backgroundColor: primaryColor }}
-              textStyle={{ fontSize: 16, color: "white" }}
-              iconColor="white"
-            />
+            {Object.keys(productsPerBatch).length !== 0 && (
+              <ThemedChip
+                tooltipTitle="Total KG"
+                iconSource="plus-box-multiple"
+                text={`Total: ${Formatter.numberWithDots(totalKg)} KG.`}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ fontSize: 16, color: "white" }}
+                iconColor="white"
+              />
+            )}
           </View>
 
           {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (

@@ -7,10 +7,12 @@ export interface Product {
 export interface ProductMix {
   id: string;
   batch: number;
+  codeDetailReq: number;
   formattedTotalKg: string;
   mixCode: string;
   mixName: string;
   packagingName: string;
+  productCode: string;
   totalKg: number;
   totalPackagingQuantity: number;
 };

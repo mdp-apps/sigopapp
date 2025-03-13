@@ -4,6 +4,7 @@ import * as UseCases from "@/core/envase/use-cases";
 
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useMutation } from "@tanstack/react-query";
+import { useAuthStore } from "@/presentation/auth/store";
 
 type UpdatePackagingBody = {
   reqCode: number;
@@ -12,10 +13,12 @@ type UpdatePackagingBody = {
   batch: number;
   codeProduct: string;
   quantity: string;
-  userCode: number;
+  userCode?: number;
 };
 
 export const useUpdatePackagingMutation = () => {
+  const {user} = useAuthStore();
+
   const updatePackaging = useMutation({
     mutationFn: (data: UpdatePackagingBody) => {
       const {
@@ -32,7 +35,7 @@ export const useUpdatePackagingMutation = () => {
         accion: "Actualizar envases",
         cantidad: quantity,
         codigo_mezcla: mixCode,
-        codigo_usuario: userCode,
+        codigo_usuario: user?.code!,
         detalle_requerimiento: codeDetailReq,
         envase: codeProduct,
         lote: batch,

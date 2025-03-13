@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
 import { Card, List } from "react-native-paper";
+import { ThemedButton } from "./ThemedButton";
 
 interface ThemedAccordionProps {
   children: React.ReactNode;
@@ -22,17 +23,17 @@ export const ThemedAccordion = ({
   const handlePress = () => setExpanded(!expanded);
 
   return (
-      <List.Accordion
-        title={title}
-        description={description}
-        expanded={expanded}
-        onPress={handlePress}
-        titleStyle={[styles.title, titleStyle]}
-        descriptionStyle={[styles.description, descriptionStyle]}
-        style={styles.accordion}
-      >
-        <Card style={styles.card}>{children}</Card>
-      </List.Accordion>
+    <List.Accordion
+      title={title}
+      description={description}
+      expanded={expanded}
+      onPress={handlePress}
+      titleStyle={[styles.title, titleStyle]}
+      descriptionStyle={[styles.description, descriptionStyle]}
+      style={styles.accordion}
+    >
+      <Card style={styles.card}>{children}</Card>
+    </List.Accordion>
   );
 };
 
