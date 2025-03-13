@@ -1,12 +1,12 @@
 import { Alert } from "react-native";
 
-import * as UseCases from "@/core/supervisor/use-cases";
+import * as UseCases from "@/core/envase/use-cases";
 
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useMutation } from "@tanstack/react-query";
 
 type UpdatePackagingBody = {
-  codeReq: number;
+  reqCode: number;
   codeDetailReq: number;
   mixCode: string;
   batch: number;
@@ -19,7 +19,7 @@ export const useUpdatePackagingMutation = () => {
   const updatePackaging = useMutation({
     mutationFn: (data: UpdatePackagingBody) => {
       const {
-        codeReq,
+        reqCode,
         codeDetailReq,
         mixCode,
         batch,
@@ -36,7 +36,7 @@ export const useUpdatePackagingMutation = () => {
         detalle_requerimiento: codeDetailReq,
         envase: codeProduct,
         lote: batch,
-        requerimiento: codeReq,
+        requerimiento: reqCode,
       });
     },
     onSuccess: (data) => {},
@@ -44,7 +44,6 @@ export const useUpdatePackagingMutation = () => {
       Alert.alert("Error", error.message);
     },
   });
-
 
   return {
     updatePackaging,

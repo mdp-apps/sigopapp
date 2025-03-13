@@ -117,7 +117,6 @@ const ObservacionesScreen = () => {
           render={({ field: { onChange, value } }) => (
             <ThemedInput
               style={{ height: 100, borderRadius: 20 }}
-              className="text-black px-4 py-2 border border-orange-400 rounded-3xl bg-white"
               label="Ingrese una observación"
               value={value}
               onChangeText={onChange}

@@ -34,8 +34,13 @@ const CheckAuthenticationLayout = () => {
       <PermissionsCheckerProvider>
         <Stack
           screenOptions={{
+            headerShown: false,
             headerShadowVisible: false,
             contentStyle: { backgroundColor: backgroundColor },
+            headerTitleStyle: {
+              fontFamily: "Ruda",
+              fontWeight: "bold",
+            },
           }}
         >
           <Stack.Screen

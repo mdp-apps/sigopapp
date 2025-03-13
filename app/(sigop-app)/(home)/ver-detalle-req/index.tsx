@@ -57,14 +57,14 @@ const VerDetalleReqScreen = () => {
       {queryProductsReq.isLoading ? (
         <ThemedLoader color={primaryColor} size="large" />
       ) : (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View className="mb-4">
-            <View className="flex-row justify-between">
+            <View className="flex-row gap-3">
               <ThemedChip
                 tooltipTitle="Cliente"
                 iconSource="account-tie"
                 text={queryReqByCode.data?.customerAbbr!}
-                style={{ backgroundColor: primaryColor }}
+                style={{ backgroundColor: primaryColor, }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
               />

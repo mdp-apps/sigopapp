@@ -80,6 +80,21 @@ const SupervisorLayout = () => {
       />
 
       <Stack.Screen
+        name="modificar-sacos-req/index"
+        options={{
+          headerTitle: "Modificar N° de sacos",
+        }}
+      />
+
+      <Stack.Screen
+        name="modificar-sacos/index"
+        options={{
+          headerTitle: reqCode ? `Req. ${reqCode}` : "Modificar N° de sacos",
+          headerTitleAlign: "center",
+        }}
+      />
+
+      <Stack.Screen
         name="mov-internos/index"
         options={{
           headerTitle: "Movimientos internos",

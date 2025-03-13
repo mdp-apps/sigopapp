@@ -1,7 +1,7 @@
 import React from "react";
-import { View } from "react-native"
+import { View } from "react-native";
 
-import { ThemedText } from "@/presentation/theme/components"
+import { ThemedText, ThemedTooltip } from "@/presentation/theme/components";
 import { Req } from "@/infrastructure/entities";
 
 interface ReqInfoProps {
@@ -9,7 +9,7 @@ interface ReqInfoProps {
   req: Req;
 }
 
-export const ReqInfo = ({ children,req }: ReqInfoProps) => {
+export const ReqInfo = ({ children, req }: ReqInfoProps) => {
   return (
     <View className="gap-2 py-5 mb-6 mx-3">
       <View className="border-b border-gray-300 p-2">
@@ -37,14 +37,40 @@ export const ReqInfo = ({ children,req }: ReqInfoProps) => {
         >
           Chofer:
         </ThemedText>
-        <ThemedText
-          variant="h4"
-          className="!text-slate-800"
-          numberOfLines={1}
-          adjustsFontSizeToFit
-        >
-          {req.driverName} | {req.rutDriver} | {req.vehiclePatent}
-        </ThemedText>
+
+        <View className="flex flex-row gap-2 items-center">
+          <ThemedTooltip title="Nombre">
+            <ThemedText
+              variant="h4"
+              className="!text-slate-800"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {req.driverName} |
+            </ThemedText>
+          </ThemedTooltip>
+          <ThemedTooltip title="Rut">
+            <ThemedText
+              variant="h4"
+              className="!text-slate-800"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {req.rutDriver} |
+            </ThemedText>
+          </ThemedTooltip>
+
+          <ThemedTooltip title="Patente">
+            <ThemedText
+              variant="h4"
+              className="!text-slate-800"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {req.vehiclePatent}
+            </ThemedText>
+          </ThemedTooltip>
+        </View>
       </View>
 
       {children}

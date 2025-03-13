@@ -1,18 +1,20 @@
 import { useVisibility } from "@/presentation/shared/hooks";
 import React from "react";
-import { View, Text, TouchableWithoutFeedback } from "react-native";
+import { View, Text, TouchableWithoutFeedback, StyleSheet } from "react-native";
 
 type ReactElement = React.ReactElement<any>;
 
 interface ThemedTooltipProps {
   children: React.ReactNode;
   title: string;
+  position?: "top" | "right" | "bottom" | "left";
   openOnLongPress?: boolean;
 }
 
 export const ThemedTooltip = ({
   children,
   title,
+  position = "top",
   openOnLongPress = false,
 }: ThemedTooltipProps) => {
   const {
@@ -46,12 +48,19 @@ export const ThemedTooltip = ({
     return child;
   });
 
+  const tooltipPositionStyle = {
+    top: styles.tooltipTop,
+    right: styles.tooltipRight,
+    bottom: styles.tooltipBottom,
+    left: styles.tooltipLeft,
+  }[position];
+
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
-      <View>
+      <View style={styles.container}>
         {clonedChildren}
         {isTooltipVisible && (
-          <View className="absolute top-0.5 right-0 bg-slate-800 p-2 rounded-xl z-50 min-w-24 self-center">
+          <View style={[styles.tooltip, tooltipPositionStyle]}>
             <Text className="text-white text-center">{title}</Text>
           </View>
         )}
@@ -59,3 +68,42 @@ export const ThemedTooltip = ({
     </TouchableWithoutFeedback>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+  },
+  tooltip: {
+    position: "absolute",
+    backgroundColor: "#1e293b",
+    padding: 6,
+    borderRadius: 10,
+    zIndex: 50,
+    minWidth: 96,
+    alignSelf: "center",
+  },
+  tooltipTop: {
+    bottom: "100%",
+    left: "25%",
+    transform: [{ translateX: "-50%" }],
+    marginBottom: 8,
+  },
+  tooltipBottom: {
+    top: "100%",
+    left: "25%",
+    transform: [{ translateX: "-50%" }],
+    marginTop: 8,
+  },
+  tooltipLeft: {
+    right: "100%",
+    top: "50%",
+    transform: [{ translateY: "-50%" }],
+    marginRight: 8,
+  },
+  tooltipRight: {
+    left: "45%",
+    top: "50%",
+    transform: [{ translateY: "-50%" }],
+    marginLeft: 8,
+  },
+});

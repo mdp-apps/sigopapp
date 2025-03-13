@@ -61,5 +61,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontFamily: "Ruda-Bold",
+    textOverflow: "ellipsis",
   },
 });
