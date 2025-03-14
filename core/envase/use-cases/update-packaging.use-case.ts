@@ -10,7 +10,7 @@ interface Body {
   codigo_mezcla: string;
   lote: number;
   envase: string;
-  cantidad: string;
+  cantidad: number;
   codigo_usuario: number;
 }
 
@@ -23,6 +23,7 @@ export const updatePackagingUseCase = async (
       `/supervisor/actualizarenvases`,
       body
     );
+    console.log(JSON.stringify(updatePackaging, null, 2));
 
     return ResultMapper.fromResultToEntity(updatePackaging);
   } catch (error) {

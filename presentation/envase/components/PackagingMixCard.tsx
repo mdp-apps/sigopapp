@@ -50,14 +50,12 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof packagingSchema>) => {
-    console.log({ values });
-
     updatePackaging.mutate({
       reqCode: Number(reqCode),
       codeDetailReq: 0,
-      mixCode: "",
-      batch: 0,
-      codeProduct: "",
+      mixCode: productMix.mixCode,
+      batch: productMix.batch,
+      productCode: productMix.productCode,
       quantity: values.packagingQuantity,
     });
   };
@@ -162,6 +160,7 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
               variant="h5"
               className="text-slate-900"
               adjustsFontSizeToFit
+              numberOfLines={1}
             >
               {productMix.mixName}
             </ThemedText>

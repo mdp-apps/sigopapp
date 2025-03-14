@@ -59,7 +59,9 @@ const SupervisorLayout = () => {
       <Stack.Screen
         name="ver-estados-req/index"
         options={{
-          headerTitle: reqCode ? `Req. ${reqCode}` : "Estados de requerimiento",
+          headerTitle: reqCode
+            ? `Estados de req. ${reqCode}`
+            : "Estados de requerimiento",
           headerTitleAlign: "center",
         }}
       />
@@ -74,7 +76,9 @@ const SupervisorLayout = () => {
       <Stack.Screen
         name="observaciones/index"
         options={{
-          headerTitle: reqCode ? `Req. ${reqCode}` : "Observaciones",
+          headerTitle: reqCode
+            ? `Observaciones de req. ${reqCode}`
+            : "Observaciones",
           headerTitleAlign: "center",
         }}
       />
