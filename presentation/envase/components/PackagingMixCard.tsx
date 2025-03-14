@@ -8,6 +8,7 @@ import { useUpdatePackagingMutation } from "@/presentation/envase/hooks";
 
 import {
   ThemedButton,
+  ThemedHelperText,
   ThemedInput,
   ThemedModal,
   ThemedText,
@@ -116,14 +117,56 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
         </View>
       </View>
 
-      <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
+      <ThemedModal
+        isVisible={isVisibleModal}
+        hideModal={hideModal}
+        isNativeModal
+      >
         <ThemedText
-          variant="h4"
+          variant="h3"
           className="uppercase font-semibold !text-slate-900 mb-6"
           adjustsFontSizeToFit
         >
           Editar cantidad de sacos
         </ThemedText>
+
+        <View className="flex-col justify-start gap-4 mb-4">
+          <View className="flex-row justify-start gap-8 w-full">
+            <View className="justify-center items-center gap-1">
+              <ThemedText variant="h5" className="font-semibold">
+                Lote
+              </ThemedText>
+
+              <ThemedText variant="h4" className="text-slate-900">
+                {productMix.batch}
+              </ThemedText>
+            </View>
+
+            <View className="justify-center items-center gap-1">
+              <ThemedText variant="h5" className="font-semibold">
+                Código mezcla
+              </ThemedText>
+
+              <ThemedText variant="h4" className="text-slate-900">
+                {productMix.mixCode}
+              </ThemedText>
+            </View>
+          </View>
+
+          <View className="justify-start gap-1">
+            <ThemedText variant="h5" className="font-semibold">
+              Mezcla
+            </ThemedText>
+
+            <ThemedText
+              variant="h5"
+              className="text-slate-900"
+              adjustsFontSizeToFit
+            >
+              {productMix.mixName}
+            </ThemedText>
+          </View>
+        </View>
 
         <Controller
           control={control}
@@ -142,10 +185,15 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
             />
           )}
         />
+        {errors.packagingQuantity && (
+          <ThemedHelperText isVisible={Boolean(errors.packagingQuantity)}>
+            {errors.packagingQuantity?.message}
+          </ThemedHelperText>
+        )}
 
         <ThemedButton
           onPress={handleSubmit(onSubmit)}
-          className="bg-orange-400  mt-5 rounded-lg"
+          className="bg-orange-400  mt-4 rounded-lg"
           isLoading={updatePackaging.isPending}
           disabled={updatePackaging.isPending}
         >
