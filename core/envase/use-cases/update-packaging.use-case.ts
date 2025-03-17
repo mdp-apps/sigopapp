@@ -23,7 +23,6 @@ export const updatePackagingUseCase = async (
       `/supervisor/actualizarenvases`,
       body
     );
-    console.log(JSON.stringify(updatePackaging, null, 2));
 
     return ResultMapper.fromResultToEntity(updatePackaging);
   } catch (error) {

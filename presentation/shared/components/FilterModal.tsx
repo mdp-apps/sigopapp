@@ -1,7 +1,7 @@
 import React from "react";
+import { View } from "react-native";
 
-import { Button } from "react-native-paper";
-import { ThemedModal } from "@/presentation/theme/components";
+import { ThemedButton, ThemedModal } from "@/presentation/theme/components";
 
 interface FilterModalProps {
   children: React.ReactNode;
@@ -15,20 +15,18 @@ export const FilterModal = ({
   handleCloseModal,
 }: FilterModalProps) => {
   return (
-    <ThemedModal
-      isVisible={isModalVisible}
-      hideModal={handleCloseModal}
-      isNativeModal
-    >
-      {children}
+    <ThemedModal isVisible={isModalVisible} hideModal={handleCloseModal}>
+      <View className="mt-2">
+        {children}
 
-      <Button
-        mode="contained"
-        onPress={handleCloseModal}
-        style={{ marginTop: 16, backgroundColor: "#0000ff" }}
-      >
-        Aplicar filtro
-      </Button>
+        <ThemedButton
+          variant="rounded"
+          className="bg-light-primary mt-4"
+          onPress={handleCloseModal}
+          text="Aplicar filtro"
+          textClassName="font-semibold text-white"
+        />
+      </View>
     </ThemedModal>
   );
 };

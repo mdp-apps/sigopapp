@@ -145,13 +145,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: width * 0.9,
     backgroundColor: "white",
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
     borderRadius: 10,
   },
   closeButton: {
     position: "absolute",
-    top: 12,
-    right: 12,
+    top: 10,
+    right: 10,
     zIndex: 2,
   },
 });

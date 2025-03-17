@@ -8,12 +8,8 @@ interface ScrollFiltersProps {
 
 export const ScrollFilters = ({ children }: ScrollFiltersProps) => {
   return (
-    <View className="px-2">
-      <ScrollView
-        className="py-3"
-        showsHorizontalScrollIndicator={false}
-        horizontal
-      >
+    <View className="my-4">
+      <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         {children}
       </ScrollView>
     </View>

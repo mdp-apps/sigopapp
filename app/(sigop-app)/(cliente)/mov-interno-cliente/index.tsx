@@ -115,7 +115,7 @@ const MovInternosClienteScreen = () => {
   };
 
   return (
-    <ThemedView className="px-3">
+    <ThemedView className="px-3" keyboardAvoiding>
       <ScrollFilters>
         {filterKeys.map((filterKey) => (
           <Filter
