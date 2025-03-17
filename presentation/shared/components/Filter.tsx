@@ -1,10 +1,12 @@
 import React from "react";
+import { View } from "react-native";
 
-import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 import { useThemeColor } from "@/presentation/theme/hooks";
+import { ThemedButton, ThemedText } from "@/presentation/theme/components";
 
 interface ReqFilterProps {
   onPress: () => void;
+  onClear: () => void;
   filterKey: string;
   displayValue: string;
   filterLabels: Record<string, string>;
@@ -12,6 +14,7 @@ interface ReqFilterProps {
 
 export const Filter = ({
   onPress,
+  onClear,
   filterKey,
   displayValue,
   filterLabels,
@@ -20,23 +23,32 @@ export const Filter = ({
   const darkGrayColor = useThemeColor({}, "darkGray");
 
   return (
-    <ThemedButton
-      className="bg-light-white  border-r border-slate-300"
-      onPress={onPress}
-    >
-      <ThemedText
-        variant="h6"
-        className={`text-slate-900 uppercase text-center ${
-          displayValue ? "font-bold" : "font-semibold"
-        }`}
-        style={{
-          color: displayValue ? primaryColor : darkGrayColor,
-        }}
-      >
-        {displayValue
-          ? `${filterLabels[filterKey]}: ${displayValue}`
-          : filterLabels[filterKey]}
-      </ThemedText>
-    </ThemedButton>
+    <View className="flex-row items-center bg-light-white border-r border-slate-300">
+      <ThemedButton onPress={onPress}>
+        <ThemedText
+          variant="h6"
+          className={`text-slate-900 uppercase text-center ${
+            displayValue ? "font-bold" : "font-semibold"
+          }`}
+          style={{
+            color: displayValue ? primaryColor : darkGrayColor,
+          }}
+        >
+          {displayValue
+            ? `${filterLabels[filterKey]}: ${displayValue}`
+            : filterLabels[filterKey]}
+        </ThemedText>
+      </ThemedButton>
+
+      {displayValue && (
+        <ThemedButton
+          onPress={onClear}
+          className="!p-0 mr-2"
+          variant="icon"
+          iconName="close-circle"
+          iconColor={primaryColor}
+        />
+      )}
+    </View>
   );
 };

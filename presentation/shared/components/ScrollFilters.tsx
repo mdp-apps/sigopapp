@@ -8,7 +8,7 @@ interface ScrollFiltersProps {
 
 export const ScrollFilters = ({ children }: ScrollFiltersProps) => {
   return (
-    <View className="my-4">
+    <View className="my-4 border border-slate-300">
       <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         {children}
       </ScrollView>

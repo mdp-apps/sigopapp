@@ -77,20 +77,27 @@ const MovInternosScreen = () => {
   });
 
   const { queryTurns, dropdownTurns } = useTurns();
-  const { queryInternalMovTypes, dropdownInternalMovTypes } = useInternalMovTypes();
-  const { queryInternalMovStatus, dropdownInternalMovStatus } = useInternalMovStatus();
+  const { queryInternalMovTypes, dropdownInternalMovTypes } =
+    useInternalMovTypes();
+  const { queryInternalMovStatus, dropdownInternalMovStatus } =
+    useInternalMovStatus();
+
+  console.log(
+    JSON.stringify(
+      {
+        movs: queryInternalMovements.data,
+        movsLenght: queryInternalMovements.data?.length,
+      },
+      null,
+      2
+    )
+  );
 
   const searchInternalMovements = async () => {
-      const areThereFilters = Object.values(filters).every(
-        (filter) => filter === ""
-      );
-  
-      if (areThereFilters) {
-        // Alert.alert("Atención", "Debe seleccionar algún filtro.");
-        return;
-      }
-  
-    };
+    const areThereFilters = Object.values(filters).every(
+      (filter) => filter === ""
+    );
+  };
 
   return (
     <ThemedView keyboardAvoiding>
@@ -99,6 +106,7 @@ const MovInternosScreen = () => {
           <Filter
             key={filterKey}
             onPress={() => handleFilterSelect(filterKey)}
+            onClear={clearFilter}
             filterKey={filterKey}
             filterLabels={FILTER_LABELS}
             displayValue={

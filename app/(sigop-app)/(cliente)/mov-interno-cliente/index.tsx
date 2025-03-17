@@ -121,6 +121,7 @@ const MovInternosClienteScreen = () => {
           <Filter
             key={filterKey}
             onPress={() => handleFilterSelect(filterKey)}
+            onClear={clearFilter}
             filterKey={filterKey}
             filterLabels={FILTER_LABELS}
             displayValue={
