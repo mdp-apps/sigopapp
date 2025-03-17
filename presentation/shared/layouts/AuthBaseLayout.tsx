@@ -6,8 +6,6 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
-  KeyboardAvoidingView,
-  Platform,
   Text,
 } from "react-native";
 
@@ -20,10 +18,7 @@ interface AuthBaseLayoutProps {
 export const AuthBaseLayout = ({ children, profile }: AuthBaseLayoutProps) => {
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
-      >
+      <ThemedView bgColor="white" keyboardAvoiding>
         <ScrollView contentContainerStyle={styles.containerScrollView}>
           <View className="flex-1">
             <View className="h-72">
@@ -53,7 +48,7 @@ export const AuthBaseLayout = ({ children, profile }: AuthBaseLayoutProps) => {
             </ThemedView>
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </ThemedView>
     </SafeAreaView>
   );
 };

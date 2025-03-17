@@ -22,6 +22,8 @@ module.exports = {
           white: Colors.light.lightWhite,
           green: Colors.light.green,
           orange: Colors.light.orange,
+          gray: Colors.light.gray,
+          "dark-gray": Colors.light.darkGray,
         },
         dark: {
           primary: Colors.dark.primary,
@@ -34,6 +36,8 @@ module.exports = {
           white: Colors.dark.lightWhite,
           green: Colors.dark.green,
           orange: Colors.dark.orange,
+          gray: Colors.dark.gray,
+          "dark-gray": Colors.dark.darkGray,
         },
       },
       fontFamily: {

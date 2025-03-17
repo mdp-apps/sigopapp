@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { Card, List } from "react-native-paper";
-import { ThemedButton } from "./ThemedButton";
 
 interface ThemedAccordionProps {
   children: React.ReactNode;
   title: string;
+  style?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
   description?: string;
   descriptionStyle?: StyleProp<TextStyle>;
@@ -14,6 +14,7 @@ interface ThemedAccordionProps {
 export const ThemedAccordion = ({
   children,
   title,
+  style,
   titleStyle,
   description = "",
   descriptionStyle,
@@ -30,7 +31,8 @@ export const ThemedAccordion = ({
       onPress={handlePress}
       titleStyle={[styles.title, titleStyle]}
       descriptionStyle={[styles.description, descriptionStyle]}
-      style={styles.accordion}
+      style={[styles.accordion, style]}
+      titleNumberOfLines={2}
     >
       <Card style={styles.card}>{children}</Card>
     </List.Accordion>

@@ -42,5 +42,6 @@ const styles = StyleSheet.create({
   card: {
     padding: 20,
     width: width - 30,
+    marginHorizontal: "auto",
   },
 });

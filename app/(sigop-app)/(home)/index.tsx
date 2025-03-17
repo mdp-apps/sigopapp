@@ -50,14 +50,6 @@ const MenuScreen = () => {
             />
 
             <MenuCard
-              text="Movimientos internos"
-              route="/mov-interno-cliente"
-              iconSource="playlist-play"
-            />
-          </View>
-
-          <View className="flex-row justify-between my-2">
-            <MenuCard
               text="Supervisor"
               route="/menu-supervisor"
               iconSource="account-hard-hat"

@@ -11,12 +11,14 @@ export interface InternalMovement {
   operationDestinyCode: number;
   operationDestinyName: string;
   operationName: string;
+  pendingQuantityKG: number;
   plannedDate: string;
   productName: string;
   status: number;
-  totalQuantity: number;
+  statusName: string;
+  totalQuantityKG: number;
   turn: number;
-  verifiedQuantity: number;
+  verifiedQuantityKG: number;
   warehouseDestinyName: string;
   warehouseName: string;
 }

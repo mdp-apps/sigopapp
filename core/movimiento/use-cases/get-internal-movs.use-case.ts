@@ -23,7 +23,7 @@ export const getInternalMovsUseCase = async (
   const internalMovements = await fetcher.post<
     ApiResponse<InternalMovementResponse[]>,
     Body
-  >(`/movimientosinternos`, body);
+    >(`/movimientosinternos`, body);
 
   return internalMovements.resultado.map(
     MovementMapper.fromInternalMovResultToEntity

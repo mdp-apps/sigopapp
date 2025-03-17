@@ -3,7 +3,6 @@ export * from "./ThemedButton";
 export * from "./ThemedCard";
 export * from "./ThemedChip";
 export * from "./ThemedDataTable";
-export * from "./ThemedDatePicker";
 export * from "./ThemedDialog";
 export * from "./ThemedDropdown";
 export * from "./ThemedHelperText";

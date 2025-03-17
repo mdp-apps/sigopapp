@@ -13,9 +13,9 @@ export const INTERNAL_MOV_STATUS = {
 export const INTERNAL_MOV_STATUS_BG_COLOR = {
   [INTERNAL_MOV_STATUS.borrador]: Colors.light.pink,
   [INTERNAL_MOV_STATUS.creado]: Colors.light.lightWhite,
-  [INTERNAL_MOV_STATUS.planificado]: Colors.light.lightWhite,
+  [INTERNAL_MOV_STATUS.planificado]: Colors.light.gray,
   [INTERNAL_MOV_STATUS.pAdicional]: Colors.light.gray,
-  [INTERNAL_MOV_STATUS.enCurso]: Colors.light.gray,
+  [INTERNAL_MOV_STATUS.enCurso]: Colors.light.green,
   [INTERNAL_MOV_STATUS.cerrado]: Colors.light.yellow,
-  [INTERNAL_MOV_STATUS.finalizado]: Colors.light.green,
+  [INTERNAL_MOV_STATUS.finalizado]: Colors.light.gray,
 };

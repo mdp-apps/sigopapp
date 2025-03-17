@@ -1,59 +1,52 @@
 import React from "react";
+import { FlatList } from "react-native";
 
 import { useAuthStore } from "@/presentation/auth/store";
+import { useThemeColor } from "@/presentation/theme/hooks";
 import { useFilters } from "@/presentation/shared/hooks";
 import { useTurns } from "@/presentation/turno/hooks";
-import {
-  useInternalMovements,
-  useInternalMovStatus,
-  useInternalMovTypes,
-} from "@/presentation/movimiento/hooks";
+import { useCustomers } from "@/presentation/cliente/hooks";
+import { useInternalMovements } from "@/presentation/movimiento/hooks";
 
 import {
-  ThemedDatePicker,
   ThemedDropdown,
-  ThemedInput,
+  ThemedLoader,
   ThemedView,
 } from "@/presentation/theme/components";
 import {
   Filter,
   FilterModal,
+  NoDataCard,
   ScrollFilters,
 } from "@/presentation/shared/components";
+import { InternalMovCard } from "@/presentation/movimiento/components";
 import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 
 import { UserSession } from "@/infrastructure/entities";
+import { INTERNAL_MOV_STATUS } from "@/config/constants";
 import { DateAdapter } from "@/config/adapters";
+
 import { Controller } from "react-hook-form";
 
 const FILTERS = {
-  CODE: "code",
-  DETAIL_CODE: "detailCode",
-  INTERNAL_MOVEMENT_TYPE: "internalMovementType",
-  INTERNAL_MOVEMENT_STATUS: "internalMovementStatus",
-  DATE: "date",
   TURN: "turn",
+  CUSTOMER: "customer",
 };
 
 const FILTER_LABELS = {
-  code: "Código",
-  detailCode: "Código detalle",
-  internalMovementType: "Tipo movimiento interno",
-  internalMovementStatus: "Estado movimiento interno",
-  date: "Fecha",
   turn: "Turno",
+  customer: "Cliente",
 };
 
 const initialFilterValues = {
-  code: "",
-  detailCode: "",
-  internalMovementType: "",
-  internalMovementStatus: "",
-  date: "",
   turn: "",
+  customer: "",
+  internalMovementStatus: `${INTERNAL_MOV_STATUS.enCurso}`,
 };
 
 const MovInternosScreen = () => {
+  const primaryColor = useThemeColor({}, "primary");
+
   const {
     filters,
     selectedFilter,
@@ -79,22 +72,8 @@ const MovInternosScreen = () => {
   });
 
   const { queryTurns, dropdownTurns } = useTurns();
-  const { queryInternalMovTypes, dropdownInternalMovTypes } =
-    useInternalMovTypes();
-  const { queryInternalMovStatus, dropdownInternalMovStatus } =
-    useInternalMovStatus();
+  const { queryCustomers, dropdownCustomers } = useCustomers();
 
-  console.log(
-    JSON.stringify(
-      {
-        movs: queryInternalMovements.data,
-        movsLenght: queryInternalMovements.data?.length,
-        filters,
-      },
-      null,
-      2
-    )
-  );
 
   return (
     <ThemedView keyboardAvoiding>
@@ -119,93 +98,6 @@ const MovInternosScreen = () => {
         isModalVisible={isModalVisible}
         handleCloseModal={handleApplyFilters}
       >
-        {selectedFilter === "code" && (
-          <Controller
-            control={control}
-            name="code"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <ThemedInput
-                keyboardType="numeric"
-                label="Código movimiento interno"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={String(value)}
-                placeholder="Ingrese el código de movimiento"
-              />
-            )}
-          />
-        )}
-
-        {selectedFilter === "detailCode" && (
-          <Controller
-            control={control}
-            name="detailCode"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <ThemedInput
-                keyboardType="numeric"
-                label="Código detalle"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={String(value)}
-                placeholder="Ingrese el código detalle"
-              />
-            )}
-          />
-        )}
-
-        {selectedFilter === "internalMovementType" && (
-          <Controller
-            control={control}
-            name="internalMovementType"
-            render={({ field: { onChange, value } }) => (
-              <ThemedDropdown
-                data={dropdownInternalMovTypes}
-                isLoading={queryInternalMovTypes.isLoading}
-                onChange={onChange}
-                selected={value}
-                placeholder="Seleccione tipo de mov. interno"
-              />
-            )}
-          />
-        )}
-
-        {selectedFilter === "internalMovementStatus" && (
-          <Controller
-            control={control}
-            name="internalMovementStatus"
-            render={({ field: { onChange, value } }) => (
-              <ThemedDropdown
-                data={dropdownInternalMovStatus}
-                isLoading={queryInternalMovStatus.isLoading}
-                onChange={onChange}
-                selected={value}
-                placeholder="Seleccione estado"
-              />
-            )}
-          />
-        )}
-
-        {selectedFilter === "date" && (
-          <Controller
-            control={control}
-            name="date"
-            render={({ field: { onChange, value } }) => (
-              <ThemedDatePicker
-                value={value}
-                onChange={(_, selectedDate) => {
-                  onChange(
-                    DateAdapter.format(
-                      selectedDate || filters.date,
-                      "yyyy-MM-dd"
-                    )
-                  );
-                }}
-                onClose={handleApplyFilters}
-              />
-            )}
-          />
-        )}
-
         {selectedFilter === "turn" && (
           <Controller
             control={control}
@@ -221,7 +113,44 @@ const MovInternosScreen = () => {
             )}
           />
         )}
+
+        {selectedFilter === "customer" && (
+          <Controller
+            control={control}
+            name="customer"
+            render={({ field: { onChange, value } }) => (
+              <ThemedDropdown
+                data={dropdownCustomers}
+                isLoading={queryCustomers.isLoading}
+                onChange={onChange}
+                selected={value}
+                placeholder="Seleccione cliente"
+              />
+            )}
+          />
+        )}
       </FilterModal>
+
+      <ThemedView className="mt-4 gap-4" margin>
+        {queryInternalMovements.isLoading ? (
+          <ThemedLoader color={primaryColor} size="large" />
+        ) : queryInternalMovements.data &&
+          queryInternalMovements.data.length > 0 ? (
+          <FlatList
+            data={queryInternalMovements.data}
+            renderItem={({ item }) => <InternalMovCard movement={item} />}
+            keyExtractor={(item, index) => `${index}${item.id}`}
+            onEndReachedThreshold={0.5}
+            initialNumToRender={2}
+            maxToRenderPerBatch={5}
+          />
+        ) : (
+          <NoDataCard
+            message="No hay movimientos internos para mostrar"
+            iconSource="alpha-m-box"
+          />
+        )}
+      </ThemedView>
     </ThemedView>
   );
 };

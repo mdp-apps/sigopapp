@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 
 import { useGlobalSearchParams } from "expo-router";
@@ -76,7 +76,6 @@ const ConfigurarPalletsScreen = () => {
     },
   });
 
-
   const onSubmit = async (values: z.infer<typeof palletSchema>) => {
     AlertNotifyAdapter.show({
       type: AlertType.WARNING,
@@ -136,203 +135,205 @@ const ConfigurarPalletsScreen = () => {
 
   return (
     <ThemedView margin safe keyboardAvoiding>
-      {queryReqByCode.data && (
-        <View className="border-b border-t border-gray-300 py-5 mb-6">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {queryReqByCode.data && (
+          <View className="border-b border-t border-gray-300 py-5 mb-6">
+            <ThemedText
+              variant="h3"
+              className="uppercase font-semibold text-slate-800 text-center"
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {queryReqByCode.data?.driverName} -{" "}
+              {queryReqByCode.data?.vehiclePatent}
+            </ThemedText>
+            <ThemedText
+              variant="h4"
+              className="font-semibold text-slate-800 text-center"
+              adjustsFontSizeToFit
+            >
+              {queryReqByCode.data?.date} - T{queryReqByCode.data?.turn} -{" "}
+              {queryReqByCode.data?.nameReqFormat}
+            </ThemedText>
+          </View>
+        )}
+
+        {queryReqByCode.data && isProductionWithPallet && (
           <ThemedText
-            variant="h3"
-            className="uppercase font-semibold text-slate-800 text-center"
+            variant="h2"
+            className="font-semibold text-zinc-950 text-center mb-4"
             numberOfLines={1}
             adjustsFontSizeToFit
           >
-            {queryReqByCode.data?.driverName} -{" "}
-            {queryReqByCode.data?.vehiclePatent}
+            Producción Paletizada
           </ThemedText>
-          <ThemedText
-            variant="h4"
-            className="font-semibold text-slate-800 text-center"
-            adjustsFontSizeToFit
-          >
-            {queryReqByCode.data?.date} - T{queryReqByCode.data?.turn} -{" "}
-            {queryReqByCode.data?.nameReqFormat}
-          </ThemedText>
-        </View>
-      )}
+        )}
 
-      {queryReqByCode.data && isProductionWithPallet && (
-        <ThemedText
-          variant="h2"
-          className="font-semibold text-zinc-950 text-center mb-4"
-          numberOfLines={1}
-          adjustsFontSizeToFit
-        >
-          Producción Paletizada
-        </ThemedText>
-      )}
+        {queryReqByCode.data && (
+          <ThemedDataTable<ProductMix>
+            data={productMixes}
+            columns={MIXES_REQ_COLUMNS}
+            getRowKey={(item) => item.id}
+            headerStyle={{
+              borderBottomColor: grayColor,
+              marginBottom: 10,
+            }}
+            isLoading={isLoadingMixed}
+            columnCellStyle={{
+              fontWeight: "700",
+              color: grayDarkColor,
+              textTransform: "uppercase",
+            }}
+            rowStyle={{ borderBottomColor: grayColor }}
+            cellStyle={{ fontWeight: "400", color: textColor }}
+            renderColAction={() =>
+              isProductionWithPallet ? (
+                <ThemedIconTooltip
+                  tooltipTitle="Pallets"
+                  iconStyles={{
+                    name: "shipping-pallet",
+                    color: grayDarkColor,
+                    size: 30,
+                  }}
+                />
+              ) : (
+                <Checkbox
+                  status={isSelectedAll ? "checked" : "unchecked"}
+                  onPress={() => handleToggleAll(!isSelectedAll)}
+                  color={primaryColor}
+                />
+              )
+            }
+            renderActions={(row) => {
+              const isMixPalletized = queryPalletizedProduction.data?.some(
+                (p) => p.mixQuantityKG === row.totalKg
+              );
 
-      {queryReqByCode.data && (
-        <ThemedDataTable<ProductMix>
-          data={productMixes}
-          columns={MIXES_REQ_COLUMNS}
-          getRowKey={(item) => item.id}
-          headerStyle={{
-            borderBottomColor: grayColor,
-            marginBottom: 10,
-          }}
-          isLoading={isLoadingMixed}
-          columnCellStyle={{
-            fontWeight: "700",
-            color: grayDarkColor,
-            textTransform: "uppercase",
-          }}
-          rowStyle={{ borderBottomColor: grayColor }}
-          cellStyle={{ fontWeight: "400", color: textColor }}
-          renderColAction={() =>
-            isProductionWithPallet ? (
-              <ThemedIconTooltip
-                tooltipTitle="Pallets"
-                iconStyles={{
-                  name: "shipping-pallet",
-                  color: grayDarkColor,
-                  size: 30,
-                }}
-              />
-            ) : (
-              <Checkbox
-                status={isSelectedAll ? "checked" : "unchecked"}
-                onPress={() => handleToggleAll(!isSelectedAll)}
-                color={primaryColor}
-              />
-            )
-          }
-          renderActions={(row) => {
-            const isMixPalletized = queryPalletizedProduction.data?.some(
-              (p) => p.mixQuantityKG === row.totalKg
-            );
-
-            return (
-              <Checkbox
-                status={
-                  isProductionWithPallet
-                    ? isMixPalletized
+              return (
+                <Checkbox
+                  status={
+                    isProductionWithPallet
+                      ? isMixPalletized
+                        ? "checked"
+                        : "unchecked"
+                      : selectedRows.includes(row)
                       ? "checked"
                       : "unchecked"
-                    : selectedRows.includes(row)
-                    ? "checked"
-                    : "unchecked"
-                }
-                onPress={() => handleToggleRow(row.id)}
-                color={primaryColor}
-                disabled={isProductionWithPallet}
-              />
-            );
-          }}
-        />
-      )}
-
-      {queryReqByCode.data && isProductionWithPallet ? (
-        <ThemedView
-          className="flex-1 flex-row justify-evenly items-center"
-          margin
-        >
-          <View>
-            <ThemedText
-              variant="h3"
-              className="uppercase font-semibold text-slate-900 text-center"
-              numberOfLines={1}
-              adjustsFontSizeToFit
-            >
-              N° Pallets
-            </ThemedText>
-            <ThemedText
-              variant="h2"
-              className="text-slate-800 text-center"
-              adjustsFontSizeToFit
-            >
-              {palletQuantity}
-            </ThemedText>
-          </View>
-
-          <View>
-            <ThemedText
-              variant="h3"
-              className="uppercase font-semibold text-slate-900 text-center"
-              numberOfLines={1}
-              adjustsFontSizeToFit
-            >
-              Peso Total
-            </ThemedText>
-            <ThemedText
-              variant="h2"
-              className="text-slate-800 text-center"
-              adjustsFontSizeToFit
-            >
-              {palletTotalWeight} KG
-            </ThemedText>
-          </View>
-        </ThemedView>
-      ) : (
-        <ThemedView className="flex-1 items-center gap-4 mt-10" margin>
-          <Controller
-            control={control}
-            name="nroPallets"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <ThemedInput
-                className="text-black px-4 py-2 border border-orange-400 rounded-3xl bg-white"
-                style={{ height: 55 }}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder="Ingrese N° Pallet"
-                keyboardType="number-pad"
-                returnKeyType="next"
-                value={String(value)}
-                isNative
-              />
-            )}
+                  }
+                  onPress={() => handleToggleRow(row.id)}
+                  color={primaryColor}
+                  disabled={isProductionWithPallet}
+                />
+              );
+            }}
           />
-          {errors.nroPallets && (
-            <ThemedHelperText isVisible={Boolean(errors.nroPallets)}>
-              {errors.nroPallets?.message}
-            </ThemedHelperText>
-          )}
+        )}
 
-          <Controller
-            control={control}
-            name="totalPalletWeight"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <ThemedInput
-                className="text-black px-4 py-3 border border-orange-400 rounded-3xl bg-white"
-                style={{ height: 55 }}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                placeholder="Ingrese peso total de Pallet"
-                keyboardType="number-pad"
-                returnKeyType="next"
-                value={String(value)}
-                isNative
-              />
-            )}
-          />
-          {errors.nroPallets && (
-            <ThemedHelperText isVisible={Boolean(errors.nroPallets)}>
-              {errors.nroPallets?.message}
-            </ThemedHelperText>
-          )}
-
-          <ThemedButton
-            onPress={handleSubmit(onSubmit)}
-            className="bg-orange-400 w-4/6 mt-2 rounded-lg"
-            disabled={selectedRows.length <= 0}
-            isLoading={configurePallets.isPending}
+        {queryReqByCode.data && isProductionWithPallet ? (
+          <ThemedView
+            className="flex-1 flex-row justify-evenly items-center"
+            margin
           >
-            <ThemedText
-              variant="h4"
-              className="text-white uppercase w-full text-center font-semibold tracking-widest"
+            <View>
+              <ThemedText
+                variant="h3"
+                className="uppercase font-semibold text-slate-900 text-center"
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                N° Pallets
+              </ThemedText>
+              <ThemedText
+                variant="h2"
+                className="text-slate-800 text-center"
+                adjustsFontSizeToFit
+              >
+                {palletQuantity}
+              </ThemedText>
+            </View>
+
+            <View>
+              <ThemedText
+                variant="h3"
+                className="uppercase font-semibold text-slate-900 text-center"
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                Peso Total
+              </ThemedText>
+              <ThemedText
+                variant="h2"
+                className="text-slate-800 text-center"
+                adjustsFontSizeToFit
+              >
+                {palletTotalWeight} KG
+              </ThemedText>
+            </View>
+          </ThemedView>
+        ) : (
+          <ThemedView className="items-center gap-4" margin>
+            <Controller
+              control={control}
+              name="nroPallets"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <ThemedInput
+                  className="text-black px-4 py-2 border border-orange-400 rounded-3xl bg-white"
+                  style={{ height: 55 }}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder="Ingrese N° Pallet"
+                  keyboardType="number-pad"
+                  returnKeyType="next"
+                  value={String(value)}
+                  isNative
+                />
+              )}
+            />
+            {errors.nroPallets && (
+              <ThemedHelperText isVisible={Boolean(errors.nroPallets)}>
+                {errors.nroPallets?.message}
+              </ThemedHelperText>
+            )}
+
+            <Controller
+              control={control}
+              name="totalPalletWeight"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <ThemedInput
+                  className="text-black px-4 py-3 border border-orange-400 rounded-3xl bg-white"
+                  style={{ height: 55 }}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder="Ingrese peso total de Pallet"
+                  keyboardType="number-pad"
+                  returnKeyType="next"
+                  value={String(value)}
+                  isNative
+                />
+              )}
+            />
+            {errors.nroPallets && (
+              <ThemedHelperText isVisible={Boolean(errors.nroPallets)}>
+                {errors.nroPallets?.message}
+              </ThemedHelperText>
+            )}
+
+            <ThemedButton
+              onPress={handleSubmit(onSubmit)}
+              className="bg-orange-400 w-4/6 mt-2 rounded-lg"
+              disabled={selectedRows.length <= 0}
+              isLoading={configurePallets.isPending}
             >
-              Guardar
-            </ThemedText>
-          </ThemedButton>
-        </ThemedView>
-      )}
+              <ThemedText
+                variant="h4"
+                className="text-white uppercase w-full text-center font-semibold tracking-widest"
+              >
+                Guardar
+              </ThemedText>
+            </ThemedButton>
+          </ThemedView>
+        )}
+      </ScrollView>
     </ThemedView>
   );
 };

@@ -19,13 +19,6 @@ const ClienteLayout = () => {
       }}
     >
       <Stack.Screen
-        name="mov-interno-cliente/index"
-        options={{
-          headerTitle: "Movimientos internos",
-        }}
-      />
-
-      <Stack.Screen
         name="req-cliente/index"
         options={{
           headerTitle: "Requerimientos cliente",

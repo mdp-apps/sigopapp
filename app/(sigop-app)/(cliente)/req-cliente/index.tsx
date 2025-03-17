@@ -12,7 +12,6 @@ import { useTurns } from "@/presentation/turno/hooks";
 
 import {
   ThemedButton,
-  ThemedDatePicker,
   ThemedDropdown,
   ThemedModal,
   ThemedText,
@@ -33,7 +32,6 @@ import { Colors } from "@/config/constants";
 const FILTERS = {
   REQ: "req",
   PATENT: "patent",
-  DATE: "date",
   TURN: "turn",
   REQ_STATUS: "reqStatus",
   REQ_TYPE: "reqType",
@@ -42,7 +40,6 @@ const FILTERS = {
 const FILTER_LABELS = {
   req: "Requerimiento",
   patent: "Patente",
-  date: "Fecha",
   turn: "Turno",
   reqStatus: "Estado requerimiento",
   reqType: "Tipo requerimiento",
@@ -52,7 +49,6 @@ const initialFilterValues = {
   req: "",
   patent: "",
   date: "",
-  turn: "",
   reqStatus: "",
   reqType: "",
 };
@@ -202,19 +198,6 @@ const ReqClienteScreen = () => {
             onChangeText={(value) => updateFilter("patent", value)}
             value={filters.patent}
             placeholder="Ingrese la patente"
-          />
-        )}
-
-        {selectedFilter === "date" && (
-          <ThemedDatePicker
-            value={filters.date}
-            onChange={(_, selectedDate) => {
-              updateFilter(
-                "date",
-                DateAdapter.format(selectedDate || filters.date, "yyyy-MM-dd")
-              );
-            }}
-            onClose={handleCloseModal}
           />
         )}
 

@@ -23,7 +23,7 @@ export const Filter = ({
   const darkGrayColor = useThemeColor({}, "darkGray");
 
   return (
-    <View className="flex-row items-center bg-light-white border-r border-t border-b border-slate-300">
+    <View className="flex-row items-center bg-light-white border border-slate-300">
       <ThemedButton onPress={onPress}>
         <ThemedText
           variant="h6"
