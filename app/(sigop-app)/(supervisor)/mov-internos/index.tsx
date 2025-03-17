@@ -20,9 +20,11 @@ import {
   FilterModal,
   ScrollFilters,
 } from "@/presentation/shared/components";
+import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 
 import { UserSession } from "@/infrastructure/entities";
 import { DateAdapter } from "@/config/adapters";
+import { Controller } from "react-hook-form";
 
 const FILTERS = {
   CODE: "code",
@@ -57,11 +59,11 @@ const MovInternosScreen = () => {
     selectedFilter,
     filterKeys,
     isModalVisible,
-    updateFilter,
+    control,
     clearFilter,
     handleFilterSelect,
-    handleCloseModal,
-  } = useFilters(initialFilterValues, FILTERS);
+    handleApplyFilters,
+  } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
   const { user } = useAuthStore();
   const customerCode = (user as UserSession)?.companyCode;
@@ -87,17 +89,12 @@ const MovInternosScreen = () => {
       {
         movs: queryInternalMovements.data,
         movsLenght: queryInternalMovements.data?.length,
+        filters,
       },
       null,
       2
     )
   );
-
-  const searchInternalMovements = async () => {
-    const areThereFilters = Object.values(filters).every(
-      (filter) => filter === ""
-    );
-  };
 
   return (
     <ThemedView keyboardAvoiding>
@@ -106,7 +103,7 @@ const MovInternosScreen = () => {
           <Filter
             key={filterKey}
             onPress={() => handleFilterSelect(filterKey)}
-            onClear={clearFilter}
+            onClear={() => clearFilter(filterKey)}
             filterKey={filterKey}
             filterLabels={FILTER_LABELS}
             displayValue={
@@ -120,68 +117,108 @@ const MovInternosScreen = () => {
 
       <FilterModal
         isModalVisible={isModalVisible}
-        handleCloseModal={handleCloseModal}
+        handleCloseModal={handleApplyFilters}
       >
         {selectedFilter === "code" && (
-          <ThemedInput
-            keyboardType="numeric"
-            label="Código movimiento interno"
-            onChangeText={(value) => updateFilter("code", value)}
-            value={filters.code}
-            placeholder="Ingrese el código de movimiento"
+          <Controller
+            control={control}
+            name="code"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedInput
+                keyboardType="numeric"
+                label="Código movimiento interno"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={String(value)}
+                placeholder="Ingrese el código de movimiento"
+              />
+            )}
           />
         )}
 
         {selectedFilter === "detailCode" && (
-          <ThemedInput
-            keyboardType="numeric"
-            label="Código detalle"
-            onChangeText={(value) => updateFilter("detailCode", value)}
-            value={filters.detailCode}
-            placeholder="Ingrese el código detalle"
+          <Controller
+            control={control}
+            name="detailCode"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedInput
+                keyboardType="numeric"
+                label="Código detalle"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={String(value)}
+                placeholder="Ingrese el código detalle"
+              />
+            )}
           />
         )}
 
         {selectedFilter === "internalMovementType" && (
-          <ThemedDropdown
-            data={dropdownInternalMovTypes}
-            isLoading={queryInternalMovTypes.isLoading}
-            onChange={(items) => updateFilter("internalMovementType", items)}
-            selected={filters.internalMovementType}
-            placeholder="Seleccione tipo de mov. interno"
+          <Controller
+            control={control}
+            name="internalMovementType"
+            render={({ field: { onChange, value } }) => (
+              <ThemedDropdown
+                data={dropdownInternalMovTypes}
+                isLoading={queryInternalMovTypes.isLoading}
+                onChange={onChange}
+                selected={value}
+                placeholder="Seleccione tipo de mov. interno"
+              />
+            )}
           />
         )}
 
         {selectedFilter === "internalMovementStatus" && (
-          <ThemedDropdown
-            data={dropdownInternalMovStatus}
-            isLoading={queryInternalMovStatus.isLoading}
-            onChange={(item) => updateFilter("internalMovementStatus", item)}
-            selected={filters.internalMovementStatus}
-            placeholder="Seleccione estado"
+          <Controller
+            control={control}
+            name="internalMovementStatus"
+            render={({ field: { onChange, value } }) => (
+              <ThemedDropdown
+                data={dropdownInternalMovStatus}
+                isLoading={queryInternalMovStatus.isLoading}
+                onChange={onChange}
+                selected={value}
+                placeholder="Seleccione estado"
+              />
+            )}
           />
         )}
 
         {selectedFilter === "date" && (
-          <ThemedDatePicker
-            value={filters.date}
-            onChange={(_, selectedDate) => {
-              updateFilter(
-                "date",
-                DateAdapter.format(selectedDate || filters.date, "yyyy-MM-dd")
-              );
-            }}
-            onClose={handleCloseModal}
+          <Controller
+            control={control}
+            name="date"
+            render={({ field: { onChange, value } }) => (
+              <ThemedDatePicker
+                value={value}
+                onChange={(_, selectedDate) => {
+                  onChange(
+                    DateAdapter.format(
+                      selectedDate || filters.date,
+                      "yyyy-MM-dd"
+                    )
+                  );
+                }}
+                onClose={handleApplyFilters}
+              />
+            )}
           />
         )}
 
         {selectedFilter === "turn" && (
-          <ThemedDropdown
-            data={dropdownTurns}
-            isLoading={queryTurns.isLoading}
-            onChange={(item) => updateFilter("turn", item)}
-            selected={filters.turn}
-            placeholder="Seleccione turno"
+          <Controller
+            control={control}
+            name="turn"
+            render={({ field: { onChange, value } }) => (
+              <ThemedDropdown
+                data={dropdownTurns}
+                isLoading={queryTurns.isLoading}
+                onChange={onChange}
+                selected={value}
+                placeholder="Seleccione turno"
+              />
+            )}
           />
         )}
       </FilterModal>

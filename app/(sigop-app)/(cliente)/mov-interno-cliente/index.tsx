@@ -32,6 +32,7 @@ import { InternalMovCard } from "@/presentation/movimiento/components";
 import { UserSession } from "@/infrastructure/entities";
 import { DateAdapter } from "@/config/adapters";
 import { Colors } from "@/config/constants";
+import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 
 const FILTERS = {
   CODE: "code",
@@ -70,7 +71,7 @@ const MovInternosClienteScreen = () => {
     clearFilter,
     handleFilterSelect,
     handleCloseModal,
-  } = useFilters(initialFilterValues, FILTERS);
+  } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
   const {
     isVisible: isVisibleCards,

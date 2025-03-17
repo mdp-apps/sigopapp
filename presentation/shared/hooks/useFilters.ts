@@ -1,12 +1,27 @@
 import { useMemo, useState } from "react";
 import { useVisibility } from "./useVisibility";
 
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 export const useFilters = (
   initialFilters: Record<string, any>,
-  filterFormat: Record<string, string>
+  filterFormat: Record<string, string>,
+  schema: z.ZodObject<any, any, any>
 ) => {
-  const [filters, setFilters] = useState(initialFilters);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+
+  const {
+    getValues,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: initialFilters,
+  });
 
   const {
     isVisible: isModalVisible,
@@ -16,17 +31,12 @@ export const useFilters = (
 
   const filterKeys = useMemo(() => Object.values(filterFormat), []);
 
-  const updateFilter = (filterName: string, value: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterName]: value,
-    }));
-  };
-
-  const clearFilter = () => {
-    Object.keys(initialFilters).forEach((key) => {
-      updateFilter(key, "");
-    });
+  const clearFilter = (filter: string) => {
+    console.log({ [filter]: "" });
+    reset({ 
+      ...getValues(),
+      [filter]: "",
+     });
   };
 
   const handleFilterSelect = (filter: string) => {
@@ -34,19 +44,22 @@ export const useFilters = (
     showModal();
   };
 
-  const handleCloseModal = () => {
+  const handleApplyFilters = () => {
     hideModal();
   };
 
   return {
-    filters,
+    filters: getValues(),
+    filterErrors: errors,
     selectedFilter,
     filterKeys,
     isModalVisible,
 
-    updateFilter,
+    control,
+    handleSubmit,
+
     clearFilter,
     handleFilterSelect,
-    handleCloseModal,
+    handleApplyFilters,
   };
 };
