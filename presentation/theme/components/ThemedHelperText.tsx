@@ -14,7 +14,7 @@ export const ThemedHelperText = ({
 }: ThemedHelperText) => {
   return (
     <HelperText
-      variant="titleSmall"
+      variant="titleMedium"
       type={type}
       visible={isVisible}
       style={{
