@@ -111,7 +111,7 @@ export const ThemedDataTable = <T,>({
                 sortColumn === column.key ? sortDirection : undefined
               }
               onPress={() => handleSort(column.key)}
-              style={{ flex: 2, justifyContent: "center" }}
+              style={{ justifyContent: "center"}}
             >
               {enableColumnTooltip ? (
                 <ThemedTooltip title={column.title}>

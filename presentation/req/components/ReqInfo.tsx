@@ -22,10 +22,10 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
         </ThemedText>
         <ThemedText
           variant="h4"
-          className="uppercase font-semibold !text-slate-900 text-center"
+          className="font-semibold !text-slate-900 text-center"
           adjustsFontSizeToFit
         >
-          {req.date} - T{req.turn}
+          Req. {req.reqCode} - {req.date} - T{req.turn}
         </ThemedText>
       </View>
 
@@ -38,7 +38,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
           >
             Chofer:
           </ThemedText>
-          <ThemedTooltip title="Nombre" position="top">
+          <ThemedTooltip title="Nombre">
             <ThemedText
               variant="h4"
               className="!text-slate-800"
@@ -51,7 +51,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
         </View>
 
         <View className="flex flex-row justify-center gap-2 items-center">
-          <ThemedTooltip title="Rut" position="top">
+          <ThemedTooltip title="Rut">
             <ThemedText
               variant="h5"
               className="!text-slate-800"
@@ -62,9 +62,9 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
             </ThemedText>
           </ThemedTooltip>
 
-          <ThemedTooltip title="Patente" position="top">
+          <ThemedTooltip title="Patente">
             <ThemedText
-              variant="h6"
+              variant="h5"
               className="!text-slate-800"
               numberOfLines={1}
               adjustsFontSizeToFit

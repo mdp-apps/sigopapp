@@ -4,7 +4,11 @@ import { useGlobalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useVisibility } from "@/presentation/shared/hooks";
-import { useReqByCode, useLogStatusReq, useReqs } from "@/presentation/req/hooks";
+import {
+  useReqByCode,
+  useLogStatusReq,
+  useReqByPatent,
+} from "@/presentation/req/hooks";
 
 import {
   ThemedDataTable,
@@ -16,7 +20,7 @@ import {
 import { NoDataCard } from "@/presentation/shared/components";
 
 import { LogStatusReq } from "@/infrastructure/entities";
-import { REQ_STATUS, REQ_STATUS_COLUMNS } from "@/config/constants";
+import { REQ_STATUS_COLUMNS } from "@/config/constants";
 import { SectionListMapper } from "@/infrastructure/mappers";
 import { ReqInfo } from "@/presentation/req/components";
 
@@ -38,23 +42,36 @@ const VerEstadosReqScreen = () => {
   } = useVisibility();
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
-
-  const { queryLogStatusReq } = useLogStatusReq(reqCode as string);
+  const { queryReqByPatent } = useReqByPatent(patent as string);
+  console.log(
+    JSON.stringify(
+      {
+        reqByCode: queryReqByCode.data,
+        reqByPatent: queryReqByPatent.data,
+      },
+      null,
+      2
+    )
+  );
+  // XD7538
+  const { queryLogStatusReq } = useLogStatusReq(
+    (reqCode as string) || String(queryReqByPatent.data?.reqCode)
+  );
 
   const handleModal = (logStatusReq: LogStatusReq) => {
     setLogStatusModal(logStatusReq);
     showModal();
   };
 
-  if (queryReqByCode.isLoading) {
+  if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
   }
 
-  if (queryReqByCode.isError) {
+  if (queryReqByCode.isError || queryReqByPatent.isError) {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
-          message={`No existe el requerimiento ${reqCode}`}
+          message={`No existe el requerimiento ingresado`}
           iconSource="alert-circle"
           iconColor="red"
         />
@@ -64,7 +81,7 @@ const VerEstadosReqScreen = () => {
 
   return (
     <ThemedView safe>
-      <ReqInfo req={queryReqByCode.data!}>
+      <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!}>
         <View className="flex-row gap-6 py-2">
           <ThemedText
             variant="semi-bold"
@@ -73,7 +90,10 @@ const VerEstadosReqScreen = () => {
           >
             Bodega:{" "}
             <ThemedText className="font-normal">
-              B-{queryReqByCode.data?.warehouseCode}
+              B-
+              {reqCode
+                ? queryReqByCode.data?.warehouseCode
+                : queryReqByPatent.data?.warehouseCode}
             </ThemedText>
           </ThemedText>
           <ThemedText
@@ -83,12 +103,15 @@ const VerEstadosReqScreen = () => {
           >
             Planta:{" "}
             <ThemedText className="font-normal">
-              P{queryReqByCode.data?.plantCode}
+              P
+              {reqCode
+                ? queryReqByCode.data?.plantCode
+                : queryReqByPatent.data?.plantCode}
             </ThemedText>
           </ThemedText>
         </View>
       </ReqInfo>
-      
+
       <ThemedDataTable<LogStatusReq>
         handleRowPress={handleModal}
         data={queryLogStatusReq.data ?? []}

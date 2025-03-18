@@ -21,6 +21,6 @@ export const searchCodeReqSchema = z.object({
 
 export const searchPatentReqSchema = z.object({
   patent: z.string().min(1, {
-    message: "La patente es requerida",
+    message: "La patente del requerimiento es requerido",
   }),
 });
