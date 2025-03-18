@@ -1,7 +1,6 @@
 import React from "react";
 import { FlatList } from "react-native";
 
-import { useAuthStore } from "@/presentation/auth/store";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useFilters } from "@/presentation/shared/hooks";
 import { useTurns } from "@/presentation/turno/hooks";
@@ -22,7 +21,6 @@ import {
 import { InternalMovCard } from "@/presentation/movimiento/components";
 import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 
-import { UserSession } from "@/infrastructure/entities";
 import { INTERNAL_MOV_STATUS } from "@/config/constants";
 import { DateAdapter } from "@/config/adapters";
 
@@ -58,9 +56,6 @@ const MovInternosScreen = () => {
     handleApplyFilters,
   } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
-  const { user } = useAuthStore();
-  const customerCode = (user as UserSession)?.companyCode;
-
   const { queryInternalMovements } = useInternalMovements({
     code: filters.code,
     detailCode: filters.detailCode,
@@ -68,12 +63,11 @@ const MovInternosScreen = () => {
     internalMovementStatus: filters.internalMovementStatus,
     date: filters.date,
     turn: filters.turn,
-    customer: customerCode,
+    customer: filters.customer,
   });
 
   const { queryTurns, dropdownTurns } = useTurns();
   const { queryCustomers, dropdownCustomers } = useCustomers();
-
 
   return (
     <ThemedView keyboardAvoiding>

@@ -32,7 +32,6 @@ export const useFilters = (
   const filterKeys = useMemo(() => Object.values(filterFormat), []);
 
   const clearFilter = (filter: string) => {
-    console.log({ [filter]: "" });
     reset({ 
       ...getValues(),
       [filter]: "",
