@@ -9,7 +9,7 @@ export const useReqByCode = (reqCode: string) => {
   const [reqType, setReqType] = useState(0);
 
   const queryReqByCode = useQuery({
-    queryKey: ["reqs", reqCode],
+    queryKey: ["reqs", {reqCode}],
     queryFn: () =>
       UseCases.getReqByCodeUseCase(sigopApiFetcher, {
         accion: "Consultar requerimientos por codigo",

@@ -4,7 +4,7 @@ import { useGlobalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useVisibility } from "@/presentation/shared/hooks";
-import { useReqByCode, useLogStatusReq } from "@/presentation/req/hooks";
+import { useReqByCode, useLogStatusReq, useReqs } from "@/presentation/req/hooks";
 
 import {
   ThemedDataTable,
@@ -16,7 +16,7 @@ import {
 import { NoDataCard } from "@/presentation/shared/components";
 
 import { LogStatusReq } from "@/infrastructure/entities";
-import { REQ_STATUS_COLUMNS } from "@/config/constants";
+import { REQ_STATUS, REQ_STATUS_COLUMNS } from "@/config/constants";
 import { SectionListMapper } from "@/infrastructure/mappers";
 import { ReqInfo } from "@/presentation/req/components";
 
@@ -28,7 +28,8 @@ const VerEstadosReqScreen = () => {
   const grayColor = useThemeColor({}, "gray");
   const grayDarkColor = useThemeColor({}, "darkGray");
   const textColor = useThemeColor({}, "text");
-  const { reqCode } = useGlobalSearchParams();
+  const { reqCode, patent } = useGlobalSearchParams();
+  console.log({ reqCode, patent });
 
   const {
     isVisible: isVisibleModal,
@@ -37,6 +38,7 @@ const VerEstadosReqScreen = () => {
   } = useVisibility();
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
+
   const { queryLogStatusReq } = useLogStatusReq(reqCode as string);
 
   const handleModal = (logStatusReq: LogStatusReq) => {

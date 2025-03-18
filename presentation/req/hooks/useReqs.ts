@@ -10,7 +10,7 @@ type ReqsBody = {
   patent?: string;
   reqType?: string;
   requirement?: string;
-  status?: string;
+  status?: number;
   turn?: string;
 };
 
@@ -31,7 +31,7 @@ export const useReqs = (reqBody?: ReqsBody) => {
       const response = await UseCases.getReqsUseCase(sigopApiFetcher, {
         accion: "Consultar requerimientos",
         cliente: customer,
-        estado: status,
+        estado: String(status),
         fecha: date,
         patente: patent,
         requerimiento: requirement,

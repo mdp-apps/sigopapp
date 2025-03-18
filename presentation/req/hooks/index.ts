@@ -2,6 +2,7 @@ export * from './useChangeReqStatusMutation';
 export * from './useDriverReqsByRut';
 export * from './useLogStatusReq';
 export * from './useReqByCode';
+export * from './useReqByPatent';
 export * from './useReqLocation';
 export * from './useReqStatusByCode';
 export * from './useReqs';
