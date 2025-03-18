@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sigop App",
     "slug": "sigop-app",
-    "version": "1.5.0",
+    "version": "1.5.5",
     "orientation": "portrait",
     "icon": "./assets/adaptive-icon.png",
     "scheme": "myapp",

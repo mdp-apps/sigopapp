@@ -30,15 +30,14 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
       </View>
 
       <View className="border-b border-gray-300 py-2">
-        <ThemedText
-          variant="semi-bold"
-          className="uppercase !text-slate-700 text-xl"
-          adjustsFontSizeToFit
-        >
-          Chofer:
-        </ThemedText>
-
-        <View className="flex flex-row gap-2 items-center">
+        <View className="flex gap-2 items-center">
+          <ThemedText
+            variant="semi-bold"
+            className="uppercase !text-slate-700 text-xl"
+            adjustsFontSizeToFit
+          >
+            Chofer:
+          </ThemedText>
           <ThemedTooltip title="Nombre" position="top">
             <ThemedText
               variant="h4"
@@ -46,13 +45,15 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              {req.driverName} |
+              {req.driverName}
             </ThemedText>
           </ThemedTooltip>
-          
+        </View>
+
+        <View className="flex flex-row justify-center gap-2 items-center">
           <ThemedTooltip title="Rut" position="top">
             <ThemedText
-              variant="h4"
+              variant="h5"
               className="!text-slate-800"
               numberOfLines={1}
               adjustsFontSizeToFit
@@ -63,7 +64,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
 
           <ThemedTooltip title="Patente" position="top">
             <ThemedText
-              variant="h4"
+              variant="h6"
               className="!text-slate-800"
               numberOfLines={1}
               adjustsFontSizeToFit
