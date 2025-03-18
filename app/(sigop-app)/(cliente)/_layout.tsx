@@ -1,30 +1,23 @@
 import React from "react";
 
-import { Colors } from "@/config/constants";
 import { Stack } from "expo-router";
 
+import { useThemeColor } from "@/presentation/theme/hooks";
+
 const ClienteLayout = () => {
+  const backgroundColor = useThemeColor({}, "background");
+  
   return (
     <Stack
       screenOptions={{
         headerShadowVisible: false,
-        headerShown: true,
-        headerTintColor: Colors.light.background,
-        headerStyle: {
-          backgroundColor: Colors.light.primary,
-        },
+        contentStyle: { backgroundColor: backgroundColor },
         headerTitleStyle: {
           fontFamily: "Ruda",
+          fontWeight: "bold",
         },
       }}
-    >
-      <Stack.Screen
-        name="req-cliente/index"
-        options={{
-          headerTitle: "Requerimientos cliente",
-        }}
-      />
-    </Stack>
+    ></Stack>
   );
 };
 

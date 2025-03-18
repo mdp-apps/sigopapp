@@ -21,20 +21,6 @@ const SupervisorLayout = () => {
       }}
     >
       <Stack.Screen
-        name="menu-supervisor/index"
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="ver-req-supervisor/index"
-        options={{
-          headerTitle: "Supervisor",
-        }}
-      />
-
-      <Stack.Screen
         name="produccion-paletizada/index"
         options={{
           headerTitle: "Producción paletizada",

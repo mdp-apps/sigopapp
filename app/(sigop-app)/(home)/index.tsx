@@ -40,23 +40,7 @@ const MenuScreen = () => {
         profile === UserProfile.foreman ||
         profile === UserProfile.planner) && <SupervisorMenu />}
 
-      {profile === UserProfile.customer && (
-        <ThemedView className="justify-center items-center" margin safe>
-          <View className="flex-row gap-2 justify-between my-2">
-            <MenuCard
-              text="Req. Cliente"
-              route="/req-cliente"
-              iconSource="playlist-play"
-            />
-
-            <MenuCard
-              text="Supervisor"
-              route="/menu-supervisor"
-              iconSource="account-hard-hat"
-            />
-          </View>
-        </ThemedView>
-      )}
+  
 
       <FabMenu />
     </ThemedView>

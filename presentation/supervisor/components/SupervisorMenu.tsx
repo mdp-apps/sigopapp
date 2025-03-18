@@ -40,6 +40,17 @@ export const SupervisorMenu = () => {
           variant="icon"
           className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
           textClassName="text-xl font-ruda-bold uppercase"
+          onPress={() => router.push("/(sigop-app)/(supervisor)/mov-internos")}
+          iconName="transit-transfer"
+          iconSize={34}
+          iconColor="white"
+          text="Movimientos internos"
+        />
+
+        <ThemedButton
+          variant="icon"
+          className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
+          textClassName="text-xl font-ruda-bold uppercase"
           onPress={() =>
             router.push("/(sigop-app)/(supervisor)/produccion-paletizada")
           }
@@ -81,19 +92,6 @@ export const SupervisorMenu = () => {
 
         {STAGE === "dev" && (
           <>
-            <ThemedButton
-              variant="icon"
-              className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-              textClassName="text-xl font-ruda-bold uppercase"
-              onPress={() =>
-                router.push("/(sigop-app)/(supervisor)/mov-internos")
-              }
-              iconName="transit-transfer"
-              iconSize={34}
-              iconColor="white"
-              text="Movimientos internos"
-            />
-
             <ThemedButton
               variant="icon"
               className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
