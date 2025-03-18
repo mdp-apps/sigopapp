@@ -10,11 +10,20 @@ export const driverReqSchema = z.object({
     }),
 });
 
-export const searchReqSchema = z.object({
-  reqCode: z
-    .string()
-    .min(1, "El código de requerimiento es requerido")
-    .refine((val) => !isNaN(Number(val)), {
-      message: "El código de requerimiento debe ser un número",
-    }),
-});
+export const searchReqSchema = z
+  .object({
+    reqCode: z
+      .string()
+      .optional()
+      .refine((val) => !isNaN(Number(val)), {
+        message: "El código de requerimiento debe ser un número",
+      }),
+    patent: z.string().optional(),
+  })
+  .refine(
+    (data) => data.reqCode || data.patent,
+    {
+      message: "Debe ingresar un código de requerimiento o una patente",
+      path: ["reqCode", "patent"],
+    }
+  );

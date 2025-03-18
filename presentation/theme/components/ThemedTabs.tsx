@@ -1,14 +1,15 @@
 import React from 'react'
 import { TextStyle, ViewStyle } from 'react-native';
+import { MD3LightTheme } from 'react-native-paper';
 
 import {
   TabsProvider,
   Tabs,
   TabScreen,
-  useTabNavigation,
 } from "react-native-paper-tabs";
+import { useThemeColor } from '../hooks';
 
-interface Tab {
+export interface Tab {
   label: string;
   icon?: string;
   component: React.ReactNode;
@@ -26,7 +27,6 @@ interface ThemedTabsProps {
   iconPosition?: "leading" | "top";
   style?: ViewStyle;
   dark?: boolean;
-  theme?: Record<string, any>;
   mode?: "fixed" | "scrollable";
   showLeadingSpace?: boolean;
   disableSwipe?: boolean;
@@ -42,13 +42,14 @@ export const ThemedTabs = ({
   iconPosition = "leading",
   style,
   dark = false,
-  theme,
   mode = "fixed",
   showLeadingSpace = true,
   disableSwipe = false,
   tabHeaderStyle,
   tabLabelStyle,
 }: ThemedTabsProps) => {
+  const primaryColor = useThemeColor({},"primary");
+
   return (
     <TabsProvider defaultIndex={defaultIndex}>
       <Tabs
@@ -57,7 +58,12 @@ export const ThemedTabs = ({
         iconPosition={iconPosition}
         style={style}
         dark={dark}
-        theme={theme}
+        theme={{
+          colors: {
+            primary: primaryColor,
+            // onSurface: primaryColor,
+          },
+        }}
         mode={mode}
         showLeadingSpace={showLeadingSpace}
         disableSwipe={disableSwipe}
