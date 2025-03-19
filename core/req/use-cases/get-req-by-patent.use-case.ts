@@ -26,7 +26,9 @@ export const getReqByPatentUseCase = async (
     (req) => req.estado === status
     );
 
-  return ReqMapper.fromReqsResultToEntity(
-    reqPatentByStatus ? reqPatentByStatus : reqByPatent.resultado[0]
-  );
+  if (Boolean(status) && reqPatentByStatus) {
+    return ReqMapper.fromReqsResultToEntity(reqPatentByStatus);
+  }
+  
+  return ReqMapper.fromReqsResultToEntity(reqByPatent.resultado[0]);
 };

@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import * as UseCases from "@/core/req/use-cases";
 
 import { sigopApiFetcher } from "@/config/api/sigopApi";
-import { REQ_STATUS } from "@/config/constants";
 
 import { useQuery } from "@tanstack/react-query";
 
-export const useReqByPatent = (patent: string) => {
+export const useReqByPatent = (patent: string, statusCode?: number) => {
   const [reqType, setReqType] = useState(0);
   const [reqCode, setReqCode] = useState(0);
 
@@ -19,7 +18,7 @@ export const useReqByPatent = (patent: string) => {
           accion: "Consultar requerimientos por patente",
           patente: patent,
         },
-        REQ_STATUS.ejecucion
+        statusCode,
       ),
     enabled: !!patent,
     staleTime: 1000 * 60 * 5,

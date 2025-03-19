@@ -1,12 +1,15 @@
 import React from "react";
-
+import { ScrollView } from "react-native";
 import { router } from "expo-router";
 
 import { ThemedButton, ThemedView } from "@/presentation/theme/components";
 import { STAGE } from "@/config/api/sigopApi";
-import { ScrollView } from "react-native";
 
-export const SupervisorMenu = () => {
+interface GeneralMenuProps {
+  children?: React.ReactNode;
+}
+
+export const GeneralMenu = ({children}: GeneralMenuProps) => {
   return (
     <ScrollView>
       <ThemedView
@@ -34,17 +37,6 @@ export const SupervisorMenu = () => {
           iconSize={34}
           iconColor="white"
           text="Estados de requerimiento"
-        />
-
-        <ThemedButton
-          variant="icon"
-          className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-          textClassName="text-xl font-ruda-bold uppercase"
-          onPress={() => router.push("/(sigop-app)/(supervisor)/mov-internos")}
-          iconName="transit-transfer"
-          iconSize={34}
-          iconColor="white"
-          text="Movimientos internos"
         />
 
         <ThemedButton
@@ -90,20 +82,7 @@ export const SupervisorMenu = () => {
           </>
         )}
 
-        {STAGE === "dev" && (
-          <>
-            <ThemedButton
-              variant="icon"
-              className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-              textClassName="text-xl font-ruda-bold uppercase"
-              onPress={() => router.push("/(sigop-app)/(supervisor)/saldos")}
-              iconName="cash-fast"
-              iconSize={34}
-              iconColor="white"
-              text="Saldos"
-            />
-          </>
-        )}
+        {children}
       </ThemedView>
     </ScrollView>
   );

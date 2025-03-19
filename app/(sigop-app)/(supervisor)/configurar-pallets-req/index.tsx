@@ -8,7 +8,7 @@ import { useGlobalSearchParams } from "expo-router";
 import { useAuthStore } from "@/presentation/auth/store";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useCheckboxSelector } from "@/presentation/shared/hooks";
-import { useReqByCode } from "@/presentation/req/hooks";
+import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
 import { useProductMixesByCode } from "@/presentation/producto/hooks";
 import {
   useConfigurePalletsMutation,
@@ -45,13 +45,16 @@ const ConfigurarPalletsScreen = () => {
 
   const queryClient = useQueryClient();
 
-  const { reqCode } = useGlobalSearchParams();
+  const { reqCode, patent } = useGlobalSearchParams();
   const { user } = useAuthStore();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
+  const { queryReqByPatent, reqCodeByPatent, reqTypeByPatent } = useReqByPatent(
+    patent as string
+  );
   const { productMixes, isLoadingMixed } = useProductMixesByCode(
-    Number(reqCode),
-    reqType
+    reqCode ? Number(reqCode) : reqCodeByPatent,
+    reqCode ? reqType : reqTypeByPatent
   );
   const { configurePallets } = useConfigurePalletsMutation();
   const {
@@ -59,7 +62,9 @@ const ConfigurarPalletsScreen = () => {
     isProductionWithPallet,
     palletQuantity,
     palletTotalWeight,
-  } = usePalletizedProductionByCode(reqCode as string);
+  } = usePalletizedProductionByCode(
+    reqCode ? Number(reqCode) : reqCodeByPatent
+  );
 
   const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
     useCheckboxSelector<ProductMix>(productMixes);
@@ -85,7 +90,7 @@ const ConfigurarPalletsScreen = () => {
       onPressButton: () => {
         selectedRows.forEach((mix) => {
           configurePallets.mutate({
-            reqCode: Number(reqCode),
+            reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
             userCode: String(user?.code),
 
             mixQuantityKG: mix.totalKg,
@@ -98,7 +103,10 @@ const ConfigurarPalletsScreen = () => {
         });
 
         queryClient.setQueryData<Palletized[]>(
-          ["palletized-production", Number(reqCode)],
+          [
+            "palletized-production",
+            reqCode ? Number(reqCode) : reqCodeByPatent,
+          ],
           (oldData) => {
             if (!oldData) return [];
 
@@ -107,7 +115,7 @@ const ConfigurarPalletsScreen = () => {
               mixQuantityKG: mix.totalKg,
               palletQuantity: Number(values.nroPallets),
               palletTotalWeight: Number(values.totalPalletWeight),
-              reqCode: Number(reqCode),
+              reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
             }));
 
             return [...oldData, ...newPalletized];
@@ -117,11 +125,11 @@ const ConfigurarPalletsScreen = () => {
     });
   };
 
-  if (queryReqByCode.isLoading) {
+  if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
   }
 
-  if (queryReqByCode.isError) {
+  if (queryReqByCode.isError || queryReqByPatent.isError) {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
@@ -136,29 +144,32 @@ const ConfigurarPalletsScreen = () => {
   return (
     <ThemedView margin safe keyboardAvoiding>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        {queryReqByCode.data && (
-          <View className="border-b border-t border-gray-300 py-5 mb-6">
-            <ThemedText
-              variant="h3"
-              className="uppercase font-semibold text-slate-800 text-center"
-              numberOfLines={1}
-              adjustsFontSizeToFit
-            >
-              {queryReqByCode.data?.driverName} -{" "}
-              {queryReqByCode.data?.vehiclePatent}
-            </ThemedText>
-            <ThemedText
-              variant="h4"
-              className="font-semibold text-slate-800 text-center"
-              adjustsFontSizeToFit
-            >
-              {queryReqByCode.data?.date} - T{queryReqByCode.data?.turn} -{" "}
-              {queryReqByCode.data?.nameReqFormat}
-            </ThemedText>
-          </View>
-        )}
+        <View className="border-b border-t border-gray-300 py-5 mb-6">
+          <ThemedText
+            variant="h3"
+            className="uppercase font-semibold text-slate-800 text-center"
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            {queryReqByCode.data?.driverName ??
+              queryReqByPatent.data?.driverName}{" "}
+            -{" "}
+            {queryReqByCode.data?.vehiclePatent ??
+              queryReqByPatent.data?.vehiclePatent}
+          </ThemedText>
+          <ThemedText
+            variant="h4"
+            className="font-semibold text-slate-800 text-center"
+            adjustsFontSizeToFit
+          >
+            {queryReqByCode.data?.date ?? queryReqByPatent.data?.date} - T
+            {queryReqByCode.data?.turn ?? queryReqByPatent.data?.turn} -{" "}
+            {queryReqByCode.data?.nameReqFormat ??
+              queryReqByPatent.data?.nameReqFormat}
+          </ThemedText>
+        </View>
 
-        {queryReqByCode.data && isProductionWithPallet && (
+        {isProductionWithPallet && (
           <ThemedText
             variant="h2"
             className="font-semibold text-zinc-950 text-center mb-4"
@@ -169,67 +180,65 @@ const ConfigurarPalletsScreen = () => {
           </ThemedText>
         )}
 
-        {queryReqByCode.data && (
-          <ThemedDataTable<ProductMix>
-            data={productMixes}
-            columns={MIXES_REQ_COLUMNS}
-            getRowKey={(item) => item.id}
-            headerStyle={{
-              borderBottomColor: grayColor,
-              marginBottom: 10,
-            }}
-            isLoading={isLoadingMixed}
-            columnCellStyle={{
-              fontWeight: "700",
-              color: grayDarkColor,
-              textTransform: "uppercase",
-            }}
-            rowStyle={{ borderBottomColor: grayColor }}
-            cellStyle={{ fontWeight: "400", color: textColor }}
-            renderColAction={() =>
-              isProductionWithPallet ? (
-                <ThemedIconTooltip
-                  tooltipTitle="Pallets"
-                  iconStyles={{
-                    name: "shipping-pallet",
-                    color: grayDarkColor,
-                    size: 30,
-                  }}
-                />
-              ) : (
-                <Checkbox
-                  status={isSelectedAll ? "checked" : "unchecked"}
-                  onPress={() => handleToggleAll(!isSelectedAll)}
-                  color={primaryColor}
-                />
-              )
-            }
-            renderActions={(row) => {
-              const isMixPalletized = queryPalletizedProduction.data?.some(
-                (p) => p.mixQuantityKG === row.totalKg
-              );
+        <ThemedDataTable<ProductMix>
+          data={productMixes}
+          columns={MIXES_REQ_COLUMNS}
+          getRowKey={(item) => item.id}
+          headerStyle={{
+            borderBottomColor: grayColor,
+            marginBottom: 10,
+          }}
+          isLoading={isLoadingMixed}
+          columnCellStyle={{
+            fontWeight: "700",
+            color: grayDarkColor,
+            textTransform: "uppercase",
+          }}
+          rowStyle={{ borderBottomColor: grayColor }}
+          cellStyle={{ fontWeight: "400", color: textColor }}
+          renderColAction={() =>
+            isProductionWithPallet ? (
+              <ThemedIconTooltip
+                tooltipTitle="Pallets"
+                iconStyles={{
+                  name: "shipping-pallet",
+                  color: grayDarkColor,
+                  size: 30,
+                }}
+              />
+            ) : (
+              <Checkbox
+                status={isSelectedAll ? "checked" : "unchecked"}
+                onPress={() => handleToggleAll(!isSelectedAll)}
+                color={primaryColor}
+              />
+            )
+          }
+          renderActions={(row) => {
+            const isMixPalletized = queryPalletizedProduction.data?.some(
+              (p) => p.mixQuantityKG === row.totalKg
+            );
 
-              return (
-                <Checkbox
-                  status={
-                    isProductionWithPallet
-                      ? isMixPalletized
-                        ? "checked"
-                        : "unchecked"
-                      : selectedRows.includes(row)
+            return (
+              <Checkbox
+                status={
+                  isProductionWithPallet
+                    ? isMixPalletized
                       ? "checked"
                       : "unchecked"
-                  }
-                  onPress={() => handleToggleRow(row.id)}
-                  color={primaryColor}
-                  disabled={isProductionWithPallet}
-                />
-              );
-            }}
-          />
-        )}
+                    : selectedRows.includes(row)
+                    ? "checked"
+                    : "unchecked"
+                }
+                onPress={() => handleToggleRow(row.id)}
+                color={primaryColor}
+                disabled={isProductionWithPallet}
+              />
+            );
+          }}
+        />
 
-        {queryReqByCode.data && isProductionWithPallet ? (
+        {isProductionWithPallet ? (
           <ThemedView
             className="flex-1 flex-row justify-evenly items-center"
             margin

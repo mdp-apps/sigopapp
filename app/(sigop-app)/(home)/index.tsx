@@ -5,8 +5,12 @@ import { View } from "react-native";
 import { useAuthStore } from "@/presentation/auth/store";
 
 import { ThemedText, ThemedView } from "@/presentation/theme/components";
-import { FabMenu, MenuCard } from "@/presentation/menu/components";
-import { SupervisorMenu } from "@/presentation/supervisor/components";
+import {
+  FabMenu,
+  ForemanMenu,
+  PlannerMenu,
+  SupervisorMenu,
+} from "@/presentation/menu/components";
 import { DriverReq } from "@/presentation/req/components";
 
 import { UserProfile } from "@/infrastructure/entities";
@@ -36,11 +40,9 @@ const MenuScreen = () => {
 
       {profile === UserProfile.driver && <DriverReq />}
 
-      {(profile === UserProfile.supervisor ||
-        profile === UserProfile.foreman ||
-        profile === UserProfile.planner) && <SupervisorMenu />}
-
-  
+      {profile === UserProfile.supervisor && <SupervisorMenu />}
+      {profile === UserProfile.foreman && <ForemanMenu />}
+      {profile === UserProfile.planner && <PlannerMenu />}
 
       <FabMenu />
     </ThemedView>
