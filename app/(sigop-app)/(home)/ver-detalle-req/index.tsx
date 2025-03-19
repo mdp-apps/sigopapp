@@ -5,7 +5,7 @@ import { ScrollView, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
-import { useReqByCode } from "@/presentation/req/hooks";
+import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
 import { useProductsReqByCode } from "@/presentation/producto/hooks";
 
 import {
@@ -26,19 +26,22 @@ const VerDetalleReqScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
   const grayColor = useThemeColor({}, "gray");
 
-  const { reqCode } = useLocalSearchParams();
+  const { reqCode, patent } = useLocalSearchParams();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
+  const { queryReqByPatent, reqTypeByPatent, reqCodeByPatent } = useReqByPatent(
+    patent as string
+  );
   const { queryProductsReq, totalKg, productsPerBatch } = useProductsReqByCode(
-    Number(reqCode),
-    String(reqType)
+    reqCode ? Number(reqCode) : reqCodeByPatent,
+    reqCode ? reqType : reqTypeByPatent
   );
 
-  if (queryReqByCode.isLoading) {
+  if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
   }
 
-  if (queryReqByCode.isError) {
+  if (queryReqByCode.isError || queryReqByPatent.isError) {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
@@ -50,7 +53,6 @@ const VerDetalleReqScreen = () => {
     );
   }
 
-
   return (
     <ThemedView className="py-3 mt-4" margin>
       {queryProductsReq.isLoading ? (
@@ -60,9 +62,22 @@ const VerDetalleReqScreen = () => {
           <View className="mb-4">
             <View className="flex-row gap-3">
               <ThemedChip
+                tooltipTitle="Código"
+                iconSource="alpha-r-circle"
+                text={reqCode ? (reqCode as string) : reqCodeByPatent}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ color: "white" }}
+                iconColor="white"
+              />
+
+              <ThemedChip
                 tooltipTitle="Cliente"
                 iconSource="account-tie"
-                text={queryReqByCode.data?.customerAbbr!}
+                text={
+                  reqCode
+                    ? queryReqByCode.data?.customerAbbr!
+                    : queryReqByPatent.data?.customerAbbr!
+                }
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
@@ -71,38 +86,51 @@ const VerDetalleReqScreen = () => {
               <ThemedChip
                 tooltipTitle="Patente"
                 iconSource="car-info"
-                text={queryReqByCode.data?.vehiclePatent!}
-                style={{ backgroundColor: primaryColor }}
-                textStyle={{ color: "white" }}
-                iconColor="white"
-              />
-
-              <ThemedChip
-                tooltipTitle="Transportista"
-                iconSource="truck-delivery"
-                text={queryReqByCode.data?.carrierName!}
+                text={
+                  reqCode
+                    ? queryReqByCode.data?.vehiclePatent!
+                    : queryReqByPatent.data?.vehiclePatent!
+                }
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
               />
             </View>
 
-            {Object.keys(productsPerBatch).length !== 0 && (
+            <View className="flex-row gap-3">
               <ThemedChip
-                tooltipTitle="Total KG"
-                iconSource="plus-box-multiple"
-                text={`Total: ${Formatter.numberWithDots(totalKg)} KG`}
+                tooltipTitle="Transportista"
+                iconSource="truck-delivery"
+                text={
+                  reqCode
+                    ? queryReqByCode.data?.carrierName!
+                    : queryReqByPatent.data?.carrierName!
+                }
                 style={{ backgroundColor: primaryColor }}
-                textStyle={{ fontSize: 16, color: "white" }}
+                textStyle={{ color: "white" }}
                 iconColor="white"
               />
-            )}
+
+              {Object.keys(productsPerBatch).length !== 0 && (
+                <ThemedChip
+                  tooltipTitle="Total KG"
+                  iconSource="plus-box-multiple"
+                  text={`Total: ${Formatter.numberWithDots(totalKg)} KG`}
+                  style={{ backgroundColor: primaryColor }}
+                  textStyle={{ fontSize: 16, color: "white" }}
+                  iconColor="white"
+                />
+              )}
+            </View>
           </View>
 
-          {Number(reqType) === REQ_TYPE_FORMAT.despachoEnvasado ? (
-            <PackagingDispatchProducts productsPerBatch={productsPerBatch} />
+          {reqType === REQ_TYPE_FORMAT.despachoEnvasado ||
+          reqTypeByPatent === REQ_TYPE_FORMAT.despachoEnvasado ? (
+            <PackagingDispatchProducts
+              productsPerBatch={productsPerBatch ?? []}
+            />
           ) : (
-            <OtherProducts products={queryProductsReq.data!} />
+            <OtherProducts products={queryProductsReq.data! ?? []} />
           )}
         </ScrollView>
       )}

@@ -18,11 +18,11 @@ import {
   ThemedView,
 } from "@/presentation/theme/components";
 import { NoDataCard } from "@/presentation/shared/components";
+import { ReqInfo } from "@/presentation/req/components";
 
 import { LogStatusReq } from "@/infrastructure/entities";
 import { REQ_STATUS_COLUMNS } from "@/config/constants";
 import { SectionListMapper } from "@/infrastructure/mappers";
-import { ReqInfo } from "@/presentation/req/components";
 
 const VerEstadosReqScreen = () => {
   const [logStatusModal, setLogStatusModal] = useState<LogStatusReq | null>(
@@ -33,7 +33,6 @@ const VerEstadosReqScreen = () => {
   const grayDarkColor = useThemeColor({}, "darkGray");
   const textColor = useThemeColor({}, "text");
   const { reqCode, patent } = useGlobalSearchParams();
-  console.log({ reqCode, patent });
 
   const {
     isVisible: isVisibleModal,
@@ -43,17 +42,7 @@ const VerEstadosReqScreen = () => {
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
   const { queryReqByPatent } = useReqByPatent(patent as string);
-  console.log(
-    JSON.stringify(
-      {
-        reqByCode: queryReqByCode.data,
-        reqByPatent: queryReqByPatent.data,
-      },
-      null,
-      2
-    )
-  );
-  // XD7538
+
   const { queryLogStatusReq } = useLogStatusReq(
     (reqCode as string) || String(queryReqByPatent.data?.reqCode)
   );

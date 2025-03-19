@@ -6,7 +6,7 @@ import { ProductReq } from "@/infrastructure/entities";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const useProductsReqByCode = (reqCode: number, reqType: string) => {
+export const useProductsReqByCode = (reqCode: number, reqType: number) => {
   const [productsPerBatch, setProductsPerBatch] = useState<{
     [key: string]: ProductReq[];
   }>({});
@@ -17,7 +17,7 @@ export const useProductsReqByCode = (reqCode: number, reqType: string) => {
       UseCases.getProductsReqByCodeUseCase(sigopApiFetcher, {
         accion: "Consultar productos requerimiento",
         requerimiento: reqCode,
-        tipo_requerimiento: reqType,
+        tipo_requerimiento: String(reqType),
       }),
     enabled: !!reqCode && !!reqType,
     staleTime: 1000 * 60 * 5,

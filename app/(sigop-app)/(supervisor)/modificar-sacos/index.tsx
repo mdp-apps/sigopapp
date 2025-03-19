@@ -29,7 +29,7 @@ const ModificarSacosScreen = () => {
     isLoadingMixed,
     totalKgProductMixes,
     totalPackagingQuantity,
-  } = useProductMixesByCode(reqCode as string, reqType);
+  } = useProductMixesByCode(Number(reqCode), reqType);
 
   if (queryReqByCode.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;

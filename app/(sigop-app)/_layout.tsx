@@ -62,9 +62,7 @@ const CheckAuthenticationLayout = () => {
             name="(home)/ver-detalle-req/index"
             options={{
               headerShown: true,
-              headerTitle: reqCode
-                ? `Detalle de Req. ${reqCode}`
-                : "Detalle de Requerimiento",
+              headerTitle: "Detalle de Requerimiento",
             }}
           />
         </Stack>

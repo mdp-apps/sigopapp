@@ -50,7 +50,7 @@ const ConfigurarPalletsScreen = () => {
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
   const { productMixes, isLoadingMixed } = useProductMixesByCode(
-    reqCode as string,
+    Number(reqCode),
     reqType
   );
   const { configurePallets } = useConfigurePalletsMutation();

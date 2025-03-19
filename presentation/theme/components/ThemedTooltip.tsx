@@ -72,6 +72,7 @@ export const ThemedTooltip = ({
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    zIndex: 99,
   },
   tooltip: {
     position: "absolute",

@@ -5,11 +5,8 @@ import { ProductMix, ProductReq } from "@/infrastructure/entities";
 import { Formatter } from "@/config/helpers";
 import { COMPONENT_TYPE } from "@/config/constants";
 
-export const useProductMixesByCode = (reqCode: string, reqType: number) => {
-  const { queryProductsReq } = useProductsReqByCode(
-    Number(reqCode),
-    String(reqType)
-  );
+export const useProductMixesByCode = (reqCode: number, reqType: number) => {
+  const { queryProductsReq } = useProductsReqByCode(reqCode, reqType);
 
   const productMixes = useMemo(() => {
     if (!queryProductsReq.data) return [];

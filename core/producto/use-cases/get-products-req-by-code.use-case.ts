@@ -21,5 +21,6 @@ export const getProductsReqByCodeUseCase = async (
     body
   );
 
+
   return productsReqByCode.resultado.map(ProductMapper.fromProductReqResultToEntity);
 };
