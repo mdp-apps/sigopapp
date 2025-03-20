@@ -3,7 +3,7 @@ import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Card, Icon } from "react-native-paper";
 
-import { ThemedText } from "@/presentation/theme/components";
+import { TextType, ThemedText } from "@/presentation/theme/components";
 import { Colors } from "@/config/constants";
 
 interface ThemedCardProps {
@@ -11,6 +11,7 @@ interface ThemedCardProps {
   iconSource: string;
   iconSize?: number;
   iconColor?: string;
+  textSize?: TextType;
 }
 
 const { width } = Dimensions.get("window");
@@ -20,6 +21,7 @@ export const NoDataCard = ({
   iconSource,
   iconSize = 120,
   iconColor = Colors.light.primary,
+  textSize = "h2",
 }: ThemedCardProps) => {
   return (
     <Card style={styles.card}>
@@ -28,7 +30,7 @@ export const NoDataCard = ({
           <Icon source={iconSource} size={iconSize} color={iconColor} />
         </View>
         <ThemedText
-          variant="h2"
+          variant={textSize}
           className="font-ruda !text-slate-700 text-center font-bold"
         >
           {message}

@@ -22,7 +22,6 @@ import { InternalMovCard } from "@/presentation/movimiento/components";
 import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 
 import { INTERNAL_MOV_STATUS } from "@/config/constants";
-import { DateAdapter } from "@/config/adapters";
 
 import { Controller } from "react-hook-form";
 
@@ -79,11 +78,7 @@ const MovInternosScreen = () => {
             onClear={() => clearFilter(filterKey)}
             filterKey={filterKey}
             filterLabels={FILTER_LABELS}
-            displayValue={
-              filterKey === "date" && filters.date
-                ? DateAdapter.format(filters.date, "dd/MM/yyyy")
-                : filters[filterKey]
-            }
+            displayValue={filters[filterKey]}
           />
         ))}
       </ScrollFilters>

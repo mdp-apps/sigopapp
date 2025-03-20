@@ -23,6 +23,7 @@ export const useFilters = (
     defaultValues: initialFilters,
   });
 
+
   const {
     isVisible: isModalVisible,
     show: showModal,

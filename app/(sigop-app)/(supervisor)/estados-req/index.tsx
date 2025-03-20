@@ -3,7 +3,7 @@ import React from "react";
 import { SearchReq } from "@/presentation/req/components";
 
 const EstadosReqScreen = () => {
-  return <SearchReq screenLink="/(sigop-app)/(supervisor)/ver-estados-req" searchByPatent />;
+  return <SearchReq screenLink="/(sigop-app)/(supervisor)/ver-estados-req" />;
 };
 
 export default EstadosReqScreen;

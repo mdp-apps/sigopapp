@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TextProps } from "react-native";
 
-type TextType =
+export type TextType =
   | "normal"
   | "h1"
   | "h2"
