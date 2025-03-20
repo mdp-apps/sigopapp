@@ -39,7 +39,6 @@ const MenuScreen = () => {
       )}
 
       {profile === UserProfile.driver && <DriverReq />}
-
       {profile === UserProfile.supervisor && <SupervisorMenu />}
       {profile === UserProfile.foreman && <ForemanMenu />}
       {profile === UserProfile.planner && <PlannerMenu />}

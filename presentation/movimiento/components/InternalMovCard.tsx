@@ -23,17 +23,17 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
 
   return (
     <ThemedAccordion
-      title={`Mov ${movement.id}. ${movement.productName}`}
-      description={`${movement.plannedDate} (T${movement.turn}) - ${movement.customerName}`}
+      title={`Det. ${movement.detailId} - ${movement.productName}`}
+      description={`Mov. ${movement.id} - ${movement.plannedDate} (T${movement.turn}) - ${movement.customerName}`}
       titleStyle={{
-        fontSize: 15,
+        fontSize: 14,
         fontFamily: "sans-serif",
         fontWeight: "bold",
         textTransform: "uppercase",
         color: darkGrayColor,
       }}
       descriptionStyle={{
-        fontSize: 15,
+        fontSize: 14,
         fontFamily: "sans-serif",
         color: darkGrayColor,
       }}
@@ -94,13 +94,15 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
         <Divider className="my-3" />
 
         <ThemedView className="flex-row mr-5" bgColor="white">
-          <ThemedText
-            variant="h5"
-            className="flex-1 text-light-dark-gray uppercase font-bold mt-3"
-            adjustsFontSizeToFit
-          >
-            Origen
-          </ThemedText>
+          <View className="flex-1 justify-center">
+            <ThemedText
+              variant="h5"
+              className="text-light-dark-gray uppercase font-bold"
+              adjustsFontSizeToFit
+            >
+              Origen
+            </ThemedText>
+          </View>
 
           <View className="flex-1 gap-2">
             <ThemedText
@@ -110,6 +112,23 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
             >
               {movement.warehouseName}
             </ThemedText>
+
+            <View>
+              <ThemedText
+                variant="h6"
+                className="text-gray-950 font-semibold"
+                adjustsFontSizeToFit
+              >
+                Operación:
+              </ThemedText>
+              <ThemedText
+                variant="h6"
+                className="flex-1 text-light-dark-gray uppercase"
+                adjustsFontSizeToFit
+              >
+                {movement.operationName}
+              </ThemedText>
+            </View>
 
             <View className="flex-row gap-2">
               <ThemedText
@@ -150,14 +169,16 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
 
         <Divider className="my-3" />
 
-        <ThemedView className="flex-row mr-5" bgColor="white">
-          <ThemedText
-            variant="h5"
-            className="flex-1 text-light-dark-gray uppercase font-bold mt-3"
-            adjustsFontSizeToFit
-          >
-            Destino
-          </ThemedText>
+        <ThemedView className="flex-row  mr-5" bgColor="white">
+          <View className="flex-1 justify-center">
+            <ThemedText
+              variant="h5"
+              className=" text-light-dark-gray uppercase font-bold"
+              adjustsFontSizeToFit
+            >
+              Destino
+            </ThemedText>
+          </View>
 
           <View className="flex-1 gap-2">
             <ThemedText
@@ -167,6 +188,23 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
             >
               {movement.warehouseDestinyName}
             </ThemedText>
+
+            <View>
+              <ThemedText
+                variant="h6"
+                className="text-gray-950 font-semibold"
+                adjustsFontSizeToFit
+              >
+                Operación:
+              </ThemedText>
+              <ThemedText
+                variant="h6"
+                className="flex-1 text-light-dark-gray uppercase"
+                adjustsFontSizeToFit
+              >
+                {movement.operationDestinyName}
+              </ThemedText>
+            </View>
 
             <View className="flex-row gap-2">
               <ThemedText
