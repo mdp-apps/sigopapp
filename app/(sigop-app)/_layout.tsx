@@ -11,7 +11,6 @@ import { ThemedLoader } from "@/presentation/theme/components";
 const CheckAuthenticationLayout = () => {
   const backgroundColor = useThemeColor({}, "background");
   const primaryColor = useThemeColor({}, "primary");
-  const { reqCode } = useGlobalSearchParams();
 
   const { status, checkStatus } = useAuthStore();
 

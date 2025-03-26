@@ -43,6 +43,49 @@ export interface ReqResponse extends DriverReqResponse {
   nombre: string;
   patente: string;
 }
+
+//! Quitar si no se usará para reemplazar a ReqResponse 
+interface NewReq {
+  bod_cod: number;
+  cho_cod: string;
+  cho_rut: string;
+  cli_abreviacion: string;
+  cli_cod: string;
+  emp_cod_transp: string;
+  emp_nombre: string;
+  esreq_cod: number;
+  esreq_nombre: string;
+  fre_cod: number;
+  fre_nombre: string;
+  nombre_chofer: string;
+  nombre_usuario: string;
+  nove_cod_docto: null;
+  nove_cod: null;
+  nove_secundaria: null;
+  pla_cod: number;
+  recli_cod: string;
+  recli_fecha_creacion: string;
+  recli_fecha: string;
+  recli_hora_entrada_maxima_show: string;
+  recli_hora_entrada_maxima: string;
+  recli_hora_entrada_req_show: string;
+  recli_hora_entrada_req: string;
+  recli_mdp_completa: number;
+  recli_num_carga: string;
+  recli_observacion: string;
+  recli_tiene_palet: number;
+  recli_trans_completa: number;
+  suma_productos_kg: string;
+  suma_productos_verificado_kg: string;
+  tra_cod: string;
+  treq_cod: number;
+  treq_nombre: string;
+  tur_cod: number;
+  usu_cod: string;
+  usu_email: string;
+  veh_cod: string;
+  veh_patente: string;
+}
 export interface LogStatusReqResponse {
   codigo_cliente: number;
   codigo_estado_requerimiento: number;

@@ -64,17 +64,6 @@ const SaldosScreen = () => {
   const { queryWarehouses, dropdownWarehouses } = useWarehouses();
   const { queryOperations, dropdownOperations } = useOperations();
 
-  console.log(
-    JSON.stringify(
-      {
-        stock: queryCurrentStock.data,
-        stockLenght: queryCurrentStock.data?.length,
-        filters,
-      },
-      null,
-      2
-    )
-  );
   return (
     <ThemedView keyboardAvoiding>
       <ScrollFilters>

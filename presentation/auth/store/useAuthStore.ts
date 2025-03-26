@@ -4,26 +4,17 @@ import { StorageAdapter } from "@/config/adapters/storage.adapter";
 
 import * as UseCases from "@/core/auth/use-cases";
 import {
+  AuthStatus,
   Driver,
   DriverSession,
   User,
+  UserProfile,
   UserSession,
 } from "@/infrastructure/entities";
 
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { create } from "zustand";
-
-type AuthStatus = "authenticated" | "unauthenticated" | "checking";
-
-enum UserProfile {
-  default = "",
-  driver = "driver",
-  customer = "customer",
-  supervisor = "supervisor",
-  planner = "planner",
-  foreman = "foreman",
-}
 
 type Session = { session: UserSession | DriverSession; profile: UserProfile };
 
@@ -70,10 +61,7 @@ const saveUserSession = async (
     };
   }
 
-  await StorageAdapter.setItem(
-    "userSession",
-    JSON.stringify(session)
-  );
+  await StorageAdapter.setItem("userSession", JSON.stringify(session));
 
   return { session, profile };
 };
@@ -92,9 +80,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return false;
     }
 
-    const storageProfile = await StorageAdapter.getItem("userProfile") as UserProfile;
-    
-    const { session,profile } = await saveUserSession(user, storageProfile);
+    const storageProfile = (await StorageAdapter.getItem(
+      "userProfile"
+    )) as UserProfile;
+
+    const { session, profile } = await saveUserSession(user, storageProfile);
 
     set({ status: "authenticated", user: session, profile: profile });
 
@@ -173,12 +163,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     set({ status: "unauthenticated", user: undefined, profile: undefined });
   },
-  selectProfile: async(profile: UserProfile) => {
+  selectProfile: async (profile: UserProfile) => {
     if (profile === UserProfile.default) return;
-    
+
     set({ profile });
     await StorageAdapter.setItem("userProfile", profile);
-    
+
     if (profile === UserProfile.driver) {
       router.push("/auth/login-driver");
       return;

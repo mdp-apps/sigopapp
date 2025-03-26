@@ -5,8 +5,8 @@ import { Alert, Keyboard } from "react-native";
 import { router } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
-
 import { useLocationPermissionsStore } from "@/presentation/shared/store";
+
 import { AuthBaseLayout } from "@/presentation/shared/layouts";
 import {
   ThemedButton,
@@ -42,8 +42,9 @@ const LoginConductorScreen = () => {
   const onSubmit = async (values: z.infer<typeof loginRutSchema>) => {
     Keyboard.dismiss();
 
-    const formattedRut = Formatter.formatRut(values.rut);
-    const driverSession = await loginDriver(formattedRut);
+     
+     const formattedRut = Formatter.rutWithDots(values.rut);
+     const driverSession = await loginDriver(formattedRut);
 
     if (driverSession) {
       router.push("/(sigop-app)/(home)");
@@ -71,9 +72,11 @@ const LoginConductorScreen = () => {
             className="text-black px-4 py-2 border border-light-primary font-ruda rounded-full mb-2"
             style={{ height: 50 }}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              onChange(Formatter.rutWithoutDots(text))
+            }}
             value={value}
-            placeholder="Ingrese su RUT  (Sin puntos, con guión y DV)"
+            placeholder="Ingrese su RUT (con guión y DV)"
             returnKeyType="next"
             isNative
           />

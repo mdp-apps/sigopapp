@@ -7,7 +7,7 @@ export class Formatter {
     return text.charAt(0).toLocaleUpperCase() + text.slice(1);
   }
 
-  static formatRut(text: string): string {
+  static rutWithDots(text: string): string {
     const cleanedInput = text.replace(REGEX.cleanRut, "");
 
     if (cleanedInput.length <= 1) {
@@ -20,6 +20,18 @@ export class Formatter {
     let formattedRut = rutPart.replace(REGEX.dotsInRut, ".");
 
     return `${formattedRut}-${dv}`;
+  }
+
+  static rutWithoutDots(text: string): string {
+    if (!text) return text;
+
+    const cleanedInput = text.replace(REGEX.cleanRut, "");
+
+    if (cleanedInput.length > 1) {
+      return cleanedInput.slice(0, -1) + "-" + cleanedInput.slice(-1);
+    }
+
+    return cleanedInput;
   }
 
   static initialLetter(text: string): string {
@@ -39,5 +51,5 @@ export class Formatter {
       return text.slice(0, maxLength) + "...";
     }
     return text;
-  };
+  }
 }
