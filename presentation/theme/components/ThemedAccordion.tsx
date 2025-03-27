@@ -34,7 +34,9 @@ export const ThemedAccordion = ({
       style={[styles.accordion, style]}
       titleNumberOfLines={2}
     >
-      <Card style={styles.card}>{children}</Card>
+      <Card style={styles.card}>
+        {children}
+      </Card>
     </List.Accordion>
   );
 };

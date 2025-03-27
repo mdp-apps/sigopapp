@@ -39,6 +39,7 @@ export const ThemedButton = ({
 
   return (
     <Pressable
+      testID="button"
       onPress={onPress}
       disabled={disabled}
       className={[
@@ -52,7 +53,11 @@ export const ThemedButton = ({
       {...rest}
     >
       {variant === "icon" && !text ? (
-        <Icon source={iconName} size={iconSize} color={iconColor} />
+        <Icon
+          source={iconName}
+          size={iconSize}
+          color={iconColor}
+        />
       ) : children ? (
         isLoading ? (
           <View className="flex-row justify-center items-center gap-2">

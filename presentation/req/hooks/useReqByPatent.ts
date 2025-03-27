@@ -5,7 +5,7 @@ import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { useQuery } from "@tanstack/react-query";
 
-export const useReqByPatent = (patent: string, statusCode?: number) => {
+export const useReqByPatent = (patent: string) => {
   const [reqType, setReqType] = useState(0);
   const [reqCode, setReqCode] = useState(0);
 
@@ -18,7 +18,6 @@ export const useReqByPatent = (patent: string, statusCode?: number) => {
           accion: "Consultar requerimientos por patente",
           patente: patent,
         },
-        statusCode,
       ),
     enabled: !!patent,
     staleTime: 1000 * 60 * 5,

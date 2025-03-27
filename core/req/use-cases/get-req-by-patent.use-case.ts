@@ -14,21 +14,11 @@ interface Body {
 export const getReqByPatentUseCase = async (
   fetcher: HttpAdapter,
   body: Body,
-  status?: number
 ): Promise<Req> => {
-
   const reqByPatent = await fetcher.post<ApiResponse<ReqResponse[]>, Body>(
     `/requerimientos/patente`,
     body
   );
 
-  const reqPatentByStatus = reqByPatent.resultado.find(
-    (req) => req.estado === status
-    );
-
-  if (Boolean(status) && reqPatentByStatus) {
-    return ReqMapper.fromReqsResultToEntity(reqPatentByStatus);
-  }
-  
   return ReqMapper.fromReqsResultToEntity(reqByPatent.resultado[0]);
 };
