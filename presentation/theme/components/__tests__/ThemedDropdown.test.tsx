@@ -107,7 +107,7 @@ describe("Probar <ThemedDropdown/>", () => {
     render(
       <ThemedDropdown data={[]} isLoading={false} />
     );
-    screen.debug();
+    
     expect(screen.queryByText(mockData.at(0)?.name!)).toBeNull();
     expect(screen.queryByText(mockData.at(1)?.name!)).toBeNull();
   });

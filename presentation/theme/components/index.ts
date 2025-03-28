@@ -6,7 +6,7 @@ export * from './ThemedDialog';
 export * from './ThemedDropdown';
 export * from './ThemedHelperText';
 export * from './ThemedIconTooltip';
-export * from './ThemedIput';
+export * from './ThemedInput';
 export * from './ThemedLoader';
 export * from './ThemedModal';
 export * from './ThemedMultiSelect';
