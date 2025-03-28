@@ -1,6 +1,5 @@
 export * from './ThemedAccordion';
 export * from './ThemedButton';
-export * from './ThemedCard';
 export * from './ThemedChip';
 export * from './ThemedDataTable';
 export * from './ThemedDialog';

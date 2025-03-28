@@ -27,11 +27,6 @@ describe("Probar <ThemedButton/>", () => {
     expect(screen.getByText(buttonText)).toBeTruthy();
   });
 
-  test.skip("Debe renderizar en el estilo 'icon'", () => {
-    render(<ThemedButton variant="icon" iconName="settings" />);
-    // expect(screen.getByTestId("icon")).toBeTruthy();
-  });
-
   test("Debe mostrar un indicador de carga cuando 'isLoading' es true", () => {
     render(<ThemedButton isLoading>{buttonText}</ThemedButton>);
     expect(ActivityIndicator).toHaveBeenCalled();
