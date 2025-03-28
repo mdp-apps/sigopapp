@@ -1,8 +1,6 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react-native";
 import { ThemedDropdown } from "../ThemedDropdown";
-import { ActivityIndicator } from "react-native-paper";
-import { Text, TouchableOpacity, View } from "react-native";
 
 type DropdownItem = {
   code: React.Key | null | undefined;

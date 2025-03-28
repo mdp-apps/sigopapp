@@ -1,6 +1,7 @@
-import { useVisibility } from "@/presentation/shared/hooks";
 import React from "react";
 import { View, Text, TouchableWithoutFeedback, StyleSheet } from "react-native";
+
+import { useVisibility } from "@/presentation/shared/hooks";
 
 type ReactElement = React.ReactElement<any>;
 

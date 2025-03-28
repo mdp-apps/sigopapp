@@ -7,7 +7,6 @@ import { DropdownResponse } from "@/infrastructure/interfaces";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-
 interface ThemedDropdownProps {
   data: DropdownResponse[];
   isLoading: boolean;
@@ -16,8 +15,13 @@ interface ThemedDropdownProps {
   placeholder?: string;
 }
 
-export const ThemedDropdown = ({ data, isLoading,onChange, selected,placeholder }: ThemedDropdownProps) => {
-
+export const ThemedDropdown = ({
+  data,
+  isLoading,
+  onChange,
+  selected,
+  placeholder,
+}: ThemedDropdownProps) => {
   const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {

@@ -39,7 +39,11 @@ export const ThemedChip = ({
         mode={mode}
         icon={() =>
           iconSource && (
-            <Icon source={iconSource} size={iconSize} color={iconColor} />
+            <Icon
+              source={iconSource}
+              size={iconSize}
+              color={iconColor}
+            />
           )
         }
         style={[styles.chip, style]}
