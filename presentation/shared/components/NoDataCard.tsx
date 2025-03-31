@@ -26,7 +26,7 @@ export const NoDataCard = ({
   return (
     <Card style={styles.card}>
       <View className="flex justify-center items-center gap-3">
-        <View>
+        <View testID="card-icon">
           <Icon source={iconSource} size={iconSize} color={iconColor} />
         </View>
         <ThemedText
