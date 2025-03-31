@@ -124,7 +124,6 @@ const SaldosScreen = () => {
             data={queryCurrentStock.data}
             renderItem={({ item }) => <BalanceCard balance={item} />}
             keyExtractor={(item, index) => `${index}${item.operationCode}`}
-            onEndReachedThreshold={0.5}
             initialNumToRender={2}
             maxToRenderPerBatch={5}
           />

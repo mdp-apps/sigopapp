@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useFilters } from "@/presentation/shared/hooks";
@@ -55,15 +55,16 @@ const MovInternosScreen = () => {
     handleApplyFilters,
   } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
-  const { queryInternalMovements } = useInternalMovements({
-    code: filters.code,
-    detailCode: filters.detailCode,
-    internalMovementType: filters.internalMovementType,
-    internalMovementStatus: filters.internalMovementStatus,
-    date: filters.date,
-    turn: filters.turn,
-    customer: filters.customer,
-  });
+  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
+    useInternalMovements({
+      code: filters.code,
+      detailCode: filters.detailCode,
+      internalMovementType: filters.internalMovementType,
+      internalMovementStatus: filters.internalMovementStatus,
+      date: filters.date,
+      turn: filters.turn,
+      customer: filters.customer,
+    });
 
   const { queryTurns, dropdownTurns } = useTurns();
   const { queryCustomers, dropdownCustomers } = useCustomers();
@@ -129,9 +130,12 @@ const MovInternosScreen = () => {
             data={queryInternalMovements.data}
             renderItem={({ item }) => <InternalMovCard movement={item} />}
             keyExtractor={(item, index) => `${index}${item.id}`}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={2}
-            maxToRenderPerBatch={5}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={onPullToRefresh}
+              />
+            }
           />
         ) : (
           <NoDataCard

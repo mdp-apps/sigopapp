@@ -3,9 +3,9 @@ import { Colors } from "./Colors";
 export const INTERNAL_MOV_STATUS = {
   borrador: 1,
   creado: 2,
-  planificado: 3, 
+  planificado: 3,
   pAdicional: 4,
-  enCurso: 5, 
+  enCurso: 5,
   cerrado: 6,
   finalizado: 7,
 };

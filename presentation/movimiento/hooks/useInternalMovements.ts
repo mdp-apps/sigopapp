@@ -1,7 +1,9 @@
-import * as UseCases from "@/core/movimiento/use-cases";
+import { useState } from "react";
 
+import * as UseCases from "@/core/movimiento/use-cases";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
-import { useQuery } from "@tanstack/react-query";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type InternalMovementBody = {
   code: string;
@@ -16,6 +18,10 @@ type InternalMovementBody = {
 export const useInternalMovements = (
   internalMovsBody?: InternalMovementBody
 ) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const queryClient = useQueryClient();
+
   const queryInternalMovements = useQuery({
     queryKey: ["internal-movs", internalMovsBody ? internalMovsBody : "all"],
     queryFn: async () => {
@@ -44,7 +50,20 @@ export const useInternalMovements = (
     },
   });
 
+  const onPullToRefresh = async() => {
+    setIsRefreshing(true);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    queryClient.invalidateQueries({
+      queryKey: ["internal-movs", internalMovsBody ? internalMovsBody : "all"],
+    });
+
+    setIsRefreshing(false);
+  }
+
   return {
     queryInternalMovements,
+    isRefreshing,
+    onPullToRefresh,
   };
 };

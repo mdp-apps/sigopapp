@@ -59,7 +59,6 @@ describe("Probar <ThemedTabs />", () => {
   
   test("Debe cambiar de tab al presionar", () => {
     render(<ThemedTabs tabs={mockTabs} />);
-    screen.debug();
 
     fireEvent.press(screen.getByTestId("tab-Tab 2"));
 
