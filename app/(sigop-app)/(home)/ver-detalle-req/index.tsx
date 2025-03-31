@@ -30,7 +30,7 @@ const VerDetalleReqScreen = () => {
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
   const { queryReqByPatent, reqTypeByPatent, reqCodeByPatent } = useReqByPatent(
-    patent as string,
+    patent as string
   );
   const { queryProductsReq, totalKg, productsPerBatch } = useProductsReqByCode(
     reqCode ? Number(reqCode) : reqCodeByPatent,

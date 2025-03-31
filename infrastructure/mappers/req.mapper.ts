@@ -16,6 +16,8 @@ import {
   TypeReq,
 } from "../entities";
 
+import { CalcAdapter } from "@/config/adapters";
+
 export class ReqMapper {
   static fromActiveReqsAccountResultToEntity(
     response: ActiveReqResponse
@@ -75,11 +77,18 @@ export class ReqMapper {
       description: response.descripcion,
       driverName: response.nombre_chofer,
       formatType: response.tipo_formato,
+      //! Cambiar si cambia el endpoint o la propiedad
+      hasPallet: response.tiene_palet
+        ? response.tiene_palet === 1
+        : CalcAdapter.getRandomNumber(0, 1) === 1,
       name: response.nombre,
       nameReqFormat: response.nombre_requerimiento_formato,
       observation: response.observacion,
       patent: response.patente,
-      plantCode: response.planta,
+      //! Cambiar si cambia el endpoint o la propiedad
+      plantCode: response.planta
+        ? response.planta
+        : CalcAdapter.getRandomNumber(1, 14),
       reqCode: response.codigo_interno,
       reqType: response.tipo_requerimiento,
       rutDriver: response.rut_chofer,
@@ -87,7 +96,10 @@ export class ReqMapper {
       statusName: response.estado_nombre,
       turn: response.turno,
       vehiclePatent: response.patente_vehiculo,
-      warehouseCode: response.bodega,
+      //! Cambiar si cambia el endpoint o la propiedad
+      warehouseCode: response.bodega
+        ? response.bodega
+        : CalcAdapter.getRandomNumber(1, 29),
     };
   }
 

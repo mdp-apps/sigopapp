@@ -4,7 +4,7 @@ export class CalcAdapter {
     lon1: number,
     lat2: number,
     lon2: number
-  ) => {
+  ): number => {
     const R = 6371e3;
     const φ1 = (lat1 * Math.PI) / 180;
     const φ2 = (lat2 * Math.PI) / 180;
@@ -20,8 +20,7 @@ export class CalcAdapter {
     return distance;
   };
 
-  static getRandomNumber = (min: number, max: number) => {
+  static getRandomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
-
 }

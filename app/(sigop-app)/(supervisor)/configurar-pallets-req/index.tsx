@@ -64,7 +64,16 @@ const ConfigurarPalletsScreen = () => {
     palletTotalWeight,
   } = usePalletizedProductionByCode(
     reqCode ? Number(reqCode) : reqCodeByPatent
-  );
+    );
+  
+   console.log(
+     JSON.stringify(
+       { reqByCode: queryReqByCode.data, reqByPatent: queryReqByPatent.data },
+       null,
+       2
+     )
+   );
+
 
   const { isSelectedAll, selectedRows, handleToggleRow, handleToggleAll } =
     useCheckboxSelector<ProductMix>(productMixes);
