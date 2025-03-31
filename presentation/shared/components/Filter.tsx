@@ -42,6 +42,7 @@ export const Filter = ({
 
       {displayValue && (
         <ThemedButton
+          testID="clear-filter-button"
           onPress={onClear}
           className="!p-0 mr-2"
           variant="icon"
