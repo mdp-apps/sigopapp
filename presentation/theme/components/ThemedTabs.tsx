@@ -1,6 +1,5 @@
 import React from 'react'
 import { TextStyle, ViewStyle } from 'react-native';
-import { MD3LightTheme } from 'react-native-paper';
 
 import {
   TabsProvider,
@@ -61,7 +60,6 @@ export const ThemedTabs = ({
         theme={{
           colors: {
             primary: primaryColor,
-            // onSurface: primaryColor,
           },
         }}
         mode={mode}
