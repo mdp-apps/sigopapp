@@ -42,6 +42,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
       />
 
       <ThemedButton
+        testID="toggle-visibility"
         variant="icon"
         onPress={() => togglePasswordVisibility()}
         iconName={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
