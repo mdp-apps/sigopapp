@@ -9,8 +9,12 @@ interface ThemedLoaderProps {
 
 export const ThemedLoader = ({color,size}: ThemedLoaderProps) => {
   return (
-    <ThemedView safe className="items-center justify-center">
-      <ActivityIndicator color={color} size={size} className="mx-auto" />
+    <ThemedView className="items-center justify-center" safe>
+      <ActivityIndicator
+        color={color}
+        size={size}
+        className="mx-auto"
+      />
     </ThemedView>
   );
 };

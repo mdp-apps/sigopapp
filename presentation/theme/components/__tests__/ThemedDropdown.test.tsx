@@ -1,19 +1,9 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react-native";
-import { ThemedDropdown } from "../ThemedDropdown";
 
-type DropdownItem = {
-  code: React.Key | null | undefined;
-  name:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | Iterable<React.ReactNode>
-    | React.ReactPortal
-    | null
-    | undefined;
-};
+import { ThemedDropdown } from "../ThemedDropdown";
+import { DropdownItem } from "@/infrastructure/interfaces";
+
 
 // 🔹 Mock de `react-native-element-dropdown`
 jest.mock("react-native-element-dropdown", () => {

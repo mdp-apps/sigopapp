@@ -3,7 +3,7 @@ import { render, fireEvent, screen } from "@testing-library/react-native";
 
 import { ThemedInput } from "../ThemedInput";
 
-describe("Componente ThemedInput", () => {
+describe("Probar <ThemedInput />", () => {
   const placeholderText = "Ingrese algo";
   const testValue = "Prueba de texto";
 
