@@ -11,7 +11,7 @@ describe("Probar <Filter />", () => {
   const filterKeyMock = "status";
   let displayValueMock = "";
 
-  test("Se renderiza correctamente con las props adecuadas", () => {
+  test("Debe renderizar correctamente con las props adecuadas", () => {
     render(
       <Filter
         onPress={mockOnPress}
@@ -25,7 +25,7 @@ describe("Probar <Filter />", () => {
     expect(screen.getByText(FILTER_LABELS[filterKeyMock])).toBeTruthy();
   });
 
-  test("Muestra el texto correcto basado en `displayValue`", () => {
+  test("Debe mostrar el texto correcto basado en `displayValue`", () => {
     displayValueMock = "Activo";
 
     render(
@@ -43,7 +43,7 @@ describe("Probar <Filter />", () => {
     ).toBeTruthy();
   });
 
-  test("Llama a `onPress` cuando se toca el botón principal", () => {
+  test("Debe invocar a `onPress` cuando se toca el botón principal", () => {
     displayValueMock = "";
 
     render(
@@ -60,7 +60,7 @@ describe("Probar <Filter />", () => {
     expect(mockOnPress).toHaveBeenCalledTimes(1);
   });
 
-  test("Llama a `onClear` cuando hay `displayValue` y se toca el botón de limpiar", () => {
+  test("Debe invocar a `onClear` cuando hay `displayValue` y se toca el botón de limpiar", () => {
     displayValueMock = "Activo";
 
     render(
