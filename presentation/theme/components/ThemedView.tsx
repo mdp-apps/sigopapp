@@ -3,7 +3,6 @@ import React from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   View,
   ViewProps,
 } from "react-native";
