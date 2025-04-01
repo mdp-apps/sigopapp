@@ -11,7 +11,7 @@ import {
 
 import { DriverReq } from "@/infrastructure/entities";
 import { CalcAdapter } from "@/config/adapters";
-import { TARGET_LATITUDE, TARGET_LONGITUDE } from "@/config/constants";
+import { MDP_LATITUDE, MDP_LONGITUDE } from "@/config/constants";
 
 export const useReqLocation = (reqCode: number, driverRut: string) => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -31,8 +31,8 @@ export const useReqLocation = (reqCode: number, driverRut: string) => {
       CalcAdapter.calculateDistance(
         lastKnownLocation.latitude,
         lastKnownLocation.longitude,
-        TARGET_LATITUDE,
-        TARGET_LONGITUDE
+        MDP_LATITUDE,
+        MDP_LONGITUDE,
       );
 
     const radius = 1500;

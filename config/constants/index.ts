@@ -3,7 +3,7 @@ export * from './Column';
 export * from './CustomerCompany';
 export * from './Global';
 export * from './InternalMov';
-export * from './MapLocation';
+export * from './Location';
 export * from './Palletized';
 export * from './Policy';
 export * from './Product';
