@@ -58,11 +58,9 @@ export const DriverReq = () => {
 
   const { isVisible: isVisibleCard, show: showCard } = useVisibility();
 
-  const { queryDriverReqs, reqType, changeReqType } =
-    useDriverReqsByRut(
-      profile === UserProfile.driver ? user?.rut! : getValues("rut")
-    );
-  
+  const { queryDriverReqs, reqType, changeReqType } = useDriverReqsByRut(
+    profile === UserProfile.driver ? user?.rut! : getValues("rut")
+  );
 
   useEffect(() => {
     if (errors.rut) {
@@ -121,7 +119,7 @@ export const DriverReq = () => {
       <ScrollView className="w-full">
         <View className="w-full min-h-56">
           {queryDriverReqs.isLoading ? (
-            <ThemedLoader color={primaryColor} size="large"/>
+            <ThemedLoader color={primaryColor} size="large" />
           ) : (
             isVisibleCard && (
               <View className="gap-5">
