@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { ThemedText, ThemedView } from "@/presentation/theme/components";
+
 interface AuthBaseLayoutProps {
   children: React.ReactNode;
   profile?: string;
