@@ -11,6 +11,6 @@ export const checkLocationPermissionUseCase = async (): Promise<PermissionStatus
       case "denied":
         return PermissionStatus.DENIED;
       default:
-        return PermissionStatus.UNDETERNAMINED;
+        return PermissionStatus.UNDETERMINED;
     }
   };

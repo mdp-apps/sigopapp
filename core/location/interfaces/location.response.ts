@@ -5,7 +5,7 @@ export enum PermissionStatus {
   BLOCKED = "blocked",
   LIMITED = "limited",
   UNAVAILABLE = "unavailable",
-  UNDETERNAMINED = "undetermined",
+  UNDETERMINED = "undetermined",
 }
 
 export interface LatLng {
