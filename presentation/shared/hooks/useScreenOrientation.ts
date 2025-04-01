@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 
 import * as ScreenOrientation from "expo-screen-orientation";
 
+const initialOrientation = ScreenOrientation.OrientationLock.DEFAULT;
+
 export const useScreenOrientation = () => {
-  const [currentOrientation, setCurrentOrientation] = useState<number>(0);
+  const [currentOrientation, setCurrentOrientation] = useState<ScreenOrientation.OrientationLock>(initialOrientation);
 
   useEffect(() => {
     getCurrentOrientation();
