@@ -1,22 +1,32 @@
 export class CalcAdapter {
   static calculateDistance = (
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number
+    baseLatitude: number,
+    baseLongitude: number,
+    targetLatitude: number,
+    targetLongitude: number
   ): number => {
-    const R = 6371e3;
-    const φ1 = (lat1 * Math.PI) / 180;
-    const φ2 = (lat2 * Math.PI) / 180;
-    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-    const Δλ = ((lon1 - lon2) * Math.PI) / 180;
+    const EARTH_RADIUS_METERS = 6371e3;
+    const baseLatitudeRadians = (baseLatitude * Math.PI) / 180;
+    const targetLatitudeRadians = (targetLatitude * Math.PI) / 180;
+    const latitudeDifferenceRadians =
+      ((targetLatitude - baseLatitude) * Math.PI) / 180;
+    const longitudeDifferenceRadians =
+      ((baseLongitude - targetLongitude) * Math.PI) / 180;
 
-    const a =
-      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const haversineFormula =
+      Math.sin(latitudeDifferenceRadians / 2) *
+        Math.sin(latitudeDifferenceRadians / 2) +
+      Math.cos(baseLatitudeRadians) *
+        Math.cos(targetLatitudeRadians) *
+        Math.sin(longitudeDifferenceRadians / 2) *
+        Math.sin(longitudeDifferenceRadians / 2);
 
-    const distance = R * c;
+    const centralAngle =
+      2 *
+      Math.atan2(Math.sqrt(haversineFormula), Math.sqrt(1 - haversineFormula));
+
+    const distance = EARTH_RADIUS_METERS * centralAngle;
+
     return distance;
   };
 
