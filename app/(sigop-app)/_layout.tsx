@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { router, Stack, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import { router, Stack } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useAuthStore } from "@/presentation/auth/store";

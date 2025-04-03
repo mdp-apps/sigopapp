@@ -128,8 +128,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const email = await StorageAdapter.getItem("userEmail");
     const password = await StorageAdapter.getItem("userPassword");
     const rut = await StorageAdapter.getItem("userRut");
-    // console.log(JSON.stringify({ email, password, rut }, null, 2));
-
+    
     if (email && password) {
       const res = await UseCases.userLoginUseCase(sigopApiFetcher, {
         accion: "Validar inicio sesion",

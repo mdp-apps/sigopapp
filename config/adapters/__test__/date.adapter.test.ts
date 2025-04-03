@@ -37,7 +37,6 @@ describe("Probar adaptador DateAdapter", () => {
     test("Debe convertir una fecha a la zona horaria de Chile", () => {
       const date = "2025-04-01T12:00:00Z";
       const convertedDate = DateAdapter.toDate(date);
-      console.log(convertedDate);
 
       expect(convertedDate).toBeInstanceOf(Date);
       expect(convertedDate.getFullYear()).toBe(2025);

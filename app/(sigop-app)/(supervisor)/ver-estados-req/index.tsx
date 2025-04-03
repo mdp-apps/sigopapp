@@ -60,7 +60,7 @@ const VerEstadosReqScreen = () => {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
-          message={`No existe el requerimiento ingresado`}
+          message={`No existe o no está en curso el requerimiento ingresado`}
           iconSource="alert-circle"
           iconColor="red"
         />

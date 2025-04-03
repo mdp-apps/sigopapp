@@ -16,8 +16,4 @@ export const sigopApiFetcher = new AxiosAdapter({
   baseURL: API_URL,
 });
 
-export const newSigopApiFetcher = new AxiosAdapter({
-  baseURL: process.env.EXPO_PUBLIC_API_SIGOP as string,
-});
-
 
