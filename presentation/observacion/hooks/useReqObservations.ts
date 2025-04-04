@@ -4,13 +4,13 @@ import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 
 
-export const useReqObservations = (reqCode: string) => {
+export const useReqObservations = (reqCode: number) => {
   const queryObservations = useQuery({
     queryKey: ["observations", reqCode],
     queryFn: () =>
       UseCases.getReqObservationsUseCase(sigopApiFetcher, {
         accion: "Consultar observaciones requerimiento",
-        requerimiento: reqCode,
+        requerimiento: String(reqCode),
       }),
     enabled: !!reqCode,
   });

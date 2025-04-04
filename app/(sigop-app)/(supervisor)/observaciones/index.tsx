@@ -5,7 +5,7 @@ import { useGlobalSearchParams } from "expo-router";
 import { useAuthStore } from "@/presentation/auth/store";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
-import { useReqByCode } from "@/presentation/req/hooks";
+import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
 import {
   useObservationMutation,
   useReqObservations,
@@ -52,7 +52,7 @@ const ObservacionesScreen = () => {
     },
   });
 
-  const { reqCode } = useGlobalSearchParams();
+  const { reqCode, patent } = useGlobalSearchParams();
 
   const {
     isVisible: isVisibleModal,
@@ -61,7 +61,12 @@ const ObservacionesScreen = () => {
   } = useVisibility();
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
-  const { queryObservations } = useReqObservations(reqCode as string);
+  const { queryReqByPatent, reqCodeByPatent,reqTypeByPatent } = useReqByPatent(
+      patent as string
+    );
+  const { queryObservations } = useReqObservations(
+    reqCode ? Number(reqCode) : reqCodeByPatent
+  );
   const { createObservation } = useObservationMutation();
 
   const handleModal = (logStatusReq: ObservationReq) => {
@@ -90,11 +95,11 @@ const ObservacionesScreen = () => {
     });
   };
 
-  if (queryReqByCode.isLoading) {
+  if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
   }
 
-  if (queryReqByCode.isError) {
+  if (queryReqByCode.isError || queryReqByPatent.isError) {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
@@ -108,7 +113,7 @@ const ObservacionesScreen = () => {
 
   return (
     <ThemedView safe keyboardAvoiding>
-      <ReqInfo req={queryReqByCode.data!} />
+      <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!} />
 
       <ThemedView className="flex-1 items-center gap-4" margin>
         <Controller

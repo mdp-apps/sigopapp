@@ -23,8 +23,23 @@ export const useUpdatePackagingMutation = () => {
 
   const updatePackaging = useMutation({
     mutationFn: (data: UpdatePackagingBody) => {
-      const { reqCode, codeDetailReq, mixCode, batch, productCode, quantity } =
-        data;
+      const { reqCode, codeDetailReq, mixCode, batch, productCode, quantity } = data;
+      
+      console.log(
+        JSON.stringify(
+          {
+            cantidad: Number(quantity),
+            codigo_mezcla: mixCode,
+            codigo_usuario: user?.code!,
+            detalle_requerimiento: codeDetailReq,
+            envase: productCode,
+            lote: batch,
+            requerimiento: reqCode,
+          },
+          null,
+          2
+        )
+      );
 
       return UseCases.updatePackagingUseCase(sigopApiFetcher, {
         accion: "Actualizar envases",

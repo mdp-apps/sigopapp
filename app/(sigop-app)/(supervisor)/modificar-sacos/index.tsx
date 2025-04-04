@@ -3,7 +3,7 @@ import React from "react";
 import { useGlobalSearchParams } from "expo-router";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
-import { useReqByCode } from "@/presentation/req/hooks";
+import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
 import { useProductMixesByCode } from "@/presentation/producto/hooks";
 
 import {
@@ -21,21 +21,27 @@ const ModificarSacosScreen = () => {
   const grayColor = useThemeColor({}, "gray");
   const primaryColor = useThemeColor({}, "primary");
 
-  const { reqCode } = useGlobalSearchParams();
+  const { reqCode, patent } = useGlobalSearchParams();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
+  const { queryReqByPatent, reqCodeByPatent,reqTypeByPatent } = useReqByPatent(
+    patent as string
+  );
   const {
     productMixes,
     isLoadingMixed,
     totalKgProductMixes,
     totalPackagingQuantity,
-  } = useProductMixesByCode(Number(reqCode), reqType);
+  } = useProductMixesByCode(
+    reqCode ? Number(reqCode) : reqCodeByPatent,
+    reqCode ? reqType : reqTypeByPatent
+  );
 
-  if (queryReqByCode.isLoading) {
+  if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
   }
 
-  if (queryReqByCode.isError) {
+  if (queryReqByCode.isError || queryReqByPatent.isError) {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
@@ -49,7 +55,7 @@ const ModificarSacosScreen = () => {
 
   return (
     <ThemedView safe>
-      <ReqInfo req={queryReqByCode.data!} />
+      <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!} />
 
       {isLoadingMixed ? (
         <ThemedLoader color={primaryColor} size="large" />
