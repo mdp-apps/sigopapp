@@ -1,7 +1,5 @@
 import { Alert } from "react-native";
 
-import { useAuthStore } from "@/presentation/auth/store";
-
 import * as UseCases from "@/core/envase/use-cases";
 import { AlertNotifyAdapter, AlertType } from "@/config/adapters";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
@@ -10,65 +8,41 @@ import { useMutation } from "@tanstack/react-query";
 
 type UpdatePackagingBody = {
   reqCode: number;
-  codeDetailReq: number;
-  mixCode: string;
   batch: number;
-  productCode: string;
   quantity: string;
-  userCode?: number;
 };
 
 export const useUpdatePackagingMutation = () => {
-  const { user } = useAuthStore();
-
   const updatePackaging = useMutation({
     mutationFn: (data: UpdatePackagingBody) => {
-      const { reqCode, codeDetailReq, mixCode, batch, productCode, quantity } = data;
-      
-      console.log(
-        JSON.stringify(
-          {
-            cantidad: Number(quantity),
-            codigo_mezcla: mixCode,
-            codigo_usuario: user?.code!,
-            detalle_requerimiento: codeDetailReq,
-            envase: productCode,
-            lote: batch,
-            requerimiento: reqCode,
-          },
-          null,
-          2
-        )
-      );
+      const { reqCode, batch, quantity } = data;
 
       return UseCases.updatePackagingUseCase(sigopApiFetcher, {
         accion: "Actualizar envases",
+        cod_req: reqCode,
         cantidad: Number(quantity),
-        codigo_mezcla: mixCode,
-        codigo_usuario: user?.code!,
-        detalle_requerimiento: codeDetailReq,
-        envase: productCode,
         lote: batch,
-        requerimiento: reqCode,
       });
     },
     onSuccess: (data) => {
-      if (data.result === "OK") {
+      if (data.result) {
         AlertNotifyAdapter.show({
           type: AlertType.SUCCESS,
           title: "Éxito",
           textBody: "Cantidad de envases actualizada correctamente.",
           button: "Salir",
         });
-        return;
       }
 
-      AlertNotifyAdapter.show({
-        type: AlertType.DANGER,
-        title: "Error",
-        textBody: "No se pudo actualizar la cantidad de envases, intente nuevamente.",
-        button: "ACEPTAR",
-      });
+      if (data.error) {
+        AlertNotifyAdapter.show({
+          type: AlertType.DANGER,
+          title: "Error",
+          textBody:
+            "No se pudo actualizar la cantidad de envases, intente nuevamente.",
+          button: "ACEPTAR",
+        });
+      }
     },
     onError: (error) => {
       Alert.alert("Error", error.message);

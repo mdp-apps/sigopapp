@@ -5,13 +5,9 @@ import { ResultMapper } from "@/infrastructure/mappers";
 
 interface Body {
   accion: "Actualizar envases";
-  requerimiento: number;
-  detalle_requerimiento: number;
-  codigo_mezcla: string;
+  cod_req: number;
   lote: number;
-  envase: string;
   cantidad: number;
-  codigo_usuario: number;
 }
 
 export const updatePackagingUseCase = async (

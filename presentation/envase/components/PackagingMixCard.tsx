@@ -52,10 +52,7 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
   const onSubmit = async (values: z.infer<typeof packagingSchema>) => {
     updatePackaging.mutate({
       reqCode: Number(reqCode),
-      codeDetailReq: 0,
-      mixCode: productMix.mixCode,
       batch: productMix.batch,
-      productCode: productMix.productCode,
       quantity: values.packagingQuantity,
     });
   };

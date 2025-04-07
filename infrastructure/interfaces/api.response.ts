@@ -1,5 +1,5 @@
 export interface Result {
-  result: string;
+  [x: string]: string | "OK";
 };
 
 
