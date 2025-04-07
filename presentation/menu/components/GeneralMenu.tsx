@@ -52,21 +52,21 @@ export const GeneralMenu = ({children}: GeneralMenuProps) => {
           text=" Producción paletizada"
         />
 
+        <ThemedButton
+          variant="icon"
+          className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
+          textClassName="text-xl font-ruda-bold uppercase"
+          onPress={() =>
+            router.push("/(sigop-app)/(supervisor)/modificar-sacos-req")
+          }
+          iconName="sack"
+          iconSize={34}
+          iconColor="white"
+          text="Modificar N° de sacos"
+        />
+        
         {STAGE === "dev" && (
           <>
-            <ThemedButton
-              variant="icon"
-              className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-              textClassName="text-xl font-ruda-bold uppercase"
-              onPress={() =>
-                router.push("/(sigop-app)/(supervisor)/modificar-sacos-req")
-              }
-              iconName="sack"
-              iconSize={34}
-              iconColor="white"
-              text="Modificar N° de sacos"
-            />
-
             <ThemedButton
               variant="icon"
               className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
