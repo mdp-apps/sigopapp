@@ -20,7 +20,6 @@ export const useProductsReqByCode = (reqCode: number, reqType: number) => {
         tipo_requerimiento: String(reqType),
       }),
     enabled: !!reqCode && !!reqType,
-    staleTime: 1000 * 60 * 5,
   });
 
 

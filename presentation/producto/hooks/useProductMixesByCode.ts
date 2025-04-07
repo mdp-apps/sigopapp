@@ -7,7 +7,6 @@ import { COMPONENT_TYPE } from "@/config/constants";
 
 export const useProductMixesByCode = (reqCode: number, reqType: number) => {
   const { queryProductsReq } = useProductsReqByCode(reqCode, reqType);
-
   const productMixes = useMemo(() => {
     if (!queryProductsReq.data) return [];
 
@@ -49,6 +48,7 @@ export const useProductMixesByCode = (reqCode: number, reqType: number) => {
 
     return result;
   }, [queryProductsReq.data]);
+
 
   const totalKgProductMixes = useMemo(() => {
     return productMixes.reduce((total, mix) => total + mix.totalKg, 0);

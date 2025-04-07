@@ -69,7 +69,7 @@ const ModificarSacosScreen = () => {
                 totalKgProductMixes
               )} KG`}
               style={{ backgroundColor: primaryColor }}
-              textStyle={{ fontSize: 16, color: "white" }}
+              textStyle={{ fontSize: 15, color: "white" }}
               iconColor="white"
             />
 
@@ -80,12 +80,15 @@ const ModificarSacosScreen = () => {
                 totalPackagingQuantity
               )}`}
               style={{ backgroundColor: primaryColor }}
-              textStyle={{ fontSize: 16, color: "white" }}
+              textStyle={{ fontSize: 15, color: "white" }}
               iconColor="white"
             />
           </View>
 
-          <PackagingMixes productMixes={productMixes} />
+          <PackagingMixes
+            productMixes={productMixes}
+            reqType={reqCode ? reqType : reqTypeByPatent}
+          />
         </ThemedView>
       )}
     </ThemedView>

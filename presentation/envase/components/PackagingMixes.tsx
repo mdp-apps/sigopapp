@@ -10,9 +10,10 @@ import { useThemeColor } from "@/presentation/theme/hooks";
 
 interface PackagingMixProps {
   productMixes: ProductMix[];
+  reqType: number;
 }
 
-export const PackagingMixes = ({ productMixes }: PackagingMixProps) => {
+export const PackagingMixes = ({ productMixes, reqType }: PackagingMixProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
 
   return (
@@ -26,7 +27,7 @@ export const PackagingMixes = ({ productMixes }: PackagingMixProps) => {
             titleStyle={{ fontSize: 20 }}
             descriptionStyle={{ color: darkGrayColor }}
           >
-            <PackagingMixCard productMix={productMix} />
+            <PackagingMixCard productMix={productMix} reqType={reqType} />
           </ThemedAccordion>
         ))
       ) : (

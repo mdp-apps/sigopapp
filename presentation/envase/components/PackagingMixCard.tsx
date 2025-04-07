@@ -23,9 +23,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 interface PackagingMixCardProps {
   productMix: ProductMix;
+  reqType: number;
 }
 
-export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
+export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps) => {
   const primaryColor = useThemeColor({}, "primary");
 
   const { reqCode } = useGlobalSearchParams();
@@ -41,6 +42,7 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof packagingSchema>>({
     resolver: zodResolver(packagingSchema),
@@ -50,11 +52,16 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof packagingSchema>) => {
-    updatePackaging.mutate({
+    await updatePackaging.mutateAsync({
       reqCode: Number(reqCode),
       batch: productMix.batch,
       quantity: values.packagingQuantity,
+      reqType: reqType,
     });
+
+    hideModal();
+    reset({ packagingQuantity: "" });
+    
   };
 
   return (
@@ -144,6 +151,16 @@ export const PackagingMixCard = ({ productMix }: PackagingMixCardProps) => {
 
               <ThemedText variant="h4" className="text-slate-900">
                 {productMix.mixCode}
+              </ThemedText>
+            </View>
+
+            <View className="justify-center items-center gap-1">
+              <ThemedText variant="h5" className="text-zinc-900 font-semibold">
+                Cantidad sacos
+              </ThemedText>
+
+              <ThemedText variant="h4" className="text-zinc-900 font-bold">
+                {productMix.totalPackagingQuantity}
               </ThemedText>
             </View>
           </View>
