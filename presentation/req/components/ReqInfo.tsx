@@ -18,14 +18,14 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
           className="uppercase font-semibold !text-slate-900 text-center"
           adjustsFontSizeToFit
         >
-          {req.nameReqFormat} de {req.customerAbbr}
+          {req?.nameReqFormat} de {req?.customerAbbr}
         </ThemedText>
         <ThemedText
           variant="h4"
           className="font-semibold !text-slate-900 text-center"
           adjustsFontSizeToFit
         >
-          Req. {req.reqCode} - {req.date} - T{req.turn}
+          Req?. {req?.reqCode} - {req?.date} - T{req?.turn}
         </ThemedText>
       </View>
 
@@ -45,7 +45,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              {req.driverName}
+              {req?.driverName}
             </ThemedText>
           </ThemedTooltip>
         </View>
@@ -58,7 +58,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              {req.rutDriver} |
+              {req?.rutDriver} |
             </ThemedText>
           </ThemedTooltip>
 
@@ -69,7 +69,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              {req.vehiclePatent}
+              {req?.vehiclePatent}
             </ThemedText>
           </ThemedTooltip>
         </View>
