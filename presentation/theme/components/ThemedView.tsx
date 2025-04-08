@@ -1,15 +1,11 @@
 import React from "react";
 
-import {
-  KeyboardAvoidingView,
-  Platform,
-  View,
-  ViewProps,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, View, ViewProps } from "react-native";
 
 import { useThemeColor } from "../hooks";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ScrollView } from "react-native";
 
 interface Props extends ViewProps {
   className?: string;
@@ -37,21 +33,26 @@ export const ThemedView = ({
       className="flex-1"
       keyboardVerticalOffset={80}
     >
-      <View
-        style={[
-          {
-            flex: 1,
-            paddingTop: safe ? safeArea.top : 0,
-            paddingBottom: 12,
-            marginHorizontal: margin ? 15 : 0,
-            backgroundColor: bgColor ? bgColor : backgroundColor,
-          },
-          style,
-        ]}
-        className={className}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
       >
-        {children}
-      </View>
+        <View
+          style={[
+            {
+              flex: 1,
+              paddingTop: safe ? safeArea.top : 0,
+              paddingBottom: 12,
+              marginHorizontal: margin ? 15 : 0,
+              backgroundColor: bgColor ? bgColor : backgroundColor,
+            },
+            style,
+          ]}
+          className={className}
+        >
+          {children}
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   ) : (
     <View

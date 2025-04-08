@@ -25,7 +25,7 @@ export const ReqInfo = ({ children, req }: ReqInfoProps) => {
           className="font-semibold !text-slate-900 text-center"
           adjustsFontSizeToFit
         >
-          Req?. {req?.reqCode} - {req?.date} - T{req?.turn}
+          Req. {req?.reqCode} - {req?.date} - T{req?.turn}
         </ThemedText>
       </View>
 

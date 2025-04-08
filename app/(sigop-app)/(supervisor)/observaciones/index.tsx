@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SectionList } from "react-native";
+import { SectionList, View } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 
 import { useAuthStore } from "@/presentation/auth/store";
@@ -61,9 +61,9 @@ const ObservacionesScreen = () => {
   } = useVisibility();
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
-  const { queryReqByPatent, reqCodeByPatent,reqTypeByPatent } = useReqByPatent(
-      patent as string
-    );
+  const { queryReqByPatent, reqCodeByPatent, reqTypeByPatent } = useReqByPatent(
+    patent as string
+  );
   const { queryObservations } = useReqObservations(
     reqCode ? Number(reqCode) : reqCodeByPatent
   );
