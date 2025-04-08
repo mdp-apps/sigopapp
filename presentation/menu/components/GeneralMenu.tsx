@@ -9,7 +9,7 @@ interface GeneralMenuProps {
   children?: React.ReactNode;
 }
 
-export const GeneralMenu = ({children}: GeneralMenuProps) => {
+export const GeneralMenu = ({ children }: GeneralMenuProps) => {
   return (
     <ScrollView>
       <ThemedView
@@ -64,23 +64,19 @@ export const GeneralMenu = ({children}: GeneralMenuProps) => {
           iconColor="white"
           text="Modificar N° de sacos"
         />
-        
-        {STAGE === "dev" && (
-          <>
-            <ThemedButton
-              variant="icon"
-              className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
-              textClassName="text-xl font-ruda-bold uppercase"
-              onPress={() =>
-                router.push("/(sigop-app)/(supervisor)/observaciones-req")
-              }
-              iconName="comment-eye"
-              iconSize={34}
-              iconColor="white"
-              text="Ingresar Observaciones"
-            />
-          </>
-        )}
+
+        <ThemedButton
+          variant="icon"
+          className="bg-light-primary text-white p-6 rounded-xl w-full !justify-start"
+          textClassName="text-xl font-ruda-bold uppercase"
+          onPress={() =>
+            router.push("/(sigop-app)/(supervisor)/observaciones-req")
+          }
+          iconName="comment-eye"
+          iconSize={34}
+          iconColor="white"
+          text="Ingresar Observaciones"
+        />
 
         {children}
       </ThemedView>

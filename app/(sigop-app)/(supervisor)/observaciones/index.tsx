@@ -74,17 +74,6 @@ const ObservacionesScreen = () => {
     showModal();
   };
 
-  console.log(
-    JSON.stringify(
-      {
-        observations: queryObservations.data,
-        createObservation: createObservation.data,
-      },
-      null,
-      2
-    )
-  );
-
   const onSubmit = async (values: z.infer<typeof observationSchema>) => {
     createObservation.mutate({
       reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
