@@ -35,29 +35,21 @@ export const useObservationMutation = () => {
           textBody: "El comentario ha sido ingresado correctamente.",
           button: "Salir",
         });
+
+        queryClient.invalidateQueries({
+          queryKey: ["observations", variables.reqCode],
+        });
+
         return;
       }
 
-      if (data) { 
-        AlertNotifyAdapter.show({
-          type: AlertType.DANGER,
-          title: data,
-          textBody:
-            "El comentario no ha sido ingresado, hubo un error en el servidor.",
-          button: "ACEPTAR",
-        });
-      }
-
-      queryClient.setQueryData<ObservationReq[]>(
-        ["observations", variables.reqCode],
-        (oldData) => {
-          if (!oldData) return [];
-
-          const updatedData = [...oldData, data];
-
-          return updatedData;
-        }
-      );
+      AlertNotifyAdapter.show({
+        type: AlertType.DANGER,
+        title: data,
+        textBody:
+          "El comentario no ha sido ingresado, hubo un error en el servidor.",
+        button: "ACEPTAR",
+      });
     },
     onError: (error) => {
       Alert.alert("Error", error.message);

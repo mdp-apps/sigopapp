@@ -8,7 +8,7 @@ import { ObservationMapper } from "@/infrastructure/mappers";
 
 interface Body {
   accion: "Consultar observaciones requerimiento";
-  requerimiento: string;
+  cod_req: number;
 }
 
 export const getReqObservationsUseCase = async (

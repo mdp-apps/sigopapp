@@ -44,6 +44,7 @@ const ObservacionesScreen = () => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<z.infer<typeof observationSchema>>({
     resolver: zodResolver(observationSchema),
     defaultValues: {
@@ -60,7 +61,7 @@ const ObservacionesScreen = () => {
   } = useVisibility();
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
-  const { queryReqByPatent, reqCodeByPatent, reqTypeByPatent } = useReqByPatent(
+  const { queryReqByPatent, reqCodeByPatent } = useReqByPatent(
     patent as string
   );
   const { queryObservations } = useReqObservations(
@@ -89,6 +90,8 @@ const ObservacionesScreen = () => {
       reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
       commment: values.observation,
     });
+
+    reset({ observation: "", });
   };
 
   if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
