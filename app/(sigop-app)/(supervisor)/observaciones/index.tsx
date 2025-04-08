@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { SectionList, View } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 
-import { useAuthStore } from "@/presentation/auth/store";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
@@ -85,13 +84,10 @@ const ObservacionesScreen = () => {
     )
   );
 
-  const { user } = useAuthStore();
-
   const onSubmit = async (values: z.infer<typeof observationSchema>) => {
     createObservation.mutate({
-      reqCode: reqCode as string,
+      reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
       commment: values.observation,
-      userCode: user?.code ?? 0,
     });
   };
 

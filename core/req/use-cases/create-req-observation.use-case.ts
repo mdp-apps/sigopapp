@@ -1,27 +1,30 @@
 import { HttpAdapter } from "@/config/adapters";
 
-import { ResultMapper } from "@/infrastructure/mappers";
+import { ObservationMapper, ResultMapper } from "@/infrastructure/mappers";
 import { ApiResponse, Result } from "@/infrastructure/interfaces";
+import { ObservationReq } from "@/infrastructure/entities";
+import { ObservationReqResponse } from "../interfaces";
 
 interface ObservationBody {
   accion: "Insertar observacion requerimiento";
-  requerimiento: string;
+  cod_req: number;
   comentario: string;
-  ruta?: string;
-  usuario: string;
+  usuario: number;
 }
 
 export const createReqObservationUseCase = async (
   fetcher: HttpAdapter,
   body: ObservationBody
-): Promise<Result> => {
+): Promise<ObservationReq> => {
   try {
     const createObservation = await fetcher.post<
-      ApiResponse<string>,
+      ApiResponse<ObservationReqResponse>,
       ObservationBody
-      >(`/requerimientos/observaciones/insertar`, body);
+    >(`/requerimientos/observaciones/insertar`, body);
 
-    return ResultMapper.fromResultToEntity(createObservation);
+    return ObservationMapper.fromReqObservationsResultToEntity(
+      createObservation.resultado
+    );
   } catch (error) {
     throw new Error("Error al crear la observación del requerimiento");
   }

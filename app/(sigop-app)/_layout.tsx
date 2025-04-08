@@ -12,8 +12,7 @@ const CheckAuthenticationLayout = () => {
   const backgroundColor = useThemeColor({}, "background");
   const primaryColor = useThemeColor({}, "primary");
 
-  const { status, checkStatus, user } = useAuthStore();
-  console.log(JSON.stringify(user,null,2));
+  const { status, checkStatus } = useAuthStore();
 
   useEffect(() => {
     checkStatus();

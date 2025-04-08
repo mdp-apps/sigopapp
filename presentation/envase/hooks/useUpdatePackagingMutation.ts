@@ -34,7 +34,7 @@ export const useUpdatePackagingMutation = () => {
       if (data.result) {
         AlertNotifyAdapter.show({
           type: AlertType.SUCCESS,
-          title: "Éxito",
+          title: data.result,
           textBody: "Cantidad de envases actualizada correctamente.",
           button: "Salir",
         });
@@ -43,7 +43,7 @@ export const useUpdatePackagingMutation = () => {
       if (data.error) {
         AlertNotifyAdapter.show({
           type: AlertType.DANGER,
-          title: "Error",
+          title: data.error,
           textBody:
             "No se pudo actualizar la cantidad de envases, intente nuevamente.",
           button: "ACEPTAR",
