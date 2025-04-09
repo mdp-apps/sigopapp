@@ -42,6 +42,8 @@ const VerEstadosReqScreen = () => {
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
   const { queryReqByPatent } = useReqByPatent(patent as string);
+  console.log(JSON.stringify(queryReqByCode.data, null, 2));
+  console.log(JSON.stringify(queryReqByPatent.data, null, 2));
 
   const { queryLogStatusReq } = useLogStatusReq(
     (reqCode as string) || String(queryReqByPatent.data?.reqCode)
@@ -71,7 +73,7 @@ const VerEstadosReqScreen = () => {
   return (
     <ThemedView safe>
       <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!}>
-        <View className="flex-row gap-6 py-2">
+        <View className="flex-row justify-center gap-6 py-2">
           <ThemedText
             variant="semi-bold"
             className="uppercase !text-slate-700 text-xl"

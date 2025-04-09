@@ -42,8 +42,7 @@ export interface ReqResponse extends DriverReqResponse {
   estado_nombre: string;
   nombre: string;
   patente: string;
-  //! Cambiar nombre de si tiene palet si el nombre no es correcto
-  tiene_palet: number;
+  tienePallet: number;
 }
 
 export interface LogStatusReqResponse {

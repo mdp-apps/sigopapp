@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SectionList, View } from "react-native";
+import { SectionList } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 
 import { useVisibility } from "@/presentation/shared/hooks";
