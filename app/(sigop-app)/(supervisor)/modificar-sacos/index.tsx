@@ -45,7 +45,9 @@ const ModificarSacosScreen = () => {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
-          message={`No existe o no está en curso el requerimiento ${reqCode}`}
+          message={
+            queryReqByCode.error?.message! || queryReqByPatent.error?.message!
+          }
           iconSource="alert-circle"
           iconColor="red"
         />

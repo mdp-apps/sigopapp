@@ -42,8 +42,7 @@ const VerEstadosReqScreen = () => {
 
   const { queryReqByCode } = useReqByCode(reqCode as string);
   const { queryReqByPatent } = useReqByPatent(patent as string);
-  console.log(JSON.stringify(queryReqByCode.data, null, 2));
-  console.log(JSON.stringify(queryReqByPatent.data, null, 2));
+
 
   const { queryLogStatusReq } = useLogStatusReq(
     (reqCode as string) || String(queryReqByPatent.data?.reqCode)
@@ -62,7 +61,7 @@ const VerEstadosReqScreen = () => {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
-          message={`No existe o no está en curso el requerimiento ingresado`}
+          message={queryReqByCode.error?.message! || queryReqByPatent.error?.message!}
           iconSource="alert-circle"
           iconColor="red"
         />

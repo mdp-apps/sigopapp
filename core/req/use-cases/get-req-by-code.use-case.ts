@@ -9,16 +9,19 @@ import { ApiResponse } from "@/infrastructure/interfaces";
 interface Body {
   accion: "Consultar requerimientos por codigo";
   codigo: string;
+  tiene_pallet?: boolean;
 }
 
 export const getReqByCodeUseCase = async (
   fetcher: HttpAdapter,
   body: Body
 ): Promise<Req> => {
-  const reqByCode = await fetcher.post<ApiResponse<ReqResponse[]>, Body>(
+
+  const reqData = await fetcher.post<ApiResponse<ReqResponse[]>, Body>(
     `/requerimientos/codigo`,
     body
   );
 
-  return ReqMapper.fromReqsResultToEntity(reqByCode.resultado[0]);
+
+  return ReqMapper.fromReqsResultToEntity(reqData.resultado[0]);
 };

@@ -5,19 +5,21 @@ import { sigopApiFetcher } from "@/config/api/sigopApi";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-export const useReqByCode = (reqCode: string) => {
+export const useReqByCode = (reqCode: string, isPalletized?: boolean) => {
   const [reqType, setReqType] = useState(0);
 
 
   const queryReqByCode = useQuery({
-    queryKey: ["reqs", {reqCode}],
-    queryFn: () =>
-      UseCases.getReqByCodeUseCase(sigopApiFetcher, {
+    queryKey: ["reqs", isPalletized ? { reqCode,isPalletized } : { reqCode }],
+    queryFn: () => {
+      return UseCases.getReqByCodeUseCase(sigopApiFetcher, {
         accion: "Consultar requerimientos por codigo",
         codigo: reqCode,
-      }),
+        tiene_pallet: isPalletized,
+      });
+    },
     enabled: !!reqCode,
-    staleTime: 1000 * 60 * 5,
+    retry: 1,
   });
 
   useEffect(() => {

@@ -4,7 +4,12 @@ export interface Result {
 
 
 export interface ApiResponse<T> {
+  error: any;
   resultado: T;
+}
+
+export interface ErrorResponse {
+  error: string;
 }
 
 export interface DropdownResponse { 

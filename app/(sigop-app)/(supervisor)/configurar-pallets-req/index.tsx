@@ -48,9 +48,9 @@ const ConfigurarPalletsScreen = () => {
   const { reqCode, patent } = useGlobalSearchParams();
   const { user } = useAuthStore();
 
-  const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
+  const { queryReqByCode, reqType } = useReqByCode(reqCode as string,true);
   const { queryReqByPatent, reqCodeByPatent, reqTypeByPatent } = useReqByPatent(
-    patent as string
+    patent as string,true
   );
   const { productMixes, isLoadingMixed } = useProductMixesByCode(
     reqCode ? Number(reqCode) : reqCodeByPatent,
@@ -133,7 +133,9 @@ const ConfigurarPalletsScreen = () => {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
-          message={`No existe o no está en curso el requerimiento ${reqCode}`}
+          message={
+            queryReqByCode.error?.message! || queryReqByPatent.error?.message!
+          }
           iconSource="alert-circle"
           iconColor="red"
         />

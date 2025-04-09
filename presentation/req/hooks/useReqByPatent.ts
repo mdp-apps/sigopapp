@@ -5,22 +5,20 @@ import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { useQuery } from "@tanstack/react-query";
 
-export const useReqByPatent = (patent: string) => {
+export const useReqByPatent = (patent: string, isPalletized?: boolean) => {
   const [reqType, setReqType] = useState(0);
   const [reqCode, setReqCode] = useState(0);
 
   const queryReqByPatent = useQuery({
-    queryKey: ["reqs", { patent }],
+    queryKey: ["reqs", isPalletized ? { patent, isPalletized } : { patent }],
     queryFn: () =>
-      UseCases.getReqByPatentUseCase(
-        sigopApiFetcher,
-        {
-          accion: "Consultar requerimientos por patente",
-          patente: patent,
-        },
-      ),
+      UseCases.getReqByPatentUseCase(sigopApiFetcher, {
+        accion: "Consultar requerimientos por patente",
+        patente: patent,
+        tiene_pallet: isPalletized,
+      }),
     enabled: !!patent,
-    staleTime: 1000 * 60 * 5,
+    retry: 1,
   });
 
   useEffect(() => {

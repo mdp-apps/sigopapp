@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { HttpAdapter } from "./http.adapter";
 
 type ErrorMessage = {
-  message: string;
+  error: string;
 };
 
 interface Options {
@@ -33,7 +33,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage = serverError.response?.data as ErrorMessage;
       console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+      throw new Error(errorMessage.error);
     }
   }
 
@@ -50,7 +50,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage = serverError.response?.data as ErrorMessage;
       console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+      throw new Error(errorMessage.error);
     }
   }
 
@@ -67,7 +67,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage = serverError.response?.data as ErrorMessage;
       console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+      throw new Error(errorMessage.error);
     }
   }
 
@@ -80,7 +80,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage = serverError.response?.data as ErrorMessage;
       console.log(errorMessage);
 
-      throw new Error(errorMessage.message);
+      throw new Error(errorMessage.error);
     }
   }
 }

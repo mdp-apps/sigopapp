@@ -9,6 +9,7 @@ import { ApiResponse } from "@/infrastructure/interfaces";
 interface Body {
   accion: "Consultar requerimientos por patente";
   patente: string;
+  tiene_pallet?: boolean;
 }
 
 export const getReqByPatentUseCase = async (
