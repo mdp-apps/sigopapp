@@ -80,10 +80,9 @@ const VerEstadosReqScreen = () => {
           >
             Bodega:{" "}
             <ThemedText className="font-normal">
-              B-
               {reqCode
-                ? queryReqByCode.data?.warehouseCode
-                : queryReqByPatent.data?.warehouseCode}
+                ? queryReqByCode.data?.warehouseName
+                : queryReqByPatent.data?.warehouseName}
             </ThemedText>
           </ThemedText>
           <ThemedText
@@ -93,10 +92,9 @@ const VerEstadosReqScreen = () => {
           >
             Planta:{" "}
             <ThemedText className="font-normal">
-              P
               {reqCode
-                ? queryReqByCode.data?.plantCode
-                : queryReqByPatent.data?.plantCode}
+                ? queryReqByCode.data?.plantName
+                : queryReqByPatent.data?.plantName}
             </ThemedText>
           </ThemedText>
         </View>

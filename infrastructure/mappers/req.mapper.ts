@@ -82,7 +82,7 @@ export class ReqMapper {
       nameReqFormat: response.nombre_requerimiento_formato,
       observation: response.observacion,
       patent: response.patente,
-      plantCode: response.planta,
+      plantName: response.planta_nombre,
       reqCode: response.codigo_interno,
       reqType: response.tipo_requerimiento,
       rutDriver: response.rut_chofer,
@@ -90,7 +90,7 @@ export class ReqMapper {
       statusName: response.estado_nombre,
       turn: response.turno,
       vehiclePatent: response.patente_vehiculo,
-      warehouseCode: response.bodega,
+      warehouseName: response.bodega_nombre,
     };
   }
 

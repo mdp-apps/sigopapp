@@ -41,13 +41,12 @@ export interface Req {
   description: string;
   driverName: string;
   formatType: number;
-  //! Quitar si el nombre de la propiedad no es correcto
   hasPallet: boolean;
   name: string;
   nameReqFormat: string;
   observation: string;
   patent: string;
-  plantCode: number;
+  plantName: string;
   reqCode: number;
   reqType: number;
   rutDriver: string;
@@ -55,7 +54,7 @@ export interface Req {
   statusName: string;
   turn: number;
   vehiclePatent: string;
-  warehouseCode: number;
+  warehouseName: string;
 }
 
 export interface StatusReq extends TypeReq {}

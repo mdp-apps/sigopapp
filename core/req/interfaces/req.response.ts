@@ -1,5 +1,5 @@
 export interface ActiveReqResponse {
-  bodega: number;
+  bodega_nombre: string;
   codigo_chofer: number;
   codigo_cliente: number;
   codigo_empresa_transportista: number;
@@ -15,7 +15,7 @@ export interface ActiveReqResponse {
   kg_verificados: number;
   numero_carga: number;
   operacion: number;
-  planta: number;
+  planta_nombre: string;
   tipo_ci: number;
   tipo_formato: number;
   tipo_requerimiento: number;

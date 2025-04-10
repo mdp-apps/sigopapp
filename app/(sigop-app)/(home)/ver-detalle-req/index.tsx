@@ -36,6 +36,7 @@ const VerDetalleReqScreen = () => {
     reqCode ? Number(reqCode) : reqCodeByPatent,
     reqCode ? reqType : reqTypeByPatent
   );
+  console.log(JSON.stringify(queryReqByCode.data, null, 2));
 
   if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;
@@ -45,7 +46,9 @@ const VerDetalleReqScreen = () => {
     return (
       <ThemedView safe className="items-center justify-center">
         <NoDataCard
-          message={queryReqByCode.error?.message! || queryReqByPatent.error?.message!}
+          message={
+            queryReqByCode.error?.message! || queryReqByPatent.error?.message!
+          }
           iconSource="alert-circle"
           iconColor="red"
         />
@@ -60,7 +63,7 @@ const VerDetalleReqScreen = () => {
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
           <View className="mb-4">
-            <View className="flex-row gap-3">
+            <View className="flex-row gap-2">
               <ThemedChip
                 tooltipTitle="Código"
                 iconSource="alpha-r-circle"
@@ -68,6 +71,7 @@ const VerDetalleReqScreen = () => {
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
+                iconSize={20}
               />
 
               <ThemedChip
@@ -81,6 +85,7 @@ const VerDetalleReqScreen = () => {
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
+                iconSize={20}
               />
 
               <ThemedChip
@@ -94,10 +99,25 @@ const VerDetalleReqScreen = () => {
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
+                iconSize={20}
               />
             </View>
 
-            <View className="flex-row gap-3">
+            <View className="flex-row gap-2">
+              <ThemedChip
+                tooltipTitle="Tipo de Requerimiento"
+                iconSource="alpha-r-box"
+                text={
+                  reqCode
+                    ? queryReqByCode.data?.nameReqFormat!
+                    : queryReqByPatent.data?.nameReqFormat!
+                }
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ color: "white" }}
+                iconColor="white"
+                iconSize={20}
+              />
+
               <ThemedChip
                 tooltipTitle="Transportista"
                 iconSource="truck-delivery"
@@ -109,16 +129,33 @@ const VerDetalleReqScreen = () => {
                 style={{ backgroundColor: primaryColor }}
                 textStyle={{ color: "white" }}
                 iconColor="white"
+                iconSize={20}
               />
+            </View>
 
+            <View className="flex-row gap-2">
+              <ThemedChip
+                tooltipTitle="Chofer"
+                iconSource="car-brake-fluid-level"
+                text={
+                  reqCode
+                    ? queryReqByCode.data?.driverName!
+                    : queryReqByPatent.data?.driverName!
+                }
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ color: "white" }}
+                iconColor="white"
+                iconSize={20}
+              />
               {Object.keys(productsPerBatch).length !== 0 && (
                 <ThemedChip
                   tooltipTitle="Total KG"
                   iconSource="plus-box-multiple"
                   text={`Total: ${Formatter.numberWithDots(totalKg)} KG`}
                   style={{ backgroundColor: primaryColor }}
-                  textStyle={{ fontSize: 16, color: "white" }}
+                  textStyle={{ color: "white" }}
                   iconColor="white"
+                  iconSize={20}
                 />
               )}
             </View>

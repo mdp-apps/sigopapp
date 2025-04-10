@@ -70,7 +70,7 @@ const MovInternosScreen = () => {
   const { queryCustomers, dropdownCustomers } = useCustomers();
 
   return (
-    <ThemedView keyboardAvoiding>
+    <ThemedView className="mb-6">
       <ScrollFilters>
         {filterKeys.map((filterKey) => (
           <Filter
