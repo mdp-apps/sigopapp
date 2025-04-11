@@ -8,6 +8,7 @@ import { useCustomers } from "@/presentation/cliente/hooks";
 import { useInternalMovements } from "@/presentation/movimiento/hooks";
 
 import {
+  ThemedAccordion,
   ThemedCard,
   ThemedDropdown,
   ThemedIconTooltip,
@@ -28,6 +29,7 @@ import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 import { INTERNAL_MOV_STATUS } from "@/config/constants";
 
 import { Controller } from "react-hook-form";
+import { Card, Divider } from "react-native-paper";
 
 const FILTERS = {
   TURN: "turn",
@@ -47,7 +49,9 @@ const initialFilterValues = {
 
 const MovInternosScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
+  const primaryAlphaColor = useThemeColor({}, "primaryAlpha");
   const blueColor = useThemeColor({}, "blue");
+  const darkGrayColor = useThemeColor({}, "darkGray");
 
   const {
     filters,
@@ -64,6 +68,7 @@ const MovInternosScreen = () => {
     queryInternalMovements,
     movCurrentDate,
     movTurn,
+    movTotals,
     isRefreshing,
     onPullToRefresh,
   } = useInternalMovements({
@@ -131,70 +136,198 @@ const MovInternosScreen = () => {
         )}
       </FilterModal>
 
-      <ThemedCard style={{ marginBottom: 15, borderRadius: 2 }}>
-        <View className="flex-row items-center gap-8 w-full">
-          <View className="flex-row items-center gap-2">
-            <ThemedIconTooltip
-              tooltipTitle="Turno"
-              position="top"
-              iconStyles={{
-                name: "account-sync",
-                color: blueColor,
-                size: 28,
-              }}
-            />
-            {queryInternalMovements.isLoading ? (
-              <ThemedSkeleton style={{ width: 30 }} />
-            ) : (
-              <ThemedText
-                variant="h4"
-                className="text-light-dark-gray uppercase font-semibold"
-                adjustsFontSizeToFit
-                numberOfLines={1}
-              >
-                {movTurn}
-              </ThemedText>
-            )}
-          </View>
-
-          <View className="flex-row items-center gap-2">
-            <ThemedIconTooltip
-              tooltipTitle="Fecha"
-              position="top"
-              iconStyles={{
-                name: "calendar-sync",
-                color: blueColor,
-                size: 28,
-              }}
-            />
-            {queryInternalMovements.isLoading ? (
-              <ThemedSkeleton style={{ width: 90 }} />
-            ) : (
-              <ThemedText
-                variant="h4"
-                className="text-light-dark-gray uppercase font-semibold"
-                adjustsFontSizeToFit
-                numberOfLines={1}
-              >
-                {movCurrentDate}
-              </ThemedText>
-            )}
-          </View>
-        </View>
-      </ThemedCard>
-
       <ScrollView showsVerticalScrollIndicator={false}>
+        {queryInternalMovements.data &&
+          queryInternalMovements.data.length > 0 && (
+            <ThemedView className="mb-5">
+              <ThemedAccordion
+                title="Totales de turno actual"
+                titleStyle={{
+                  fontSize: 15,
+                  fontFamily: "sans-serif",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  color: darkGrayColor,
+                  marginBottom: 10,
+                }}
+              >
+                <Card.Content>
+                  <View className="flex-row items-center gap-8 w-full my-2">
+                    <View className="flex-row items-center gap-2">
+                      <ThemedIconTooltip
+                        tooltipTitle="Turno"
+                        position="top"
+                        iconStyles={{
+                          name: "account-sync",
+                          color: blueColor,
+                          size: 28,
+                        }}
+                      />
+                      {queryInternalMovements.isLoading ? (
+                        <ThemedSkeleton style={{ width: 30 }} />
+                      ) : (
+                        <ThemedText
+                          variant="h4"
+                          className="text-slate-800 uppercase font-semibold"
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
+                        >
+                          {movTurn}
+                        </ThemedText>
+                      )}
+                    </View>
+
+                    <View className="flex-row items-center gap-2">
+                      <ThemedIconTooltip
+                        tooltipTitle="Fecha"
+                        position="top"
+                        iconStyles={{
+                          name: "calendar-sync",
+                          color: blueColor,
+                          size: 28,
+                        }}
+                      />
+                      {queryInternalMovements.isLoading ? (
+                        <ThemedSkeleton style={{ width: 90 }} />
+                      ) : (
+                        <ThemedText
+                          variant="h4"
+                          className="text-slate-800 uppercase font-semibold"
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
+                        >
+                          {movCurrentDate}
+                        </ThemedText>
+                      )}
+                    </View>
+                  </View>
+
+                  <Divider
+                    style={{
+                      backgroundColor: darkGrayColor,
+                      marginVertical: 15,
+                    }}
+                  />
+
+                  <View className="w-full gap-2">
+                    <View className="flex-row items-center gap-4 mt-3">
+                      <View className="flex-row items-center gap-2">
+                        <ThemedIconTooltip
+                          tooltipTitle="Fecha"
+                          position="top"
+                          iconStyles={{
+                            name: "checkbox-blank-circle",
+                            color: blueColor,
+                            size: 8,
+                          }}
+                        />
+                        <ThemedText
+                          variant="h5"
+                          className="text-gray-600 uppercase font-semibold"
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
+                        >
+                          Planificado:
+                        </ThemedText>
+
+                        {queryInternalMovements.isLoading ? (
+                          <ThemedSkeleton style={{ width: 90 }} />
+                        ) : (
+                          <ThemedText
+                            variant="h5"
+                            className="text-slate-800 uppercase"
+                            adjustsFontSizeToFit
+                            numberOfLines={1}
+                          >
+                            {movTotals.planned}
+                          </ThemedText>
+                        )}
+                      </View>
+                    </View>
+
+                    <View className="flex-row items-center gap-4">
+                      <View className="flex-row items-center gap-2">
+                        <ThemedIconTooltip
+                          tooltipTitle="Fecha"
+                          position="top"
+                          iconStyles={{
+                            name: "checkbox-blank-circle",
+                            color: blueColor,
+                            size: 8,
+                          }}
+                        />
+                        <ThemedText
+                          variant="h5"
+                          className="text-gray-600 uppercase font-semibold"
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
+                        >
+                          Pendiente:
+                        </ThemedText>
+
+                        {queryInternalMovements.isLoading ? (
+                          <ThemedSkeleton style={{ width: 90 }} />
+                        ) : (
+                          <ThemedText
+                            variant="h5"
+                            className="text-slate-800 uppercase "
+                            adjustsFontSizeToFit
+                            numberOfLines={1}
+                          >
+                            {movTotals.pending}
+                          </ThemedText>
+                        )}
+                      </View>
+                    </View>
+
+                    <View className="flex-row items-center gap-4">
+                      <View className="flex-row gap-2 items-center">
+                        <ThemedIconTooltip
+                          tooltipTitle="Fecha"
+                          position="top"
+                          iconStyles={{
+                            name: "checkbox-blank-circle",
+                            color: blueColor,
+                            size: 8,
+                          }}
+                        />
+
+                        <ThemedText
+                          variant="h5"
+                          className="text-gray-600 uppercase font-semibold"
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
+                        >
+                          Trasladado:
+                        </ThemedText>
+
+                        {queryInternalMovements.isLoading ? (
+                          <ThemedSkeleton style={{ width: 90 }} />
+                        ) : (
+                          <ThemedText
+                            variant="h5"
+                            className="text-slate-800 uppercase"
+                            adjustsFontSizeToFit
+                            numberOfLines={1}
+                          >
+                            {movTotals.transferred}
+                          </ThemedText>
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                </Card.Content>
+              </ThemedAccordion>
+            </ThemedView>
+          )}
+
         {queryInternalMovements.isLoading ? (
           <ThemedLoader color={primaryColor} size="large" />
         ) : queryInternalMovements.data &&
           queryInternalMovements.data.length > 0 ? (
           <FlatList
             data={queryInternalMovements.data}
-            renderItem={({ item }) => (
-              <ThemedView className="mb-3">
-                <InternalMovCard movement={item} />
-              </ThemedView>
-            )}
+            renderItem={({ item }) => <InternalMovCard movement={item} />}
             keyExtractor={(item, index) => `${index}${item.id}`}
             refreshControl={
               <RefreshControl

@@ -33,6 +33,16 @@ export const ThemedAccordion = ({
       descriptionStyle={[styles.description, descriptionStyle]}
       style={[styles.accordion, style]}
       titleNumberOfLines={2}
+      right={
+        (props) => (
+          <List.Icon
+            {...props}
+            icon={expanded ? "chevron-up" : "chevron-down"}
+            color="black"
+            style={{ marginRight: 10 }}
+          />
+        )
+      }
     >
       <Card style={styles.card} mode="contained">
         {children}

@@ -24,207 +24,208 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
 
 
   return (
-    <ThemedAccordion
-      title={`${movement.productName} ${movement.plannedDate} (T${movement.turn})`}
-      description={`Det. ${movement.detailId} - ${movement.customerName}`}
-      titleStyle={{
-        fontSize: 14,
-        fontFamily: "sans-serif",
-        fontWeight: "bold",
-        textTransform: "uppercase",
-        color: darkGrayColor,
-      }}
-      descriptionStyle={{
-        fontSize: 15,
-        fontFamily: "sans-serif",
-        color: darkGrayColor,
-        textTransform: "uppercase",
-      }}
-    >
-      <Card.Content>
-        <ThemedView className="gap-3" bgColor="white">
-          <ThemedView className="flex-row items-center gap-3" bgColor="white">
-            <ThemedIconTooltip
-              tooltipTitle="Tipo de movimiento"
-              position="right"
-              iconStyles={{
-                name: "cog-transfer",
-                color: blueColor,
-              }}
-            />
-            <ThemedText
-              variant="h5"
-              className="text-light-dark-gray uppercase font-semibold"
-              adjustsFontSizeToFit
-              numberOfLines={1}
-            >
-              {movement.movementTypeName}
-            </ThemedText>
-          </ThemedView>
-
-          <ThemedView
-            className="flex-1 flex-row items-center gap-3"
-            bgColor="white"
-          >
-            {movement.diCode && (
-              <>
-                <ThemedIconTooltip
-                  tooltipTitle="DI"
-                  position="right"
-                  iconStyles={{
-                    name: "checkbox-marked-circle-outline",
-                    color: blueColor,
-                  }}
-                />
-                <ThemedText
-                  variant="h5"
-                  className="text-gray-600 uppercase font-semibold"
-                >
-                  {movement.diCode}
-                </ThemedText>
-              </>
-            )}
-          </ThemedView>
-        </ThemedView>
-
-        <Divider
-          style={{
-            backgroundColor: darkGrayColor,
-            marginVertical: 15,
-          }}
-        />
-
-        <ThemedView className="flex-row w-full" bgColor="white">
-          <View className="justify-center w-2/6">
-            <ThemedText
-              variant="h5"
-              className="text-light-dark-gray uppercase font-bold"
-              adjustsFontSizeToFit
-            >
-              Origen
-            </ThemedText>
-          </View>
-
-          <View className="flex-1 gap-2">
-            <ThemedText
-              variant="h5"
-              className="text-gray-600 uppercase font-semibold"
-              adjustsFontSizeToFit
-            >
-              {movement.warehouseName}
-            </ThemedText>
-
-            <View>
+     <ThemedView className="mb-3">
+      <ThemedAccordion
+        title={`${movement.productName}`}
+        description={`${movement.customerName} - T${movement.turn}`}
+        titleStyle={{
+          fontSize: 14,
+          fontFamily: "sans-serif",
+          fontWeight: "bold",
+          textTransform: "uppercase",
+          color: darkGrayColor,
+        }}
+        descriptionStyle={{
+          fontSize: 15,
+          fontFamily: "sans-serif",
+          color: darkGrayColor,
+          textTransform: "uppercase",
+        }}
+      >
+        <Card.Content>
+          <ThemedView className="gap-3" bgColor="white">
+            <ThemedView className="flex-row items-center gap-3" bgColor="white">
+              <ThemedIconTooltip
+                tooltipTitle="Tipo de movimiento"
+                position="right"
+                iconStyles={{
+                  name: "truck-check",
+                  color: blueColor,
+                }}
+              />
               <ThemedText
-                variant="h6"
-                className="text-gray-950 font-semibold"
-                adjustsFontSizeToFit
-              >
-                Operación:
-              </ThemedText>
-
-              <ThemedText
-                variant="h6"
-                className="flex-1 text-light-dark-gray uppercase"
-                adjustsFontSizeToFit
-              >
-                {movement.operationName}
-              </ThemedText>
-            </View>
-
-            <View className="flex-row gap-2">
-              <ThemedText
-                variant="h6"
-                className="text-gray-950 font-semibold"
-                adjustsFontSizeToFit
-              >
-                Planificado:
-              </ThemedText>
-              <ThemedText
-                variant="h6"
-                className="text-gray-600 font-semibold"
-                adjustsFontSizeToFit
-              >
-                {Formatter.numberWithDots(movement.totalQuantityKG)}00 KG
-              </ThemedText>
-            </View>
-
-            <View className="flex-row gap-2">
-              <ThemedText
-                variant="h6"
-                className="text-gray-950 font-semibold"
+                variant="h5"
+                className="text-light-dark-gray uppercase font-semibold"
                 adjustsFontSizeToFit
                 numberOfLines={1}
               >
-                Pendiente:
+                {movement.movementTypeName}
               </ThemedText>
+            </ThemedView>
+
+            <ThemedView className="flex-row items-center gap-3" bgColor="white">
+              {movement.diCode && (
+                <>
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-800 uppercase font-bold"
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                  >
+                    DI:
+                  </ThemedText>
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-600 uppercase font-semibold"
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                  >
+                    {movement.diCode}
+                  </ThemedText>
+                </>
+              )}
+            </ThemedView>
+          </ThemedView>
+
+          <Divider
+            style={{
+              backgroundColor: darkGrayColor,
+              marginVertical: 15,
+            }}
+          />
+
+          <ThemedView className="flex-row w-full" bgColor="white">
+            <View className="justify-center w-2/6">
               <ThemedText
-                variant="h6"
-                className="text-gray-600 font-semibold"
+                variant="h5"
+                className="text-light-dark-gray uppercase font-bold"
                 adjustsFontSizeToFit
               >
-                {Formatter.numberWithDots(movement.pendingQuantityKG)}00 KG
-              </ThemedText>
-            </View>
-          </View>
-        </ThemedView>
-
-        <ThemedView className="flex-row w-full mt-4" bgColor="white">
-          <View className="justify-center w-2/6">
-            <ThemedText
-              variant="h5"
-              className=" text-light-dark-gray uppercase font-bold"
-              adjustsFontSizeToFit
-            >
-              Destino
-            </ThemedText>
-          </View>
-
-          <View className="flex-1 gap-2">
-            <ThemedText
-              variant="h5"
-              className="text-gray-600 uppercase font-semibold"
-              adjustsFontSizeToFit
-            >
-              {movement.warehouseDestinyName}
-            </ThemedText>
-
-            <View>
-              <ThemedText
-                variant="h6"
-                className="text-gray-950 font-semibold"
-                adjustsFontSizeToFit
-              >
-                Operación:
-              </ThemedText>
-              <ThemedText
-                variant="h6"
-                className="flex-1 text-light-dark-gray uppercase"
-                adjustsFontSizeToFit
-              >
-                {movement.operationDestinyName}
+                Origen
               </ThemedText>
             </View>
 
-            <View className="flex-row gap-2">
+            <View className="flex-1 gap-2">
               <ThemedText
-                variant="h6"
-                className="text-gray-950 font-semibold"
+                variant="h5"
+                className="text-gray-600 uppercase font-semibold"
                 adjustsFontSizeToFit
               >
-                Trasladado:
+                {movement.warehouseName}
               </ThemedText>
+
+              <View>
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-950 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  Operación:
+                </ThemedText>
+
+                <ThemedText
+                  variant="h6"
+                  className="flex-1 text-light-dark-gray uppercase"
+                  adjustsFontSizeToFit
+                >
+                  {movement.operationName}
+                </ThemedText>
+              </View>
+
+              <View className="flex-row gap-2">
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-950 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  Planificado:
+                </ThemedText>
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-600 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  {Formatter.numberWithDots(movement.totalQuantityKG)} KG
+                </ThemedText>
+              </View>
+
+              <View className="flex-row gap-2">
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-950 font-semibold"
+                  adjustsFontSizeToFit
+                  numberOfLines={1}
+                >
+                  Pendiente:
+                </ThemedText>
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-600 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  {Formatter.numberWithDots(movement.pendingQuantityKG)} KG
+                </ThemedText>
+              </View>
+            </View>
+          </ThemedView>
+
+          <ThemedView className="flex-row w-full mt-5" bgColor="white">
+            <View className="justify-center w-2/6">
               <ThemedText
-                variant="h6"
-                className="text-gray-600 font-semibold"
+                variant="h5"
+                className=" text-light-dark-gray uppercase font-bold"
                 adjustsFontSizeToFit
               >
-                {Formatter.numberWithDots(movement.transferredQuantityKG)}00 KG
+                Destino
               </ThemedText>
             </View>
-          </View>
-        </ThemedView>
-      </Card.Content>
-    </ThemedAccordion>
+
+            <View className="flex-1 gap-2">
+              <ThemedText
+                variant="h5"
+                className="text-gray-600 uppercase font-semibold"
+                adjustsFontSizeToFit
+              >
+                {movement.warehouseDestinyName}
+              </ThemedText>
+
+              <View>
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-950 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  Operación:
+                </ThemedText>
+                <ThemedText
+                  variant="h6"
+                  className="flex-1 text-light-dark-gray uppercase"
+                  adjustsFontSizeToFit
+                >
+                  {movement.operationDestinyName}
+                </ThemedText>
+              </View>
+
+              <View className="flex-row gap-2">
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-950 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  Trasladado:
+                </ThemedText>
+                <ThemedText
+                  variant="h6"
+                  className="text-gray-600 font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  {Formatter.numberWithDots(movement.transferredQuantityKG)} KG
+                </ThemedText>
+              </View>
+            </View>
+          </ThemedView>
+        </Card.Content>
+      </ThemedAccordion>
+     </ThemedView>
   );
 };

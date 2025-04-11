@@ -9,6 +9,7 @@ export const Colors = {
     secondary: "#0064ff59",
     tertiary: "#AAC1FE",
     quaternary: "#D4E0FF",
+    primaryAlpha: "#337AB720",
 
     success: "#52d49b",
 
@@ -34,6 +35,7 @@ export const Colors = {
     secondary: "#d138a8",
     tertiary: "#ff527f",
     quaternary: "#ff6b81",
+    primaryAlpha: "#3498db50",
 
     success: "#3a9d78",
 
@@ -49,7 +51,7 @@ export const Colors = {
     lightGreen: "#ABEBC6",
     lightWhite: "#FDFEFE",
     orange: "#DEA241",
-    
+
     pink: "#F5B7B1",
     tomato: "#D9534F",
     yellow: "#F9E79F",
