@@ -18,7 +18,7 @@ export interface InternalMovement {
   statusName: string;
   totalQuantityKG: number;
   turn: number;
-  verifiedQuantityKG: number;
+  transferredQuantityKG: number;
   warehouseDestinyName: string;
   warehouseName: string;
 }

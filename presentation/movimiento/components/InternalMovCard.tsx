@@ -6,12 +6,12 @@ import { Card, Divider } from "react-native-paper";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import {
   ThemedAccordion,
+  ThemedIconTooltip,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
 
 import { InternalMovement } from "@/infrastructure/entities";
-import { INTERNAL_MOV_STATUS_BG_COLOR } from "@/config/constants";
 import { Formatter } from "@/config/helpers";
 
 interface InternalMovCardProps {
@@ -23,8 +23,8 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
 
   return (
     <ThemedAccordion
-      title={`Det. ${movement.detailId} - ${movement.productName}`}
-      description={`Mov. ${movement.id} - ${movement.plannedDate} (T${movement.turn}) - ${movement.customerName}`}
+      title={`${movement.productName} ${movement.plannedDate} (T${movement.turn})`}
+      description={`Det. ${movement.detailId} - ${movement.customerName}`}
       titleStyle={{
         fontSize: 14,
         fontFamily: "sans-serif",
@@ -33,68 +33,68 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
         color: darkGrayColor,
       }}
       descriptionStyle={{
-        fontSize: 14,
+        fontSize: 15,
         fontFamily: "sans-serif",
         color: darkGrayColor,
+        textTransform: "uppercase",
       }}
+      style={{ flex: 1, gap: 4 }}
     >
       <Card.Content>
-        <ThemedView className="gap-2" bgColor="white">
-          <ThemedText
-            variant="h5"
-            className="text-light-dark-gray uppercase font-semibold"
-            adjustsFontSizeToFit
-            numberOfLines={1}
-          >
-            {movement.movementTypeName}
-          </ThemedText>
+        <ThemedView className="gap-3" bgColor="white">
+          <ThemedView className="flex-row items-center gap-3" bgColor="white">
+            <ThemedIconTooltip
+              tooltipTitle="Tipo de movimiento"
+              position="right"
+              iconStyles={{
+                name: "cog-transfer",
+                color: darkGrayColor,
+              }}
+            />
+            <ThemedText
+              variant="h5"
+              className="text-light-dark-gray uppercase font-semibold"
+              adjustsFontSizeToFit
+              numberOfLines={1}
+            >
+              {movement.movementTypeName}
+            </ThemedText>
+          </ThemedView>
 
           <ThemedView
             className="flex-1 flex-row items-center gap-3"
             bgColor="white"
           >
-            <View className="flex-row items-center gap-2">
-              <View className="flex-row items-center gap-1">
-                <View
-                  style={{
-                    backgroundColor:
-                      INTERNAL_MOV_STATUS_BG_COLOR[movement.status],
-                    width: 12,
-                    height: 12,
+            {movement.diCode && (
+              <>
+                <ThemedIconTooltip
+                  tooltipTitle="DI"
+                  position="right"
+                  iconStyles={{
+                    name: "checkbox-marked-circle-outline",
+                    color: darkGrayColor,
                   }}
                 />
                 <ThemedText
-                  variant="h6"
+                  variant="h5"
                   className="text-gray-600 uppercase font-semibold"
                 >
-                  Estado:
+                  {movement.diCode}
                 </ThemedText>
-              </View>
-
-              <ThemedText
-                variant="h6"
-                className="text-gray-600 font-semibold"
-                style={{ textTransform: "capitalize" }}
-              >
-                {movement.statusName}
-              </ThemedText>
-            </View>
-
-            {movement.diCode && (
-              <ThemedText
-                variant="h6"
-                className="text-gray-600 uppercase font-semibold"
-              >
-                DI: {movement.diCode}
-              </ThemedText>
+              </>
             )}
           </ThemedView>
         </ThemedView>
 
-        <Divider className="my-3" />
+        <Divider
+          style={{
+            backgroundColor: darkGrayColor,
+            marginVertical: 15,
+          }}
+        />
 
-        <ThemedView className="flex-row mr-5" bgColor="white">
-          <View className="flex-1 justify-center">
+        <ThemedView className="flex-row w-full" bgColor="white">
+          <View className="justify-center w-2/6">
             <ThemedText
               variant="h5"
               className="text-light-dark-gray uppercase font-bold"
@@ -121,6 +121,7 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
               >
                 Operación:
               </ThemedText>
+
               <ThemedText
                 variant="h6"
                 className="flex-1 text-light-dark-gray uppercase"
@@ -136,14 +137,14 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
                 className="text-gray-950 font-semibold"
                 adjustsFontSizeToFit
               >
-                Planificado KG:
+                Planificado:
               </ThemedText>
               <ThemedText
                 variant="h6"
                 className="text-gray-600 font-semibold"
                 adjustsFontSizeToFit
               >
-                {Formatter.numberWithDots(movement.totalQuantityKG)}
+                {Formatter.numberWithDots(movement.totalQuantityKG)}00 KG
               </ThemedText>
             </View>
 
@@ -154,23 +155,21 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
                 adjustsFontSizeToFit
                 numberOfLines={1}
               >
-                Pendiente KG:
+                Pendiente:
               </ThemedText>
               <ThemedText
                 variant="h6"
                 className="text-gray-600 font-semibold"
                 adjustsFontSizeToFit
               >
-                {Formatter.numberWithDots(movement.pendingQuantityKG)}
+                {Formatter.numberWithDots(movement.pendingQuantityKG)}00 KG
               </ThemedText>
             </View>
           </View>
         </ThemedView>
 
-        <Divider className="my-3" />
-
-        <ThemedView className="flex-row  mr-5" bgColor="white">
-          <View className="flex-1 justify-center">
+        <ThemedView className="flex-row w-full mt-4" bgColor="white">
+          <View className="justify-center w-2/6">
             <ThemedText
               variant="h5"
               className=" text-light-dark-gray uppercase font-bold"
@@ -212,14 +211,14 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
                 className="text-gray-950 font-semibold"
                 adjustsFontSizeToFit
               >
-                Verificado KG:
+                Trasladado:
               </ThemedText>
               <ThemedText
                 variant="h6"
                 className="text-gray-600 font-semibold"
                 adjustsFontSizeToFit
               >
-                {Formatter.numberWithDots(movement.verifiedQuantityKG)}
+                {Formatter.numberWithDots(movement.transferredQuantityKG)}00 KG
               </ThemedText>
             </View>
           </View>

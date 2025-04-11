@@ -33,10 +33,10 @@ export class MovementMapper {
       statusName: response.nombre_estado,
       totalQuantityKG: response.cantidad_total,
       turn: response.turno,
-      verifiedQuantityKG: response.cantidad_verificada,
+      transferredQuantityKG: response.cantidad_verificada,
       warehouseDestinyName: response.nombre_bodega_destino,
       warehouseName: response.nombre_bodega,
-    }
+    };
   }
 
   static fromStatusInternalMovResultToEntity(

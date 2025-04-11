@@ -36,7 +36,6 @@ const VerDetalleReqScreen = () => {
     reqCode ? Number(reqCode) : reqCodeByPatent,
     reqCode ? reqType : reqTypeByPatent
   );
-  console.log(JSON.stringify(queryReqByCode.data, null, 2));
 
   if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
     return <ThemedLoader color={grayColor} size="large" />;

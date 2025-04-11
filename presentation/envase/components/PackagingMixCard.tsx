@@ -125,7 +125,7 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
         isNativeModal
       >
         <ThemedText
-          variant="h3"
+          variant="h4"
           className="uppercase font-semibold !text-slate-900 mb-6"
           adjustsFontSizeToFit
         >
@@ -163,21 +163,6 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
                 {productMix.totalPackagingQuantity}
               </ThemedText>
             </View>
-          </View>
-
-          <View className="justify-start gap-1">
-            <ThemedText variant="h5" className="font-semibold">
-              Mezcla
-            </ThemedText>
-
-            <ThemedText
-              variant="h5"
-              className="text-slate-900"
-              adjustsFontSizeToFit
-              numberOfLines={1}
-            >
-              {productMix.mixName}
-            </ThemedText>
           </View>
         </View>
 

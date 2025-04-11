@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 99,
     elevation: 10,
-    minWidth: 96,
+    minWidth: 120,
+    maxWidth: 200,
     alignSelf: "center",
   },
   tooltipTop: {
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   tooltipRight: {
-    left: "45%",
+    left: "50%",
     top: "50%",
     transform: [{ translateY: "-50%" }],
     marginLeft: 8,
