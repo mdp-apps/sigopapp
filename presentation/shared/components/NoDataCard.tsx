@@ -1,9 +1,8 @@
 import React from "react";
+import { View } from "react-native";
+import { Icon } from "react-native-paper";
 
-import { View, StyleSheet, Dimensions } from "react-native";
-import { Card, Icon } from "react-native-paper";
-
-import { TextType, ThemedText } from "@/presentation/theme/components";
+import { TextType, ThemedCard, ThemedText } from "@/presentation/theme/components";
 import { Colors } from "@/config/constants";
 
 interface ThemedCardProps {
@@ -14,7 +13,6 @@ interface ThemedCardProps {
   textSize?: TextType;
 }
 
-const { width } = Dimensions.get("window");
 
 export const NoDataCard = ({
   message,
@@ -24,7 +22,7 @@ export const NoDataCard = ({
   textSize = "h2",
 }: ThemedCardProps) => {
   return (
-    <Card style={styles.card}>
+    <ThemedCard>
       <View className="flex justify-center items-center gap-3">
         <View testID="card-icon">
           <Icon source={iconSource} size={iconSize} color={iconColor} />
@@ -36,14 +34,7 @@ export const NoDataCard = ({
           {message}
         </ThemedText>
       </View>
-    </Card>
+    </ThemedCard>
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    padding: 20,
-    width: width - 30,
-    marginHorizontal: "auto",
-  },
-});

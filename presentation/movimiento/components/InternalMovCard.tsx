@@ -20,6 +20,8 @@ interface InternalMovCardProps {
 
 export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
+  const blueColor = useThemeColor({}, "blue");
+
 
   return (
     <ThemedAccordion
@@ -38,7 +40,6 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
         color: darkGrayColor,
         textTransform: "uppercase",
       }}
-      style={{ flex: 1, gap: 4 }}
     >
       <Card.Content>
         <ThemedView className="gap-3" bgColor="white">
@@ -48,7 +49,7 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
               position="right"
               iconStyles={{
                 name: "cog-transfer",
-                color: darkGrayColor,
+                color: blueColor,
               }}
             />
             <ThemedText
@@ -72,7 +73,7 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
                   position="right"
                   iconStyles={{
                     name: "checkbox-marked-circle-outline",
-                    color: darkGrayColor,
+                    color: blueColor,
                   }}
                 />
                 <ThemedText

@@ -150,7 +150,7 @@ const VerDetalleReqScreen = () => {
                 <ThemedChip
                   tooltipTitle="Total KG"
                   iconSource="plus-box-multiple"
-                  text={`Total: ${Formatter.numberWithDots(totalKg)} KG`}
+                  text={`${Formatter.numberWithDots(totalKg)} KG`}
                   style={{ backgroundColor: primaryColor }}
                   textStyle={{ color: "white" }}
                   iconColor="white"

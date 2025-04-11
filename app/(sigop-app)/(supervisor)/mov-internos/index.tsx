@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { FlatList, RefreshControl, ScrollView, View } from "react-native";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useFilters } from "@/presentation/shared/hooks";
@@ -8,8 +8,12 @@ import { useCustomers } from "@/presentation/cliente/hooks";
 import { useInternalMovements } from "@/presentation/movimiento/hooks";
 
 import {
+  ThemedCard,
   ThemedDropdown,
+  ThemedIconTooltip,
   ThemedLoader,
+  ThemedSkeleton,
+  ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
 import {
@@ -43,6 +47,7 @@ const initialFilterValues = {
 
 const MovInternosScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
+  const blueColor = useThemeColor({}, "blue");
 
   const {
     filters,
@@ -55,22 +60,27 @@ const MovInternosScreen = () => {
     handleApplyFilters,
   } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
-  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
-    useInternalMovements({
-      code: filters.code,
-      detailCode: filters.detailCode,
-      internalMovementType: filters.internalMovementType,
-      internalMovementStatus: filters.internalMovementStatus,
-      date: filters.date,
-      turn: filters.turn,
-      customer: filters.customer,
-    });
+  const {
+    queryInternalMovements,
+    movCurrentDate,
+    movTurn,
+    isRefreshing,
+    onPullToRefresh,
+  } = useInternalMovements({
+    code: filters.code,
+    detailCode: filters.detailCode,
+    internalMovementType: filters.internalMovementType,
+    internalMovementStatus: filters.internalMovementStatus,
+    date: filters.date,
+    turn: filters.turn,
+    customer: filters.customer,
+  });
 
   const { queryTurns, dropdownTurns } = useTurns();
   const { queryCustomers, dropdownCustomers } = useCustomers();
 
   return (
-    <ThemedView className="mb-6">
+    <ThemedView className="mb-6" margin>
       <ScrollFilters>
         {filterKeys.map((filterKey) => (
           <Filter
@@ -121,14 +131,70 @@ const MovInternosScreen = () => {
         )}
       </FilterModal>
 
-      <ThemedView className="mt-4 gap-4" margin>
+      <ThemedCard style={{ marginBottom: 15, borderRadius: 2 }}>
+        <View className="flex-row items-center gap-8 w-full">
+          <View className="flex-row items-center gap-2">
+            <ThemedIconTooltip
+              tooltipTitle="Turno"
+              position="top"
+              iconStyles={{
+                name: "account-sync",
+                color: blueColor,
+                size: 28,
+              }}
+            />
+            {queryInternalMovements.isLoading ? (
+              <ThemedSkeleton style={{ width: 30 }} />
+            ) : (
+              <ThemedText
+                variant="h4"
+                className="text-light-dark-gray uppercase font-semibold"
+                adjustsFontSizeToFit
+                numberOfLines={1}
+              >
+                {movTurn}
+              </ThemedText>
+            )}
+          </View>
+
+          <View className="flex-row items-center gap-2">
+            <ThemedIconTooltip
+              tooltipTitle="Fecha"
+              position="top"
+              iconStyles={{
+                name: "calendar-sync",
+                color: blueColor,
+                size: 28,
+              }}
+            />
+            {queryInternalMovements.isLoading ? (
+              <ThemedSkeleton style={{ width: 90 }} />
+            ) : (
+              <ThemedText
+                variant="h4"
+                className="text-light-dark-gray uppercase font-semibold"
+                adjustsFontSizeToFit
+                numberOfLines={1}
+              >
+                {movCurrentDate}
+              </ThemedText>
+            )}
+          </View>
+        </View>
+      </ThemedCard>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
         {queryInternalMovements.isLoading ? (
           <ThemedLoader color={primaryColor} size="large" />
         ) : queryInternalMovements.data &&
           queryInternalMovements.data.length > 0 ? (
           <FlatList
             data={queryInternalMovements.data}
-            renderItem={({ item }) => <InternalMovCard movement={item} />}
+            renderItem={({ item }) => (
+              <ThemedView className="mb-3">
+                <InternalMovCard movement={item} />
+              </ThemedView>
+            )}
             keyExtractor={(item, index) => `${index}${item.id}`}
             refreshControl={
               <RefreshControl
@@ -136,6 +202,7 @@ const MovInternosScreen = () => {
                 onRefresh={onPullToRefresh}
               />
             }
+            scrollEnabled={false}
           />
         ) : (
           <NoDataCard
@@ -143,7 +210,7 @@ const MovInternosScreen = () => {
             iconSource="alpha-m-box"
           />
         )}
-      </ThemedView>
+      </ScrollView>
     </ThemedView>
   );
 };

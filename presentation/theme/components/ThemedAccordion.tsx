@@ -34,7 +34,7 @@ export const ThemedAccordion = ({
       style={[styles.accordion, style]}
       titleNumberOfLines={2}
     >
-      <Card style={styles.card}>
+      <Card style={styles.card} mode="contained">
         {children}
       </Card>
     </List.Accordion>
@@ -45,11 +45,6 @@ const styles = StyleSheet.create({
   accordion: {
     backgroundColor: "#f3f3f3",
     width: "100%",
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 2,
-    elevation: 1,
   },
   title: {
     fontSize: 22,
