@@ -1,14 +1,26 @@
 export interface InternalMovementResponse {
+  resultado: InternalMovResponse[];
+  totales: TotalInternalMovResponse;
+}
+
+export interface TotalInternalMovResponse {
+  fecha: string;
+  pendiente: number;
+  planificado: number;
+  trasladado: number;
+  turno: number;
+}
+
+export interface InternalMovResponse {
   cantidad_dapi: number;
   cantidad_di: number;
+  cantidad_pendiente: number;
   cantidad_total: number;
   cantidad_verificada: number;
   cobro: number;
   codigo_bodega_destino: number;
   codigo_bodega: number;
   codigo_cliente: number;
-  codigo_dapi: number;
-  codigo_di: string;
   codigo_operacion_destino: number;
   codigo_operacion: number;
   codigo_papeleta: number;
@@ -17,7 +29,6 @@ export interface InternalMovementResponse {
   copiada: number;
   estado: number;
   fecha_creacion: string;
-  fecha_planificada: string;
   id_dapi: number;
   id_detalle: number;
   id_di: number;
@@ -27,20 +38,16 @@ export interface InternalMovementResponse {
   nombre_bodega_destino: string;
   nombre_bodega: string;
   nombre_cliente: string;
-  nombre_estado: string;
   nombre_operacion_destino: string;
   nombre_operacion: string;
   nombre_producto: string;
-  nombre_tipo_movimiento: string;
-  nombre_turno: string;
-  observacion: string;
   porcentaje_cumplimiento: number;
   tiene_pallet: number;
   tipo_movimiento: number;
   turno: number;
 }
 
-export interface StatusInternalMovResponse extends TypeInternalMovResponse { }
+export interface StatusInternalMovResponse extends TypeInternalMovResponse {}
 
 export interface TypeInternalMovResponse {
   bool2: boolean;
@@ -54,4 +61,3 @@ export interface TypeInternalMovResponse {
   nombre: string;
   bool1: boolean;
 }
-

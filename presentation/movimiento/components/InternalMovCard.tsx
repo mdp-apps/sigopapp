@@ -6,21 +6,19 @@ import { Card, Divider } from "react-native-paper";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import {
   ThemedAccordion,
-  ThemedIconTooltip,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
 
-import { InternalMovement } from "@/infrastructure/entities";
+import { InternalMov } from "@/infrastructure/entities";
 import { Formatter } from "@/config/helpers";
 
 interface InternalMovCardProps {
-  movement: InternalMovement;
+  movement: InternalMov;
 }
 
 export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
-  const blueColor = useThemeColor({}, "blue");
 
 
   return (
@@ -43,50 +41,6 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
         }}
       >
         <Card.Content>
-          <ThemedView className="gap-3" bgColor="white">
-            <ThemedView className="flex-row items-center gap-3" bgColor="white">
-              <ThemedIconTooltip
-                tooltipTitle="Tipo de movimiento"
-                position="right"
-                iconStyles={{
-                  name: "truck-check",
-                  color: blueColor,
-                }}
-              />
-              <ThemedText
-                variant="h5"
-                className="text-light-dark-gray uppercase font-semibold"
-                adjustsFontSizeToFit
-                numberOfLines={1}
-              >
-                {movement.movementTypeName}
-              </ThemedText>
-            </ThemedView>
-
-            <ThemedView className="flex-row items-center gap-3" bgColor="white">
-              {movement.diCode && (
-                <>
-                  <ThemedText
-                    variant="h5"
-                    className="text-gray-800 uppercase font-bold"
-                    adjustsFontSizeToFit
-                    numberOfLines={1}
-                  >
-                    DI:
-                  </ThemedText>
-                  <ThemedText
-                    variant="h5"
-                    className="text-gray-600 uppercase font-semibold"
-                    adjustsFontSizeToFit
-                    numberOfLines={1}
-                  >
-                    {movement.diCode}
-                  </ThemedText>
-                </>
-              )}
-            </ThemedView>
-          </ThemedView>
-
           <Divider
             style={{
               backgroundColor: darkGrayColor,

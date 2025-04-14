@@ -1,6 +1,5 @@
 import { HttpAdapter } from "@/config/adapters";
 
-import { ApiResponse } from "@/infrastructure/interfaces";
 import { MovementMapper } from "@/infrastructure/mappers";
 import { InternalMovementResponse } from "../interfaces";
 import { InternalMovement } from "@/infrastructure/entities";
@@ -19,13 +18,18 @@ interface Body {
 export const getInternalMovsUseCase = async (
   fetcher: HttpAdapter,
   body: Body
-): Promise<InternalMovement[]> => {
-  const internalMovements = await fetcher.post<
-    ApiResponse<InternalMovementResponse[]>,
-    Body
-    >(`/movimientosinternos`, body);
-
-  return internalMovements.resultado.map(
-    MovementMapper.fromInternalMovResultToEntity
+): Promise<InternalMovement> => {
+  const internalMovements = await fetcher.post<InternalMovementResponse, Body>(
+    `/movimientosinternos`,
+    body
   );
+
+  return {
+    result: internalMovements.resultado.map(
+      MovementMapper.fromInternalMovResultToEntity
+    ),
+    turnTotals: MovementMapper.fromTotalInternalMovToEntity(
+      internalMovements.totales
+    ),
+  };
 };

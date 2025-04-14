@@ -49,7 +49,6 @@ const initialFilterValues = {
 
 const MovInternosScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
-  const primaryAlphaColor = useThemeColor({}, "primaryAlpha");
   const blueColor = useThemeColor({}, "blue");
   const darkGrayColor = useThemeColor({}, "darkGray");
 
@@ -66,9 +65,6 @@ const MovInternosScreen = () => {
 
   const {
     queryInternalMovements,
-    movCurrentDate,
-    movTurn,
-    movTotals,
     isRefreshing,
     onPullToRefresh,
   } = useInternalMovements({
@@ -83,6 +79,7 @@ const MovInternosScreen = () => {
 
   const { queryTurns, dropdownTurns } = useTurns();
   const { queryCustomers, dropdownCustomers } = useCustomers();
+  console.log(JSON.stringify(queryInternalMovements.data, null, 2));
 
   return (
     <ThemedView className="mb-6" margin>
@@ -138,7 +135,7 @@ const MovInternosScreen = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {queryInternalMovements.data &&
-          queryInternalMovements.data.length > 0 && (
+          queryInternalMovements.data.result.length > 0 && (
             <ThemedView className="mb-5">
               <ThemedAccordion
                 title="Totales de turno actual"
@@ -172,7 +169,7 @@ const MovInternosScreen = () => {
                           adjustsFontSizeToFit
                           numberOfLines={1}
                         >
-                          {movTurn}
+                          {queryInternalMovements.data.turnTotals.turn}
                         </ThemedText>
                       )}
                     </View>
@@ -196,7 +193,7 @@ const MovInternosScreen = () => {
                           adjustsFontSizeToFit
                           numberOfLines={1}
                         >
-                          {movCurrentDate}
+                          {queryInternalMovements.data.turnTotals.plannedDate}
                         </ThemedText>
                       )}
                     </View>
@@ -217,7 +214,7 @@ const MovInternosScreen = () => {
                           position="top"
                           iconStyles={{
                             name: "checkbox-blank-circle",
-                            color: blueColor,
+                            color: darkGrayColor,
                             size: 8,
                           }}
                         />
@@ -239,7 +236,7 @@ const MovInternosScreen = () => {
                             adjustsFontSizeToFit
                             numberOfLines={1}
                           >
-                            {movTotals.planned}
+                            {queryInternalMovements.data.turnTotals.planned}
                           </ThemedText>
                         )}
                       </View>
@@ -252,7 +249,7 @@ const MovInternosScreen = () => {
                           position="top"
                           iconStyles={{
                             name: "checkbox-blank-circle",
-                            color: blueColor,
+                            color: darkGrayColor,
                             size: 8,
                           }}
                         />
@@ -274,7 +271,7 @@ const MovInternosScreen = () => {
                             adjustsFontSizeToFit
                             numberOfLines={1}
                           >
-                            {movTotals.pending}
+                            {queryInternalMovements.data.turnTotals.pending}
                           </ThemedText>
                         )}
                       </View>
@@ -287,7 +284,7 @@ const MovInternosScreen = () => {
                           position="top"
                           iconStyles={{
                             name: "checkbox-blank-circle",
-                            color: blueColor,
+                            color: darkGrayColor,
                             size: 8,
                           }}
                         />
@@ -310,7 +307,7 @@ const MovInternosScreen = () => {
                             adjustsFontSizeToFit
                             numberOfLines={1}
                           >
-                            {movTotals.transferred}
+                            {queryInternalMovements.data.turnTotals.transferred}
                           </ThemedText>
                         )}
                       </View>
@@ -324,9 +321,9 @@ const MovInternosScreen = () => {
         {queryInternalMovements.isLoading ? (
           <ThemedLoader color={primaryColor} size="large" />
         ) : queryInternalMovements.data &&
-          queryInternalMovements.data.length > 0 ? (
+          queryInternalMovements.data.result.length > 0 ? (
           <FlatList
-            data={queryInternalMovements.data}
+            data={queryInternalMovements.data.result}
             renderItem={({ item }) => <InternalMovCard movement={item} />}
             keyExtractor={(item, index) => `${index}${item.id}`}
             refreshControl={

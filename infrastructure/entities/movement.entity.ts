@@ -1,26 +1,33 @@
 export interface InternalMovement {
+  result: InternalMov[];
+  turnTotals: TotalInternalMov;
+}
+
+export interface InternalMov {
   cashing: number;
   customerName: string;
-  dapiCode: number;
   detailId: number;
-  diCode: string;
   id: number;
-  movementTypeName: string;
-  observation: string;
   operationCode: number;
   operationDestinyCode: number;
   operationDestinyName: string;
   operationName: string;
   pendingQuantityKG: number;
-  plannedDate: string;
   productName: string;
   status: number;
-  statusName: string;
   totalQuantityKG: number;
   turn: number;
   transferredQuantityKG: number;
   warehouseDestinyName: string;
   warehouseName: string;
+}
+
+export interface TotalInternalMov {
+  plannedDate: string;
+  pending: string;
+  planned: string;
+  transferred: string;
+  turn: number;
 }
 
 export interface StatusInternalMov extends TypeInternalMov { }
