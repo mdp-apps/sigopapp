@@ -63,23 +63,19 @@ const MovInternosScreen = () => {
     handleApplyFilters,
   } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
-  const {
-    queryInternalMovements,
-    isRefreshing,
-    onPullToRefresh,
-  } = useInternalMovements({
-    code: filters.code,
-    detailCode: filters.detailCode,
-    internalMovementType: filters.internalMovementType,
-    internalMovementStatus: filters.internalMovementStatus,
-    date: filters.date,
-    turn: filters.turn,
-    customer: filters.customer,
-  });
+  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
+    useInternalMovements({
+      code: filters.code,
+      detailCode: filters.detailCode,
+      internalMovementType: filters.internalMovementType,
+      internalMovementStatus: filters.internalMovementStatus,
+      date: filters.date,
+      turn: filters.turn,
+      customer: filters.customer,
+    });
 
   const { queryTurns, dropdownTurns } = useTurns();
   const { queryCustomers, dropdownCustomers } = useCustomers();
-  console.log(JSON.stringify(queryInternalMovements.data, null, 2));
 
   return (
     <ThemedView className="mb-6" margin>
@@ -145,8 +141,8 @@ const MovInternosScreen = () => {
                   fontWeight: "bold",
                   textTransform: "uppercase",
                   color: darkGrayColor,
-                  marginBottom: 10,
                 }}
+                defaultExpanded
               >
                 <Card.Content>
                   <View className="flex-row items-center gap-8 w-full my-2">

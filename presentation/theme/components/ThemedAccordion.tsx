@@ -9,6 +9,8 @@ interface ThemedAccordionProps {
   titleStyle?: StyleProp<TextStyle>;
   description?: string;
   descriptionStyle?: StyleProp<TextStyle>;
+  leftIcon?: { icon: string; color?: string };
+  defaultExpanded?: boolean;
 }
 
 export const ThemedAccordion = ({
@@ -18,10 +20,19 @@ export const ThemedAccordion = ({
   titleStyle,
   description = "",
   descriptionStyle,
+  leftIcon,
+  defaultExpanded = false,
 }: ThemedAccordionProps) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
 
   const handlePress = () => setExpanded(!expanded);
+
+  const leftProp = {
+    left: (props: any) =>
+      leftIcon ? (
+        <List.Icon {...props} icon={leftIcon.icon} color={leftIcon.color} />
+      ) : null,
+  };
 
   return (
     <List.Accordion
@@ -33,16 +44,15 @@ export const ThemedAccordion = ({
       descriptionStyle={[styles.description, descriptionStyle]}
       style={[styles.accordion, style]}
       titleNumberOfLines={2}
-      right={
-        (props) => (
-          <List.Icon
-            {...props}
-            icon={expanded ? "chevron-up" : "chevron-down"}
-            color="black"
-            style={{ marginRight: 10 }}
-          />
-        )
-      }
+      {...(leftIcon ? leftProp : null)}
+      right={(props) => (
+        <List.Icon
+          {...props}
+          icon={expanded ? "chevron-up" : "chevron-down"}
+          color="black"
+          style={{ marginRight: 5 }}
+        />
+      )}
     >
       <Card style={styles.card} mode="contained">
         {children}
