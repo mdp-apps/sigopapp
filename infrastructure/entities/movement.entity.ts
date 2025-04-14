@@ -19,7 +19,9 @@ export interface InternalMov {
   turn: number;
   transferredQuantityKG: number;
   warehouseDestinyName: string;
+  warehouseDestinyCode: string;
   warehouseName: string;
+  wareHouseCode: string;
 }
 
 export interface TotalInternalMov {
@@ -27,7 +29,7 @@ export interface TotalInternalMov {
   pending: string;
   planned: string;
   transferred: string;
-  turn: number;
+  turn: string;
 }
 
 export interface StatusInternalMov extends TypeInternalMov { }

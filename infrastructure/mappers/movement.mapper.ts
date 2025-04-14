@@ -11,6 +11,7 @@ import {
   TypeInternalMov,
 } from "../entities";
 import { Formatter } from "@/config/helpers";
+import { DateAdapter } from "@/config/adapters";
 
 export class MovementMapper {
   static fromInternalMovResultToEntity(
@@ -31,7 +32,9 @@ export class MovementMapper {
       totalQuantityKG: response.cantidad_total,
       turn: response.turno,
       transferredQuantityKG: response.cantidad_verificada,
+      warehouseDestinyCode: `B${response.codigo_bodega_destino}`,
       warehouseDestinyName: response.nombre_bodega_destino,
+      wareHouseCode: `B${response.codigo_bodega}`,
       warehouseName: response.nombre_bodega,
     };
   }
@@ -40,11 +43,11 @@ export class MovementMapper {
     response: TotalInternalMovResponse
   ): TotalInternalMov {
     return {
-      plannedDate: response.fecha,
+      plannedDate: DateAdapter.format(response.fecha, "dd 'de' MMMM 'de' yyyy"),
       pending: Formatter.numberWithDots(response.pendiente).concat(" KG"),
       planned: Formatter.numberWithDots(response.planificado).concat(" KG"),
-      transferred: Formatter.numberWithDots(response.trasladado).concat("KG"),
-      turn: response.turno,
+      transferred: Formatter.numberWithDots(response.trasladado).concat(" KG"),
+      turn: `T${response.turno}`,
     };
   }
 

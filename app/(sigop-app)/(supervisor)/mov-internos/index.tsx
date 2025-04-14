@@ -9,6 +9,7 @@ import { useInternalMovements } from "@/presentation/movimiento/hooks";
 
 import {
   ThemedAccordion,
+  ThemedButton,
   ThemedCard,
   ThemedDropdown,
   ThemedIconTooltip,
@@ -146,21 +147,22 @@ const MovInternosScreen = () => {
               >
                 <Card.Content>
                   <View className="flex-row items-center gap-8 w-full my-2">
-                    <View className="flex-row items-center gap-2">
+                    <View className="flex-row items-center">
                       <ThemedIconTooltip
                         tooltipTitle="Turno"
                         position="top"
                         iconStyles={{
                           name: "account-sync",
                           color: blueColor,
-                          size: 28,
+                          size: 26,
                         }}
                       />
+
                       {queryInternalMovements.isLoading ? (
                         <ThemedSkeleton style={{ width: 30 }} />
                       ) : (
                         <ThemedText
-                          variant="h4"
+                          variant="h5"
                           className="text-slate-800 uppercase font-semibold"
                           adjustsFontSizeToFit
                           numberOfLines={1}
@@ -177,14 +179,15 @@ const MovInternosScreen = () => {
                         iconStyles={{
                           name: "calendar-sync",
                           color: blueColor,
-                          size: 28,
+                          size: 26,
                         }}
                       />
+
                       {queryInternalMovements.isLoading ? (
                         <ThemedSkeleton style={{ width: 90 }} />
                       ) : (
                         <ThemedText
-                          variant="h4"
+                          variant="h5"
                           className="text-slate-800 uppercase font-semibold"
                           adjustsFontSizeToFit
                           numberOfLines={1}
@@ -205,15 +208,14 @@ const MovInternosScreen = () => {
                   <View className="w-full gap-2">
                     <View className="flex-row items-center gap-4 mt-3">
                       <View className="flex-row items-center gap-2">
-                        <ThemedIconTooltip
-                          tooltipTitle="Fecha"
-                          position="top"
-                          iconStyles={{
-                            name: "checkbox-blank-circle",
-                            color: darkGrayColor,
-                            size: 8,
-                          }}
+                        <ThemedButton
+                          className="!p-0"
+                          variant="icon"
+                          iconName="checkbox-blank-circle"
+                          iconColor={darkGrayColor}
+                          iconSize={8}
                         />
+
                         <ThemedText
                           variant="h5"
                           className="text-gray-600 uppercase font-semibold"
@@ -240,15 +242,14 @@ const MovInternosScreen = () => {
 
                     <View className="flex-row items-center gap-4">
                       <View className="flex-row items-center gap-2">
-                        <ThemedIconTooltip
-                          tooltipTitle="Fecha"
-                          position="top"
-                          iconStyles={{
-                            name: "checkbox-blank-circle",
-                            color: darkGrayColor,
-                            size: 8,
-                          }}
+                        <ThemedButton
+                          className="!p-0"
+                          variant="icon"
+                          iconName="checkbox-blank-circle"
+                          iconColor={darkGrayColor}
+                          iconSize={8}
                         />
+
                         <ThemedText
                           variant="h5"
                           className="text-gray-600 uppercase font-semibold"
@@ -275,14 +276,12 @@ const MovInternosScreen = () => {
 
                     <View className="flex-row items-center gap-4">
                       <View className="flex-row gap-2 items-center">
-                        <ThemedIconTooltip
-                          tooltipTitle="Fecha"
-                          position="top"
-                          iconStyles={{
-                            name: "checkbox-blank-circle",
-                            color: darkGrayColor,
-                            size: 8,
-                          }}
+                        <ThemedButton
+                          className="!p-0"
+                          variant="icon"
+                          iconName="checkbox-blank-circle"
+                          iconColor={darkGrayColor}
+                          iconSize={8}
                         />
 
                         <ThemedText
