@@ -65,8 +65,8 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
   };
 
   return (
-    <>
-      <View className="relative flex-1 flex-col gap-5 px-4 py-6">
+    <View>
+      <View className="flex-col gap-5 px-4 py-6">
         <ThemedButton
           className="absolute top-3 right-3 z-50 !p-0"
           variant="icon"
@@ -88,7 +88,7 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
           </ThemedText>
         </View>
 
-        <View className="flex-1 flex-row justify-between items-center gap-1">
+        <View className="flex-row justify-between items-center gap-1">
           <View>
             <ThemedText variant="h5" className="font-semibold">
               Código mezcla
@@ -132,7 +132,7 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
         </ThemedText>
 
         <View className="flex-col justify-start gap-4 mb-4">
-          <View className="flex-row justify-start gap-8 w-full">
+          <View className="flex-row justify-start gap-10 w-full">
             <View className="justify-center items-center gap-1">
               <ThemedText variant="h5" className="font-semibold">
                 Lote
@@ -155,7 +155,7 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
 
             <View className="justify-center items-center gap-1">
               <ThemedText variant="h5" className="text-zinc-900 font-semibold">
-                Cantidad sacos
+                N° sacos
               </ThemedText>
 
               <ThemedText variant="h4" className="text-zinc-900 font-bold">
@@ -202,6 +202,6 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
           </ThemedText>
         </ThemedButton>
       </ThemedModal>
-    </>
+    </View>
   );
 };

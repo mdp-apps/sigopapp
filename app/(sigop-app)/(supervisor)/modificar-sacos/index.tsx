@@ -14,7 +14,7 @@ import {
 import { NoDataCard } from "@/presentation/shared/components";
 import { ReqInfo } from "@/presentation/req/components";
 import { PackagingMixes } from "@/presentation/envase/components";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Formatter } from "@/config/helpers";
 
 const ModificarSacosScreen = () => {
@@ -24,7 +24,7 @@ const ModificarSacosScreen = () => {
   const { reqCode, patent } = useGlobalSearchParams();
 
   const { queryReqByCode, reqType } = useReqByCode(reqCode as string);
-  const { queryReqByPatent, reqCodeByPatent,reqTypeByPatent } = useReqByPatent(
+  const { queryReqByPatent, reqCodeByPatent, reqTypeByPatent } = useReqByPatent(
     patent as string
   );
   const {
@@ -56,43 +56,47 @@ const ModificarSacosScreen = () => {
   }
 
   return (
-    <ThemedView safe>
-      <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!} />
+    <ThemedView margin>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ReqInfo
+          req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!}
+        />
 
-      {isLoadingMixed ? (
-        <ThemedLoader color={primaryColor} size="large" />
-      ) : (
-        <ThemedView margin>
-          <View className="flex-row gap-3 mb-3">
-            <ThemedChip
-              tooltipTitle="Total KG mezclas"
-              iconSource="weight-kilogram"
-              text={`Total: ${Formatter.numberWithDots(
-                totalKgProductMixes
-              )} KG`}
-              style={{ backgroundColor: primaryColor }}
-              textStyle={{ fontSize: 15, color: "white" }}
-              iconColor="white"
+        {isLoadingMixed ? (
+          <ThemedLoader color={primaryColor} size="large" />
+        ) : (
+          <ThemedView className="mb-4">
+            <View className="flex-row gap-3 mb-3">
+              <ThemedChip
+                tooltipTitle="Total KG mezclas"
+                iconSource="weight-kilogram"
+                text={`Total: ${Formatter.numberWithDots(
+                  totalKgProductMixes
+                )} KG`}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ fontSize: 15, color: "white" }}
+                iconColor="white"
+              />
+
+              <ThemedChip
+                tooltipTitle="Cantidad total de sacos"
+                iconSource="format-list-numbered"
+                text={`Cantidad: ${Formatter.numberWithDots(
+                  totalPackagingQuantity
+                )}`}
+                style={{ backgroundColor: primaryColor }}
+                textStyle={{ fontSize: 15, color: "white" }}
+                iconColor="white"
+              />
+            </View>
+
+            <PackagingMixes
+              productMixes={productMixes}
+              reqType={reqCode ? reqType : reqTypeByPatent}
             />
-
-            <ThemedChip
-              tooltipTitle="Cantidad total de sacos"
-              iconSource="format-list-numbered"
-              text={`Cantidad: ${Formatter.numberWithDots(
-                totalPackagingQuantity
-              )}`}
-              style={{ backgroundColor: primaryColor }}
-              textStyle={{ fontSize: 15, color: "white" }}
-              iconColor="white"
-            />
-          </View>
-
-          <PackagingMixes
-            productMixes={productMixes}
-            reqType={reqCode ? reqType : reqTypeByPatent}
-          />
-        </ThemedView>
-      )}
+          </ThemedView>
+        )}
+      </ScrollView>
     </ThemedView>
   );
 };
