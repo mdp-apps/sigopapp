@@ -64,7 +64,7 @@ const MovInternosScreen = () => {
     handleApplyFilters,
   } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
-  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
+  const { queryInternalMovements, duplicatedProducts, isRefreshing, onPullToRefresh } =
     useInternalMovements({
       code: filters.code,
       detailCode: filters.detailCode,
@@ -319,7 +319,15 @@ const MovInternosScreen = () => {
           queryInternalMovements.data.result.length > 0 ? (
           <FlatList
             data={queryInternalMovements.data.result}
-            renderItem={({ item }) => <InternalMovCard movement={item} />}
+            renderItem={({ item }) => (
+              <InternalMovCard
+                movement={item}
+                currentTurn={queryInternalMovements.data.turnTotals.turn}
+                isProductDuplicated={duplicatedProducts.includes(
+                  item.productCode
+                )} 
+              />
+            )}
             keyExtractor={(item, index) => `${index}${item.id}`}
             refreshControl={
               <RefreshControl

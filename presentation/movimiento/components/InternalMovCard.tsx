@@ -17,15 +17,29 @@ import { Formatter } from "@/config/helpers";
 
 interface InternalMovCardProps {
   movement: InternalMov;
+  currentTurn: string;
+  isProductDuplicated: boolean;
 }
 
-export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
+export const InternalMovCard = ({
+  movement,
+  currentTurn,
+  isProductDuplicated,
+}: InternalMovCardProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
+
 
   return (
     <ThemedView className="mb-3">
       <ThemedAccordion
         title={`${movement.productName}`}
+        description={
+          isProductDuplicated || movement.turn !== currentTurn
+            ? `${movement.turn !== currentTurn ? movement.turn : ""} ${
+                isProductDuplicated ? `Cliente: ${movement.customerName}` : ""
+              }`
+            : undefined
+        }
         titleStyle={{
           fontSize: 14,
           fontFamily: "sans-serif",

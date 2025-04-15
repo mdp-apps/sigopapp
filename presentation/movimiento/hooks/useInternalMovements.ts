@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 import * as UseCases from "@/core/movimiento/use-cases";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
-import { Formatter } from "@/config/helpers";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -52,6 +51,20 @@ export const useInternalMovements = (
     },
   });
 
+  const duplicatedProducts = useMemo(() => {
+    const productCounts = queryInternalMovements.data?.result.reduce(
+      (acc: Record<string, number>, movement) => {
+        acc[movement.productCode] = (acc[movement.productCode] || 0) + 1;
+        return acc;
+      },
+      {}
+    );
+
+    return Object.keys(productCounts || {}).filter(
+      (productCode) => (productCounts ?? {})[productCode] > 1
+    );
+  }, [queryInternalMovements.data]);
+
   const onPullToRefresh = async () => {
     setIsRefreshing(true);
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -65,6 +78,7 @@ export const useInternalMovements = (
 
   return {
     queryInternalMovements,
+    duplicatedProducts,
     isRefreshing,
     onPullToRefresh,
   };

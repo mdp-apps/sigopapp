@@ -13,10 +13,11 @@ export interface InternalMov {
   operationDestinyName: string;
   operationName: string;
   pendingQuantityKG: number;
+  productCode: string;
   productName: string;
   status: number;
   totalQuantityKG: number;
-  turn: number;
+  turn: string;
   transferredQuantityKG: number;
   warehouseDestinyName: string;
   warehouseDestinyCode: string;
