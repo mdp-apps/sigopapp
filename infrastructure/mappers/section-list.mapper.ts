@@ -1,5 +1,6 @@
 import { SectionListResponse } from "../interfaces";
 import { LogStatusReq, ObservationReq } from "../entities";
+import { DateAdapter } from "@/config/adapters";
 
 export class SectionListMapper {
   static fromReqStatusToSectionList = (
@@ -20,8 +21,12 @@ export class SectionListMapper {
       },
       {
         title: "Fecha y hora",
-        data: [reqStatus?.eventDate ?? ""],
-      }
+        data: [
+          reqStatus?.eventDate
+            ? DateAdapter.format(new Date(reqStatus.eventDate), "PPPPp")
+            : "",
+        ],
+      },
     ];
   };
 
@@ -39,8 +44,12 @@ export class SectionListMapper {
       },
       {
         title: "Fecha y hora",
-        data: [observation?.dateComment ?? ""],
-      }
+        data: [
+          observation?.dateComment
+            ? DateAdapter.format(new Date(observation.dateComment), "PPPP p")
+            : "",
+        ],
+      },
     ];
   };
 }

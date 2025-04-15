@@ -147,7 +147,7 @@ const MovInternosScreen = () => {
               >
                 <Card.Content>
                   <View className="flex-row items-center gap-8 w-full my-2">
-                    <View className="flex-row items-center">
+                    <View className="flex-row items-center gap-2">
                       <ThemedIconTooltip
                         tooltipTitle="Turno"
                         position="top"

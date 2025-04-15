@@ -127,7 +127,6 @@ export const PackagingMixCard = ({ productMix, reqType }: PackagingMixCardProps)
         <ThemedText
           variant="h4"
           className="uppercase font-semibold !text-slate-900 mb-6"
-          adjustsFontSizeToFit
         >
           Editar cantidad de sacos
         </ThemedText>
