@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { SectionList } from "react-native";
-import { useGlobalSearchParams } from "expo-router";
+import { SectionList, View } from "react-native";
+import { router, useGlobalSearchParams } from "expo-router";
 
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -36,6 +36,7 @@ const ObservacionesScreen = () => {
   const [observationModal, setObservationModal] =
     useState<ObservationReq | null>(null);
 
+  const primaryColor = useThemeColor({}, "primary");
   const textColor = useThemeColor({}, "text");
   const grayColor = useThemeColor({}, "gray");
   const grayDarkColor = useThemeColor({}, "darkGray");
@@ -80,7 +81,7 @@ const ObservacionesScreen = () => {
       commment: values.observation,
     });
 
-    reset({ observation: "", });
+    reset({ observation: "" });
   };
 
   if (queryReqByCode.isLoading || queryReqByPatent.isLoading) {
@@ -125,19 +126,29 @@ const ObservacionesScreen = () => {
           </ThemedHelperText>
         )}
 
-        <ThemedButton
-          onPress={handleSubmit(onSubmit)}
-          className="bg-orange-400 w-4/6 mt-2 rounded-lg"
-          disabled={createObservation.isPending}
-          isLoading={createObservation.isPending}
-        >
-          <ThemedText
-            variant="h4"
-            className="text-white uppercase w-full text-center font-semibold tracking-widest"
+        <View className="flex-row items-center gap-4 mt-4">
+          <ThemedButton
+            onPress={handleSubmit(onSubmit)}
+            className="bg-orange-400 w-4/6 rounded-lg"
+            disabled={createObservation.isPending}
+            isLoading={createObservation.isPending}
           >
-            Ingresar
-          </ThemedText>
-        </ThemedButton>
+            <ThemedText
+              variant="h4"
+              className="text-white uppercase w-full text-center font-semibold tracking-widest"
+            >
+              Ingresar
+            </ThemedText>
+          </ThemedButton>
+
+          <ThemedButton
+            onPress={() => router.push("/camera")}
+            className="border border-light-primary bg-white rounded-lg p-3"
+            variant="icon"
+            iconName="camera"
+            iconColor={primaryColor}
+          />
+        </View>
       </ThemedView>
 
       <ThemedDataTable<ObservationReq>

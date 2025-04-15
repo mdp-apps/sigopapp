@@ -5,7 +5,6 @@ import * as UseCases from "@/core/req/use-cases";
 
 import { AlertNotifyAdapter, AlertType } from "@/config/adapters";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
-import { ObservationReq } from "@/infrastructure/entities";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

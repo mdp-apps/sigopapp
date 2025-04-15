@@ -20,7 +20,6 @@ export const driverLoginUseCase = async (
       `/validasesionconductor`,
       body
     );
-    // console.log(JSON.stringify(sessionDriver, null, 2));
 
     return AuthMapper.fromAuthSessionToEntity<DriverResponse,Driver>(
       sessionDriver,

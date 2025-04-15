@@ -37,7 +37,7 @@ interface ThemedInputProps {
 }
 
 const ThemedInput: React.FC<ThemedInputProps> = ({
-  activeOutlineColor = Colors.light.darkBlue,
+  activeOutlineColor = Colors.light.primary,
   autoCapitalize = "none",
   iconRight,
   keyboardType = "default",
