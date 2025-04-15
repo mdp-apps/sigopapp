@@ -10,11 +10,30 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
+    "test:coverage": "jest --watchAll --coverage",
     "lint": "expo lint"
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "app/**/*.{ts,tsx}",
+      "config/**/*.{ts,tsx}",
+      "core/**/*.{ts,tsx}",
+      "presentation/**/*.{ts,tsx}",
+      "!app/**/*.d.ts",
+      "!config/**/index.ts",
+      "!core/**/index.ts",
+      "!presentation/**/index.ts"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
