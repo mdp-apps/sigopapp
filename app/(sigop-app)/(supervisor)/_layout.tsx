@@ -30,7 +30,7 @@ const SupervisorLayout = () => {
       <Stack.Screen
         name="configurar-pallets-req/index"
         options={{
-          headerTitle: "Requerimiento paletizado",
+          headerTitle: reqCode ? `Req. ${reqCode}` : "Requerimiento paletizado",
           headerTitleAlign: "center",
         }}
       />

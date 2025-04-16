@@ -4,7 +4,8 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { CameraView } from "expo-camera";
 
 import { useCamera } from "@/presentation/camera/hooks";
-import { ThemedText } from "@/presentation/theme/components";
+import { ThemedButton, ThemedText } from "@/presentation/theme/components";
+import { NoDataCard } from "@/presentation/shared/components";
 import {
   ConfirmImageButton,
   FlipCameraButton,
@@ -13,7 +14,6 @@ import {
   ReturnCancelButton,
   ShutterButton,
 } from "@/presentation/camera/components";
-import { useCameraStore } from "@/presentation/shared/store";
 
 export default function CameraScreen() {
   const {
@@ -31,23 +31,24 @@ export default function CameraScreen() {
     toggleCameraFacing,
   } = useCamera();
 
-  const { selectedImages } = useCameraStore();
-    console.log(selectedImages);
-
   if (!cameraPermission) {
     return <View />;
   }
 
   if (!cameraPermission.granted) {
     return (
-      <View className="flex-1 justify-center items-center mx-8">
-        <Text className="text-center text-lg pb-3">
-          Necesitamos permisos para acceder a la cámara y la galería.
-        </Text>
-
-        <TouchableOpacity onPress={onRequestPermissions}>
-          <ThemedText>Solicitar permiso</ThemedText>
-        </TouchableOpacity>
+      <View className="flex-1 justify-center">
+        <NoDataCard
+          message="Necesitamos permisos para acceder a la cámara y la galería."
+          iconSource="lock-question"
+        >
+          <ThemedButton
+            onPress={onRequestPermissions}
+            className="bg-orange-400 w-4/6 rounded-lg mt-4"
+            textClassName="text-white w-full text-center tracking-widest text-xl"
+            text="Solicitar permiso"
+          />
+        </NoDataCard>
       </View>
     );
   }

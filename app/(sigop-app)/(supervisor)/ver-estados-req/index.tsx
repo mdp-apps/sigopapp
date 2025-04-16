@@ -70,7 +70,7 @@ const VerEstadosReqScreen = () => {
   }
 
   return (
-    <ThemedView safe>
+    <ThemedView>
       <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!}>
         <View className="flex-row justify-center gap-6 py-2">
           <ThemedText

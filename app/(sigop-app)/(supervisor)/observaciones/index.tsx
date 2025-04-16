@@ -27,6 +27,7 @@ import { observationSchema } from "@/presentation/shared/validations";
 import { ObservationReq } from "@/infrastructure/entities";
 import { SectionListMapper } from "@/infrastructure/mappers";
 import { REQ_OBSERVATIONS_COLUMNS } from "@/config/constants";
+import { STAGE } from "@/config/api/sigopApi";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -103,7 +104,7 @@ const ObservacionesScreen = () => {
   }
 
   return (
-    <ThemedView safe keyboardAvoiding>
+    <ThemedView keyboardAvoiding>
       <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!} />
 
       <ThemedView className="flex-1 items-center gap-4" margin>
@@ -126,7 +127,7 @@ const ObservacionesScreen = () => {
           </ThemedHelperText>
         )}
 
-        <View className="flex-row items-center gap-4 mt-4">
+        <View className="flex-row items-center gap-4 mb-4">
           <ThemedButton
             onPress={handleSubmit(onSubmit)}
             className="bg-orange-400 w-4/6 rounded-lg"
@@ -141,13 +142,15 @@ const ObservacionesScreen = () => {
             </ThemedText>
           </ThemedButton>
 
-          <ThemedButton
-            onPress={() => router.push("/camera")}
-            className="border border-light-primary bg-white rounded-lg !p-2.5"
-            variant="icon"
-            iconName="camera"
-            iconColor={primaryColor}
-          />
+          {STAGE === "dev" && (
+            <ThemedButton
+              onPress={() => router.push("/camera")}
+              className="border border-light-primary bg-white rounded-lg !p-2.5"
+              variant="icon"
+              iconName="camera"
+              iconColor={primaryColor}
+            />
+          )}
         </View>
       </ThemedView>
 

@@ -113,8 +113,8 @@ export const InternalMovCard = ({
               </ThemedText>
             </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View className="flex-row items-center gap-2">
+            <ScrollView horizontal>
+              <View className="flex-row items-center gap-2 pb-2">
                 <ThemedTooltip title="Operación origen">
                   <ThemedText
                     variant="h5"

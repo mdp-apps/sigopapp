@@ -6,6 +6,7 @@ import { TextType, ThemedCard, ThemedText } from "@/presentation/theme/component
 import { Colors } from "@/config/constants";
 
 interface ThemedCardProps {
+  children?: React.ReactNode;
   message: string;
   iconSource: string;
   iconSize?: number;
@@ -15,6 +16,7 @@ interface ThemedCardProps {
 
 
 export const NoDataCard = ({
+  children,
   message,
   iconSource,
   iconSize = 120,
@@ -33,6 +35,7 @@ export const NoDataCard = ({
         >
           {message}
         </ThemedText>
+        {children}
       </View>
     </ThemedCard>
   );

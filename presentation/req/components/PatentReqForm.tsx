@@ -47,9 +47,9 @@ export const PatentReqForm = ({ screenLink }: PatentReqFormProps) => {
           <ThemedInput
             className="text-black px-4 py-2 border border-light-primary font-ruda rounded-full bg-white"
             style={{ height: 50 }}
-            keyboardType="ascii-capable"
+            keyboardType="default"
             onBlur={onBlur}
-            onChangeText={(value) => onChange(value.toLocaleUpperCase())}
+            onChangeText={(value) => onChange(value)}
             value={value}
             placeholder="Ingrese patente"
             isNative

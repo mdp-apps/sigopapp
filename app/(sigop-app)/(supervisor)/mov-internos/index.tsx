@@ -44,7 +44,7 @@ const FILTER_LABELS = {
 const initialFilterValues = {
   turn: "",
   customer: "",
-  internalMovementStatus: `${INTERNAL_MOV_STATUS.enCurso}`,
+  internalMovementStatus: `${INTERNAL_MOV_STATUS.planificado}`,
 };
 
 const MovInternosScreen = () => {
