@@ -143,7 +143,7 @@ const ObservacionesScreen = () => {
 
           <ThemedButton
             onPress={() => router.push("/camera")}
-            className="border border-light-primary bg-white rounded-lg p-3"
+            className="border border-light-primary bg-white rounded-lg !p-2.5"
             variant="icon"
             iconName="camera"
             iconColor={primaryColor}

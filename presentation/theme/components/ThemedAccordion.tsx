@@ -30,7 +30,12 @@ export const ThemedAccordion = ({
   const leftProp = {
     left: (props: any) =>
       leftIcon ? (
-        <List.Icon {...props} icon={leftIcon.icon} color={leftIcon.color} />
+        <List.Icon
+          {...props}
+          icon={leftIcon.icon}
+          color={leftIcon.color}
+          testID="accordion-left-icon"
+        />
       ) : null,
   };
 

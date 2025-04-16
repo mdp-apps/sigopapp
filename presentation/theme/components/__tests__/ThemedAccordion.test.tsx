@@ -34,4 +34,18 @@ describe("Probar <ThemedAccordion>", () => {
     expect(screen.getByTestId("accordion-content")).toBeTruthy();
     expect(screen.getByText(contentText)).toBeTruthy();
   });
+
+  test.skip("Debe renderizar el ícono izquierdo si se proporciona la prop leftIcon", () => {
+    const leftIcon = { icon: "account", color: "blue" };
+
+    render(
+      <ThemedAccordion title={title} leftIcon={leftIcon}>
+        <></>
+      </ThemedAccordion>
+    );
+    screen.debug();
+
+    const leftIconElement = screen.queryByTestId("accordion-left-icon");
+    expect(leftIconElement).toBeTruthy();
+  });
 });

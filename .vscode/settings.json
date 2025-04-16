@@ -1,4 +1,5 @@
 {
   "postman.settings.dotenv-detection-notification-visibility": false,
-  "livePreview.defaultPreviewPath": "/coverage/lcov-report/index.html"
+  "livePreview.defaultPreviewPath": "/coverage/lcov-report/index.html",
+  "liveServer.settings.port": 5501
 }

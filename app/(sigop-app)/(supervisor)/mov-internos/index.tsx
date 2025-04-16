@@ -10,7 +10,6 @@ import { useInternalMovements } from "@/presentation/movimiento/hooks";
 import {
   ThemedAccordion,
   ThemedButton,
-  ThemedCard,
   ThemedDropdown,
   ThemedIconTooltip,
   ThemedLoader,

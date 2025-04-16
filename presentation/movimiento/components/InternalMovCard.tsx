@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View } from "react-native";
+import { View, ScrollView } from 'react-native';
 import { Card, Divider } from "react-native-paper";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -113,35 +113,37 @@ export const InternalMovCard = ({
               </ThemedText>
             </View>
 
-            <View className="flex-row items-center gap-2">
-              <ThemedTooltip title="Operación origen">
-                <ThemedText
-                  variant="h5"
-                  className="text-gray-600 uppercase font-semibold"
-                  adjustsFontSizeToFit
-                >
-                  {movement.operationName}
-                </ThemedText>
-              </ThemedTooltip>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View className="flex-row items-center gap-2">
+                <ThemedTooltip title="Operación origen">
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-600 uppercase font-semibold"
+                    adjustsFontSizeToFit
+                  >
+                    {movement.operationName}
+                  </ThemedText>
+                </ThemedTooltip>
 
-              <ThemedButton
-                className="!p-0"
-                variant="icon"
-                iconName="arrow-right-thin"
-                iconColor={darkGrayColor}
-                iconSize={28}
-              />
+                <ThemedButton
+                  className="!p-0"
+                  variant="icon"
+                  iconName="arrow-right-thin"
+                  iconColor={darkGrayColor}
+                  iconSize={28}
+                />
 
-              <ThemedTooltip title="Operación destino">
-                <ThemedText
-                  variant="h5"
-                  className="text-gray-600 uppercase font-semibold"
-                  adjustsFontSizeToFit
-                >
-                  {movement.operationDestinyName}
-                </ThemedText>
-              </ThemedTooltip>
-            </View>
+                <ThemedTooltip title="Operación destino">
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-600 uppercase font-semibold"
+                    adjustsFontSizeToFit
+                  >
+                    {movement.operationDestinyName}
+                  </ThemedText>
+                </ThemedTooltip>
+              </View>
+            </ScrollView>
           </View>
 
           <Divider
