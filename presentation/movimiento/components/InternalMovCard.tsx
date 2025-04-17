@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView } from "react-native";
 import { Card, Divider } from "react-native-paper";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -27,7 +27,6 @@ export const InternalMovCard = ({
   isProductDuplicated,
 }: InternalMovCardProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
-
 
   return (
     <ThemedView className="mb-3">
@@ -85,37 +84,36 @@ export const InternalMovCard = ({
               marginVertical: 15,
             }}
           />
+          <ScrollView horizontal>
+            <View className="flex-1  gap-2">
+              <View className="flex-row items-center gap-2 ml-6">
+                <ThemedText
+                  variant="h5"
+                  className="text-gray-600 uppercase font-semibold"
+                  adjustsFontSizeToFit
+                >
+                  {movement.warehouseName}
+                </ThemedText>
 
-          <View className="flex-1 gap-2">
-            <View className="flex-row items-center gap-2">
-              <ThemedText
-                variant="h5"
-                className="text-gray-600 uppercase font-semibold"
-                adjustsFontSizeToFit
-              >
-                {movement.warehouseName}
-              </ThemedText>
+                <ThemedButton
+                  className="!p-0"
+                  variant="icon"
+                  iconName="arrow-right-thin"
+                  iconColor={darkGrayColor}
+                  iconSize={28}
+                />
 
-              <ThemedButton
-                className="!p-0"
-                variant="icon"
-                iconName="arrow-right-thin"
-                iconColor={darkGrayColor}
-                iconSize={28}
-              />
+                <ThemedText
+                  variant="h5"
+                  className="text-gray-600 uppercase font-semibold "
+                  adjustsFontSizeToFit
+                >
+                  {movement.warehouseDestinyName}
+                </ThemedText>
+              </View>
 
-              <ThemedText
-                variant="h5"
-                className="text-gray-600 uppercase font-semibold"
-                adjustsFontSizeToFit
-              >
-                {movement.warehouseDestinyName}
-              </ThemedText>
-            </View>
-
-            <ScrollView horizontal>
-              <View className="flex-row items-center gap-2 pb-2">
-                <ThemedTooltip title="Operación origen">
+              <View className="flex-row items-center gap-2 ml-6 pb-2">
+                <ThemedTooltip title="Op. origen">
                   <ThemedText
                     variant="h5"
                     className="text-gray-600 uppercase font-semibold"
@@ -133,7 +131,7 @@ export const InternalMovCard = ({
                   iconSize={28}
                 />
 
-                <ThemedTooltip title="Operación destino">
+                <ThemedTooltip title="Op. destino" position="default">
                   <ThemedText
                     variant="h5"
                     className="text-gray-600 uppercase font-semibold"
@@ -143,8 +141,8 @@ export const InternalMovCard = ({
                   </ThemedText>
                 </ThemedTooltip>
               </View>
-            </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
 
           <Divider
             style={{

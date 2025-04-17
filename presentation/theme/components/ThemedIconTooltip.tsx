@@ -18,7 +18,7 @@ interface ThemedIconTooltipProps {
 export const ThemedIconTooltip = ({
   iconStyles,
   tooltipTitle,
-  position = "default",
+  position,
 }: ThemedIconTooltipProps) => {
 
   return (

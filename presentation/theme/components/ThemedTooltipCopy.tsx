@@ -59,6 +59,7 @@ export const ThemedTooltip = ({
   return (
     <TouchableWithoutFeedback
       onPress={handleOutsidePress}
+      style={{ position: "relative", zIndex: 99 }}
     >
       <View style={styles.container}>
         {clonedChildren}
@@ -80,11 +81,11 @@ const styles = StyleSheet.create({
   tooltip: {
     position: "absolute",
     backgroundColor: "#1e293b",
-    paddingVertical: 6,
+    padding: 6,
     borderRadius: 10,
     zIndex: 99,
     elevation: 10,
-    minWidth: 100,
+    minWidth: 120,
     maxWidth: 200,
     alignSelf: "center",
   },

@@ -44,7 +44,7 @@ const FILTER_LABELS = {
 const initialFilterValues = {
   turn: "",
   customer: "",
-  internalMovementStatus: `${INTERNAL_MOV_STATUS.planificado}`,
+  internalMovementStatus: `${INTERNAL_MOV_STATUS.enCurso}`,
 };
 
 const MovInternosScreen = () => {
@@ -148,8 +148,8 @@ const MovInternosScreen = () => {
                   <View className="flex-row items-center gap-8 w-full my-2">
                     <View className="flex-row items-center gap-2">
                       <ThemedIconTooltip
-                        tooltipTitle="Turno"
                         position="top"
+                        tooltipTitle="Turno"
                         iconStyles={{
                           name: "account-sync",
                           color: blueColor,
@@ -173,8 +173,8 @@ const MovInternosScreen = () => {
 
                     <View className="flex-row items-center gap-2">
                       <ThemedIconTooltip
-                        tooltipTitle="Fecha"
                         position="top"
+                        tooltipTitle="Fecha"
                         iconStyles={{
                           name: "calendar-sync",
                           color: blueColor,
