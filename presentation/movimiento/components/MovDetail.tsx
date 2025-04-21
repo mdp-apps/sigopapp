@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { View, ScrollView } from "react-native";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -9,41 +9,17 @@ import {
   ThemedTooltip,
 } from "@/presentation/theme/components";
 
-import { InternalMovDetail } from '@/infrastructure/entities'
+import { InternalMovDetail } from "@/infrastructure/entities";
 
-interface InternalMovDetailsProps {
+interface MovDetailProps {
   detail: InternalMovDetail;
 }
 
-export const InternalMovDetails = ({ detail }: InternalMovDetailsProps) => {
+export const MovDetail = ({ detail }: MovDetailProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
-  return (
-    <View>
-      <View className="flex-row items-center gap-2 mb-2">
-        <ThemedButton
-            className="!p-0"
-            variant="icon"
-            iconName="checkbox-blank-circle"
-            iconColor={darkGrayColor}
-            iconSize={8}
-        />
-        
-        <ThemedText
-          variant="h5"
-          className="text-gray-950 uppercase font-semibold"
-          adjustsFontSizeToFit
-        >
-          Cliente:
-        </ThemedText>
-        <ThemedText
-          variant="h5"
-          className="text-gray-600 font-semibold"
-          adjustsFontSizeToFit
-        >
-          {detail.customerName}
-        </ThemedText>
-      </View>
 
+  return (
+    <>
       <ScrollView horizontal>
         <View className="flex-1  gap-2">
           <View className="flex-row items-center gap-2 pl-4">
@@ -196,6 +172,6 @@ export const InternalMovDetails = ({ detail }: InternalMovDetailsProps) => {
           </ThemedText>
         </View>
       </View>
-    </View>
+    </>
   );
-}
+};

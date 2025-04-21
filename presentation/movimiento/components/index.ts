@@ -1,2 +1,4 @@
-export * from './InternalMovCard';
-export * from './InternalMovDetail';
+export * from "./InternalMovCard";
+export * from "./InternalMovDetails";
+export * from "./InternalMovDetailAccordion";
+export * from "./MovDetail";

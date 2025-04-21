@@ -21,13 +21,14 @@ export class MovementMapper {
   ): InternalMov {
     return {
       pendingQuantityKG: Formatter.numberWithDots(
-        response.cantidad_pendiente
+        response.cantidad_pendiente 
       ).concat(" KG"),
       productCode: response.codigo_producto,
       productName: response.nombre_producto,
       totalQuantityKG: Formatter.numberWithDots(response.cantidad_total).concat(
         " KG"
       ),
+      
       transferredQuantityKG: Formatter.numberWithDots(
         response.cantidad_verificada
       ).concat(" KG"),

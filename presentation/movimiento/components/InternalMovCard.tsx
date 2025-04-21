@@ -1,7 +1,7 @@
 import React from "react";
 
 import { View } from "react-native";
-import { Card, Divider } from "react-native-paper";
+import { Card } from "react-native-paper";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
 import {
@@ -10,7 +10,7 @@ import {
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
-import { InternalMovDetails } from "./InternalMovDetail";
+import { InternalMovDetails, InternalMovDetailsAccordion } from "./";
 
 import { InternalMov } from "@/infrastructure/entities";
 
@@ -20,7 +20,6 @@ interface InternalMovCardProps {
 
 export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
-  const grayColor = useThemeColor({}, "gray");
 
   return (
     <ThemedView className="mb-3">
@@ -31,11 +30,6 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
           fontFamily: "sans-serif",
           fontWeight: "bold",
           textTransform: "uppercase",
-          color: darkGrayColor,
-        }}
-        descriptionStyle={{
-          fontSize: 15,
-          fontFamily: "sans-serif",
           color: darkGrayColor,
         }}
       >
@@ -118,30 +112,23 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
                   </ThemedText>
                 </View>
               </View>
-
-              <Divider
-                style={{
-                  backgroundColor: darkGrayColor,
-                  marginVertical: 20,
-                }}
-              />
             </>
           )}
+          
 
-          {movement.details.map((detail, index) => (
-            <React.Fragment key={`${index}${detail.customerName}`}>
-              <InternalMovDetails detail={detail} />
-
-              {index < movement.details.length - 1 && (
-                <Divider
-                  style={{
-                    backgroundColor: grayColor,
-                    marginVertical: 20,
-                  }}
-                />
-              )}
-            </React.Fragment>
-          ))}
+          {movement.details.map((detail, index) =>
+            movement.details.length > 1 ? (
+              <InternalMovDetailsAccordion
+                key={`${detail.operationName}${detail.customerName}`}
+                detail={detail}
+              />
+            ) : (
+              <InternalMovDetails
+                key={`${detail.operationName}${detail.customerName}`}
+                detail={detail}
+              />
+            )
+          )}
         </Card.Content>
       </ThemedAccordion>
     </ThemedView>

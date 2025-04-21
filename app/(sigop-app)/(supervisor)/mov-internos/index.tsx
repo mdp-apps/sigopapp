@@ -2,15 +2,11 @@ import React from "react";
 import { FlatList, RefreshControl, ScrollView, View } from "react-native";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
-import { useFilters } from "@/presentation/shared/hooks";
-import { useTurns } from "@/presentation/turno/hooks";
-import { useCustomers } from "@/presentation/cliente/hooks";
 import { useInternalMovements } from "@/presentation/movimiento/hooks";
 
 import {
   ThemedAccordion,
   ThemedButton,
-  ThemedDropdown,
   ThemedIconTooltip,
   ThemedLoader,
   ThemedSkeleton,
@@ -18,64 +14,23 @@ import {
   ThemedView,
 } from "@/presentation/theme/components";
 import {
-  Filter,
-  FilterModal,
   NoDataCard,
-  ScrollFilters,
 } from "@/presentation/shared/components";
 import { InternalMovCard } from "@/presentation/movimiento/components";
-import { interalMovFiltersSchema } from "@/presentation/shared/validations";
 
-import { INTERNAL_MOV_STATUS } from "@/config/constants";
 
-import { Controller } from "react-hook-form";
 import { Card, Divider } from "react-native-paper";
-
-const FILTERS = {
-  TURN: "turn",
-  CUSTOMER: "customer",
-};
-
-const FILTER_LABELS = {
-  turn: "Turno",
-  customer: "Cliente",
-};
-
-const initialFilterValues = {
-  turn: "",
-  customer: "",
-  internalMovementStatus: `${INTERNAL_MOV_STATUS.enCurso}`,
-};
 
 const MovInternosScreen = () => {
   const primaryColor = useThemeColor({}, "primary");
   const blueColor = useThemeColor({}, "blue");
   const darkGrayColor = useThemeColor({}, "darkGray");
 
-  const {
-    filters,
-    selectedFilter,
-    filterKeys,
-    isModalVisible,
-    control,
-    clearFilter,
-    handleFilterSelect,
-    handleApplyFilters,
-  } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
-
-  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
-    useInternalMovements({
-      code: filters.code,
-      detailCode: filters.detailCode,
-      internalMovementType: filters.internalMovementType,
-      internalMovementStatus: filters.internalMovementStatus,
-      date: filters.date,
-      turn: filters.turn,
-      customer: filters.customer,
-    });
-
-  const { queryTurns, dropdownTurns } = useTurns();
-  const { queryCustomers, dropdownCustomers } = useCustomers();
+  const { 
+    queryInternalMovements,
+    isRefreshing,
+    onPullToRefresh,
+  } = useInternalMovements();
 
   return (
     <ThemedView className="my-6" margin>
