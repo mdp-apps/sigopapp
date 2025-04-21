@@ -20,10 +20,17 @@ export class MovementMapper {
     response: InternalMovResponse
   ): InternalMov {
     return {
-      pendingQuantityKG: response.cantidad_pendiente,
+      pendingQuantityKG: Formatter.numberWithDots(
+        response.cantidad_pendiente
+      ).concat(" KG"),
+      productCode: response.codigo_producto,
       productName: response.nombre_producto,
-      totalQuantityKG: response.cantidad_total,
-      transferredQuantityKG: response.cantidad_verificada,
+      totalQuantityKG: Formatter.numberWithDots(response.cantidad_total).concat(
+        " KG"
+      ),
+      transferredQuantityKG: Formatter.numberWithDots(
+        response.cantidad_verificada
+      ).concat(" KG"),
       details: response.detalles.map((detail) => {
         return MovementMapper.fromInternalMovDetailResultToEntity(detail);
       }),
@@ -37,9 +44,15 @@ export class MovementMapper {
       customerName: response.nombre_cliente,
       operationDestinyName: response.nombre_operacion_destino,
       operationName: response.nombre_operacion,
-      pendingQuantityKG: response.cantidad_pendiente,
-      totalQuantityKG: response.cantidad_total,
-      transferredQuantityKG: response.cantidad_verificada,
+      pendingQuantityKG: Formatter.numberWithDots(
+        response.cantidad_pendiente
+      ).concat(" KG"),
+      totalQuantityKG: Formatter.numberWithDots(response.cantidad_total).concat(
+        " KG"
+      ),
+      transferredQuantityKG: Formatter.numberWithDots(
+        response.cantidad_verificada
+      ).concat(" KG"),
       warehouseDestinyName: response.nombre_bodega_destino,
       warehouseName: response.nombre_bodega,
     };

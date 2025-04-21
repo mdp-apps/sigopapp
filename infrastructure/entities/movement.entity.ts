@@ -4,10 +4,11 @@ export interface InternalMovement {
 }
 
 export interface InternalMov {
-  pendingQuantityKG: number;
+  pendingQuantityKG: string;
+  productCode: number;
   productName: string;
-  totalQuantityKG: number;
-  transferredQuantityKG: number;
+  totalQuantityKG: string;
+  transferredQuantityKG: string;
   details: InternalMovDetail[];
 }
 
@@ -15,9 +16,9 @@ export interface InternalMovDetail {
   customerName: string;
   operationDestinyName: string;
   operationName: string;
-  pendingQuantityKG: number;
-  totalQuantityKG: number;
-  transferredQuantityKG: number;
+  pendingQuantityKG: string;
+  totalQuantityKG: string;
+  transferredQuantityKG: string;
   warehouseDestinyName: string;
   warehouseName: string;
 }

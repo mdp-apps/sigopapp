@@ -63,7 +63,7 @@ const MovInternosScreen = () => {
     handleApplyFilters,
   } = useFilters(initialFilterValues, FILTERS, interalMovFiltersSchema);
 
-  const { queryInternalMovements, duplicatedProducts, isRefreshing, onPullToRefresh } =
+  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
     useInternalMovements({
       code: filters.code,
       detailCode: filters.detailCode,
@@ -78,57 +78,7 @@ const MovInternosScreen = () => {
   const { queryCustomers, dropdownCustomers } = useCustomers();
 
   return (
-    <ThemedView className="mb-6" margin>
-      <ScrollFilters>
-        {filterKeys.map((filterKey) => (
-          <Filter
-            key={filterKey}
-            onPress={() => handleFilterSelect(filterKey)}
-            onClear={() => clearFilter(filterKey)}
-            filterKey={filterKey}
-            filterLabels={FILTER_LABELS}
-            displayValue={filters[filterKey]}
-          />
-        ))}
-      </ScrollFilters>
-
-      <FilterModal
-        isModalVisible={isModalVisible}
-        handleCloseModal={handleApplyFilters}
-      >
-        {selectedFilter === "turn" && (
-          <Controller
-            control={control}
-            name="turn"
-            render={({ field: { onChange, value } }) => (
-              <ThemedDropdown
-                data={dropdownTurns}
-                isLoading={queryTurns.isLoading}
-                onChange={onChange}
-                selected={value}
-                placeholder="Seleccione turno"
-              />
-            )}
-          />
-        )}
-
-        {selectedFilter === "customer" && (
-          <Controller
-            control={control}
-            name="customer"
-            render={({ field: { onChange, value } }) => (
-              <ThemedDropdown
-                data={dropdownCustomers}
-                isLoading={queryCustomers.isLoading}
-                onChange={onChange}
-                selected={value}
-                placeholder="Seleccione cliente"
-              />
-            )}
-          />
-        )}
-      </FilterModal>
-
+    <ThemedView className="my-6" margin>
       <ScrollView showsVerticalScrollIndicator={false}>
         {queryInternalMovements.data &&
           queryInternalMovements.data.result.length > 0 && (
@@ -318,16 +268,8 @@ const MovInternosScreen = () => {
           queryInternalMovements.data.result.length > 0 ? (
           <FlatList
             data={queryInternalMovements.data.result}
-            renderItem={({ item }) => (
-              <InternalMovCard
-                movement={item}
-                currentTurn={queryInternalMovements.data.turnTotals.turn}
-                isProductDuplicated={duplicatedProducts.includes(
-                  item.productCode
-                )} 
-              />
-            )}
-            keyExtractor={(item, index) => `${index}${item.id}`}
+            renderItem={({ item }) => <InternalMovCard movement={item} />}
+            keyExtractor={(item) => String(item.productCode)}
             refreshControl={
               <RefreshControl
                 refreshing={isRefreshing}

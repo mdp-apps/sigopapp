@@ -51,20 +51,6 @@ export const useInternalMovements = (
     },
   });
 
-  const duplicatedProducts = useMemo(() => {
-    const productCounts = queryInternalMovements.data?.result.reduce(
-      (acc: Record<string, number>, movement) => {
-        acc[movement.productCode] = (acc[movement.productCode] || 0) + 1;
-        return acc;
-      },
-      {}
-    );
-
-    return Object.keys(productCounts || {}).filter(
-      (productCode) => (productCounts ?? {})[productCode] > 1
-    );
-  }, [queryInternalMovements.data]);
-
   const onPullToRefresh = async () => {
     setIsRefreshing(true);
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -78,7 +64,6 @@ export const useInternalMovements = (
 
   return {
     queryInternalMovements,
-    duplicatedProducts,
     isRefreshing,
     onPullToRefresh,
   };

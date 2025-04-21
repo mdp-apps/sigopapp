@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { Card, Divider } from "react-native-paper";
 
 import { useThemeColor } from "@/presentation/theme/hooks";
@@ -8,37 +8,24 @@ import {
   ThemedAccordion,
   ThemedButton,
   ThemedText,
-  ThemedTooltip,
   ThemedView,
 } from "@/presentation/theme/components";
+import { InternalMovDetails } from "./InternalMovDetail";
 
 import { InternalMov } from "@/infrastructure/entities";
-import { Formatter } from "@/config/helpers";
 
 interface InternalMovCardProps {
   movement: InternalMov;
-  currentTurn: string;
-  isProductDuplicated: boolean;
 }
 
-export const InternalMovCard = ({
-  movement,
-  currentTurn,
-  isProductDuplicated,
-}: InternalMovCardProps) => {
+export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
   const darkGrayColor = useThemeColor({}, "darkGray");
+  const grayColor = useThemeColor({}, "gray");
 
   return (
     <ThemedView className="mb-3">
       <ThemedAccordion
         title={`${movement.productName}`}
-        description={
-          isProductDuplicated || movement.turn !== currentTurn
-            ? `${movement.turn !== currentTurn ? movement.turn : ""} ${
-                isProductDuplicated ? `Cliente: ${movement.customerName}` : ""
-              }`
-            : undefined
-        }
         titleStyle={{
           fontSize: 14,
           fontFamily: "sans-serif",
@@ -53,180 +40,108 @@ export const InternalMovCard = ({
         }}
       >
         <Card.Content>
-          <View className="flex-row items-center gap-2">
-            <ThemedButton
-              className="!p-0"
-              variant="icon"
-              iconName="checkbox-blank-circle"
-              iconColor={darkGrayColor}
-              iconSize={8}
-            />
+          {movement.details.length > 1 && (
+            <>
+              <View className="flex-1 gap-2 mt-2">
+                <View className="flex-row items-center gap-2">
+                  <ThemedButton
+                    className="!p-0"
+                    variant="icon"
+                    iconName="arrow-right-drop-circle"
+                    iconColor={darkGrayColor}
+                    iconSize={20}
+                  />
 
-            <ThemedText
-              variant="h5"
-              className="text-gray-950 uppercase font-semibold"
-              adjustsFontSizeToFit
-            >
-              Cliente:
-            </ThemedText>
-            <ThemedText
-              variant="h5"
-              className="text-gray-600 font-semibold"
-              adjustsFontSizeToFit
-            >
-              {movement.customerName}
-            </ThemedText>
-          </View>
-
-          <Divider
-            style={{
-              backgroundColor: darkGrayColor,
-              marginVertical: 15,
-            }}
-          />
-          <ScrollView horizontal>
-            <View className="flex-1  gap-2">
-              <View className="flex-row items-center gap-2 ml-6">
-                <ThemedText
-                  variant="h5"
-                  className="text-gray-600 uppercase font-semibold"
-                  adjustsFontSizeToFit
-                >
-                  {movement.warehouseName}
-                </ThemedText>
-
-                <ThemedButton
-                  className="!p-0"
-                  variant="icon"
-                  iconName="arrow-right-thin"
-                  iconColor={darkGrayColor}
-                  iconSize={28}
-                />
-
-                <ThemedText
-                  variant="h5"
-                  className="text-gray-600 uppercase font-semibold "
-                  adjustsFontSizeToFit
-                >
-                  {movement.warehouseDestinyName}
-                </ThemedText>
-              </View>
-
-              <View className="flex-row items-center gap-2 ml-6 pb-2">
-                <ThemedTooltip title="Op. origen">
                   <ThemedText
                     variant="h5"
-                    className="text-gray-600 uppercase font-semibold"
+                    className="text-gray-950 uppercase font-semibold"
                     adjustsFontSizeToFit
                   >
-                    {movement.operationName}
+                    Planificado:
                   </ThemedText>
-                </ThemedTooltip>
-
-                <ThemedButton
-                  className="!p-0"
-                  variant="icon"
-                  iconName="arrow-right-thin"
-                  iconColor={darkGrayColor}
-                  iconSize={28}
-                />
-
-                <ThemedTooltip title="Op. destino" position="default">
                   <ThemedText
                     variant="h5"
-                    className="text-gray-600 uppercase font-semibold"
+                    className="text-gray-600 font-semibold"
                     adjustsFontSizeToFit
                   >
-                    {movement.operationDestinyName}
+                    {movement.totalQuantityKG}
                   </ThemedText>
-                </ThemedTooltip>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <ThemedButton
+                    className="!p-0"
+                    variant="icon"
+                    iconName="arrow-right-drop-circle"
+                    iconColor={darkGrayColor}
+                    iconSize={20}
+                  />
+
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-950 uppercase font-semibold"
+                    adjustsFontSizeToFit
+                  >
+                    Pendiente:
+                  </ThemedText>
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-600 font-semibold"
+                    adjustsFontSizeToFit
+                  >
+                    {movement.pendingQuantityKG}
+                  </ThemedText>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <ThemedButton
+                    className="!p-0"
+                    variant="icon"
+                    iconName="arrow-right-drop-circle"
+                    iconColor={darkGrayColor}
+                    iconSize={20}
+                  />
+
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-950 uppercase font-semibold"
+                    adjustsFontSizeToFit
+                  >
+                    Trasladado:
+                  </ThemedText>
+                  <ThemedText
+                    variant="h5"
+                    className="text-gray-600 font-semibold"
+                    adjustsFontSizeToFit
+                  >
+                    {movement.transferredQuantityKG}
+                  </ThemedText>
+                </View>
               </View>
-            </View>
-          </ScrollView>
 
-          <Divider
-            style={{
-              backgroundColor: darkGrayColor,
-              marginVertical: 15,
-            }}
-          />
-
-          <View className="flex-1  gap-2">
-            <View className="flex-row items-center gap-2">
-              <ThemedButton
-                className="!p-0"
-                variant="icon"
-                iconName="checkbox-blank-circle"
-                iconColor={darkGrayColor}
-                iconSize={8}
+              <Divider
+                style={{
+                  backgroundColor: darkGrayColor,
+                  marginVertical: 20,
+                }}
               />
+            </>
+          )}
 
-              <ThemedText
-                variant="h5"
-                className="text-gray-950 uppercase font-semibold"
-                adjustsFontSizeToFit
-              >
-                Planificado:
-              </ThemedText>
-              <ThemedText
-                variant="h5"
-                className="text-gray-600 font-semibold"
-                adjustsFontSizeToFit
-              >
-                {Formatter.numberWithDots(movement.totalQuantityKG)} KG
-              </ThemedText>
-            </View>
+          {movement.details.map((detail, index) => (
+            <React.Fragment key={`${index}${detail.customerName}`}>
+              <InternalMovDetails detail={detail} />
 
-            <View className="flex-row items-center gap-2">
-              <ThemedButton
-                className="!p-0"
-                variant="icon"
-                iconName="checkbox-blank-circle"
-                iconColor={darkGrayColor}
-                iconSize={8}
-              />
-
-              <ThemedText
-                variant="h5"
-                className="text-gray-950 uppercase font-semibold"
-                adjustsFontSizeToFit
-              >
-                Pendiente:
-              </ThemedText>
-              <ThemedText
-                variant="h5"
-                className="text-gray-600 font-semibold"
-                adjustsFontSizeToFit
-              >
-                {Formatter.numberWithDots(movement.pendingQuantityKG)} KG
-              </ThemedText>
-            </View>
-
-            <View className="flex-row items-center gap-2">
-              <ThemedButton
-                className="!p-0"
-                variant="icon"
-                iconName="checkbox-blank-circle"
-                iconColor={darkGrayColor}
-                iconSize={8}
-              />
-
-              <ThemedText
-                variant="h5"
-                className="text-gray-950 uppercase font-semibold"
-                adjustsFontSizeToFit
-              >
-                Trasladado:
-              </ThemedText>
-              <ThemedText
-                variant="h5"
-                className="text-gray-600 font-semibold"
-                adjustsFontSizeToFit
-              >
-                {Formatter.numberWithDots(movement.transferredQuantityKG)} KG
-              </ThemedText>
-            </View>
-          </View>
+              {index < movement.details.length - 1 && (
+                <Divider
+                  style={{
+                    backgroundColor: grayColor,
+                    marginVertical: 20,
+                  }}
+                />
+              )}
+            </React.Fragment>
+          ))}
         </Card.Content>
       </ThemedAccordion>
     </ThemedView>
