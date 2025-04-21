@@ -4,25 +4,22 @@ export interface InternalMovement {
 }
 
 export interface InternalMov {
-  cashing: number;
+  pendingQuantityKG: number;
+  productName: string;
+  totalQuantityKG: number;
+  transferredQuantityKG: number;
+  details: InternalMovDetail[];
+}
+
+export interface InternalMovDetail {
   customerName: string;
-  detailId: number;
-  id: number;
-  operationCode: number;
-  operationDestinyCode: number;
   operationDestinyName: string;
   operationName: string;
   pendingQuantityKG: number;
-  productCode: string;
-  productName: string;
-  status: number;
   totalQuantityKG: number;
-  turn: string;
   transferredQuantityKG: number;
   warehouseDestinyName: string;
-  warehouseDestinyCode: string;
   warehouseName: string;
-  wareHouseCode: string;
 }
 
 export interface TotalInternalMov {

@@ -1,4 +1,5 @@
 import {
+  InternalMovDetailResponse,
   InternalMovResponse,
   StatusInternalMovResponse,
   TotalInternalMovResponse,
@@ -6,6 +7,7 @@ import {
 } from "@/core/movimiento/interfaces";
 import {
   InternalMov,
+  InternalMovDetail,
   StatusInternalMov,
   TotalInternalMov,
   TypeInternalMov,
@@ -18,24 +20,27 @@ export class MovementMapper {
     response: InternalMovResponse
   ): InternalMov {
     return {
-      cashing: response.cobro,
+      pendingQuantityKG: response.cantidad_pendiente,
+      productName: response.nombre_producto,
+      totalQuantityKG: response.cantidad_total,
+      transferredQuantityKG: response.cantidad_verificada,
+      details: response.detalles.map((detail) => {
+        return MovementMapper.fromInternalMovDetailResultToEntity(detail);
+      }),
+    };
+  }
+
+  static fromInternalMovDetailResultToEntity(
+    response: InternalMovDetailResponse
+  ): InternalMovDetail {
+    return {
       customerName: response.nombre_cliente,
-      detailId: response.id_detalle,
-      id: response.id,
-      operationCode: response.codigo_operacion,
-      operationDestinyCode: response.codigo_operacion_destino,
       operationDestinyName: response.nombre_operacion_destino,
       operationName: response.nombre_operacion,
-      pendingQuantityKG: response.cantidad_total - response.cantidad_verificada,
-      productCode: response.codigo_producto,
-      productName: response.nombre_producto,
-      status: response.estado,
+      pendingQuantityKG: response.cantidad_pendiente,
       totalQuantityKG: response.cantidad_total,
-      turn: `T${response.turno}`,
       transferredQuantityKG: response.cantidad_verificada,
-      warehouseDestinyCode: `B${response.codigo_bodega_destino}`,
       warehouseDestinyName: response.nombre_bodega_destino,
-      wareHouseCode: `B${response.codigo_bodega}`,
       warehouseName: response.nombre_bodega,
     };
   }
