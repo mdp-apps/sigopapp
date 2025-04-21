@@ -8,5 +8,4 @@ export interface ObservationReq {
 
 export interface ObservationImage{
   imageUrl: string;
-  base64Str: string;
 }

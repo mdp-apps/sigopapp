@@ -18,7 +18,6 @@ import {
 } from "@/presentation/shared/components";
 import { InternalMovCard } from "@/presentation/movimiento/components";
 
-
 import { Card, Divider } from "react-native-paper";
 
 const MovInternosScreen = () => {
