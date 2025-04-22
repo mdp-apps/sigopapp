@@ -1,7 +1,7 @@
 import { HttpAdapter } from "@/config/adapters";
 
-import { ObservationMapper, ResultMapper } from "@/infrastructure/mappers";
-import { ApiResponse, Result } from "@/infrastructure/interfaces";
+import { ObservationMapper } from "@/infrastructure/mappers";
+import { ApiResponse } from "@/infrastructure/interfaces";
 import { ObservationReq } from "@/infrastructure/entities";
 import { ObservationReqResponse } from "../interfaces";
 
@@ -10,12 +10,14 @@ interface ObservationBody {
   cod_req: number;
   comentario: string;
   usuario: number;
+  ruta?: string;
 }
 
 export const createReqObservationUseCase = async (
   fetcher: HttpAdapter,
   body: ObservationBody
 ): Promise<ObservationReq> => {
+
   try {
     const createObservation = await fetcher.post<
       ApiResponse<ObservationReqResponse>,

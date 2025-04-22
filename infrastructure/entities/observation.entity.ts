@@ -3,6 +3,7 @@ export interface ObservationReq {
   dateComment: string;
   observationId: number;
   reqCode: number;
+  urlImg: string;
   userComment: string;
 }
 

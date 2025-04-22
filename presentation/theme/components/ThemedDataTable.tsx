@@ -145,7 +145,7 @@ export const ThemedDataTable = <T,>({
           dataToRender.map((item, index) => {
             const computedRowStyle =
               typeof rowStyle === "function" ? rowStyle(item, index) : rowStyle;
-
+            
             return (
               <DataTable.Row
                 key={getRowKey(item)}

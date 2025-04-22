@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { SectionList, View } from "react-native";
+import { ScrollView, SectionList, View } from "react-native";
 import { router, useGlobalSearchParams } from "expo-router";
 
+import { useCameraStore } from "@/presentation/shared/store";
 import { useVisibility } from "@/presentation/shared/hooks";
 import { useThemeColor } from "@/presentation/theme/hooks";
 import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
@@ -32,6 +33,8 @@ import { STAGE } from "@/config/api/sigopApi";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { ImageAdapter } from "@/config/adapters";
+import { Image } from "react-native";
 
 const ObservacionesScreen = () => {
   const [observationModal, setObservationModal] =
@@ -55,6 +58,7 @@ const ObservacionesScreen = () => {
   });
 
   const { reqCode, patent } = useGlobalSearchParams();
+  const { selectedImages } = useCameraStore();
 
   const {
     isVisible: isVisibleModal,
@@ -80,6 +84,7 @@ const ObservacionesScreen = () => {
     createObservation.mutate({
       reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
       commment: values.observation,
+      pathImg: selectedImages,
     });
 
     reset({ observation: "" });
@@ -102,6 +107,7 @@ const ObservacionesScreen = () => {
       </ThemedView>
     );
   }
+
 
   return (
     <ThemedView keyboardAvoiding>
@@ -207,6 +213,25 @@ const ObservacionesScreen = () => {
               {item}
             </ThemedText>
           )}
+          ListFooterComponent={() =>
+            observationModal?.urlImg && (
+              <>
+                <ThemedText
+                  variant="h4"
+                  className="uppercase font-semibold !text-slate-700 mb-2"
+                  adjustsFontSizeToFit
+                >
+                  Imágen de la observación
+                </ThemedText>
+                <View className="flex-1">
+                  <Image
+                    source={{ uri: observationModal?.urlImg }}
+                    style={{ width: 300, height: 300 }}
+                  />
+                </View>
+              </>
+            )
+          }
         />
       </ThemedModal>
     </ThemedView>

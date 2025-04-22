@@ -4,5 +4,6 @@ export interface ObservationReqResponse{
   fecha_comentario: string;
   id_observacion: number;
   id_usuario: number;
+  ruta: string;
   usuario_comentario: string;
 }

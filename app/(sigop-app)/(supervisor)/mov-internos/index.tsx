@@ -13,9 +13,7 @@ import {
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
-import {
-  NoDataCard,
-} from "@/presentation/shared/components";
+import { NoDataCard } from "@/presentation/shared/components";
 import { InternalMovCard } from "@/presentation/movimiento/components";
 
 import { Card, Divider } from "react-native-paper";
@@ -25,11 +23,8 @@ const MovInternosScreen = () => {
   const blueColor = useThemeColor({}, "blue");
   const darkGrayColor = useThemeColor({}, "darkGray");
 
-  const { 
-    queryInternalMovements,
-    isRefreshing,
-    onPullToRefresh,
-  } = useInternalMovements();
+  const { queryInternalMovements, isRefreshing, onPullToRefresh } =
+    useInternalMovements();
 
   return (
     <ThemedView className="my-6" margin>
@@ -51,14 +46,12 @@ const MovInternosScreen = () => {
                 <Card.Content>
                   <View className="flex-row items-center gap-8 w-full my-2">
                     <View className="flex-row items-center gap-2">
-                      <ThemedIconTooltip
-                        position="top"
-                        tooltipTitle="Turno"
-                        iconStyles={{
-                          name: "account-sync",
-                          color: blueColor,
-                          size: 26,
-                        }}
+                      <ThemedButton
+                        className="!p-0"
+                        variant="icon"
+                        iconName="account-sync"
+                        iconColor={blueColor}
+                        iconSize={26}
                       />
 
                       {queryInternalMovements.isLoading ? (
@@ -76,14 +69,12 @@ const MovInternosScreen = () => {
                     </View>
 
                     <View className="flex-row items-center gap-2">
-                      <ThemedIconTooltip
-                        position="top"
-                        tooltipTitle="Fecha"
-                        iconStyles={{
-                          name: "calendar-sync",
-                          color: blueColor,
-                          size: 26,
-                        }}
+                      <ThemedButton
+                        className="!p-0"
+                        variant="icon"
+                        iconName="calendar-sync"
+                        iconColor={blueColor}
+                        iconSize={26}
                       />
 
                       {queryInternalMovements.isLoading ? (

@@ -1,9 +1,10 @@
 import { Alert } from "react-native";
 import { useAuthStore } from "@/presentation/auth/store";
+import { useCameraStore } from "@/presentation/shared/store";
 
 import * as UseCases from "@/core/req/use-cases";
 
-import { AlertNotifyAdapter, AlertType } from "@/config/adapters";
+import { AlertNotifyAdapter, AlertType, ImageAdapter } from "@/config/adapters";
 import { sigopApiFetcher } from "@/config/api/sigopApi";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,22 +12,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 type CreateObsBody = {
   reqCode: number;
   commment: string;
+  pathImg?: string[];
 };
 
 export const useObservationMutation = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { clearImages } = useCameraStore();
 
   const createObservation = useMutation({
     mutationFn: (data: CreateObsBody) => {
+      const imagesName = ImageAdapter.prepareImages(data.pathImg!);
+
       return UseCases.createReqObservationUseCase(sigopApiFetcher, {
         accion: "Insertar observacion requerimiento",
         cod_req: data.reqCode,
         comentario: data.commment,
         usuario: user?.code!,
+        ruta: imagesName && imagesName.length > 0 ? imagesName[0] : undefined,
       });
     },
-    onSuccess: (data,variables) => {
+    onSuccess: (data, variables) => {
+      clearImages();
+      
       if (data) {
         AlertNotifyAdapter.show({
           type: AlertType.SUCCESS,

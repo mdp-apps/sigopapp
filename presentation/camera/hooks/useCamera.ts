@@ -87,7 +87,7 @@ export const useCamera = () => {
 
     if (result.canceled) return;
 
-    console.log(JSON.stringify(result.assets, null, 2));
+    // console.log(JSON.stringify(result.assets, null, 2));
 
     result.assets.forEach((asset) => {
       addSelectedImage(asset.uri);
