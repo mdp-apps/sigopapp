@@ -20,6 +20,7 @@ export const InternalMovDetailsAccordion = ({
   return (
     <ThemedAccordion
       title={`Cliente: ${detail.customerName}`}
+      description={`${detail.warehouseCode} - ${detail.warehouseDestinyCode}`}
       titleStyle={{
         fontSize: 14,
         fontFamily: "sans-serif",

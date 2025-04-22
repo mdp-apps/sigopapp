@@ -20,7 +20,9 @@ export interface InternalMovDetail {
   totalQuantityKG: string;
   transferredQuantityKG: string;
   warehouseDestinyName: string;
+  warehouseDestinyCode: string;
   warehouseName: string;
+  warehouseCode: string;
 }
 
 export interface TotalInternalMov {

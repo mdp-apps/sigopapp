@@ -8,8 +8,6 @@ interface Body {
   filename: string;
 }
 
-
-
 export const getReqObservationImageUseCase = async (
   fetcher: HttpAdapter,
   body: Body

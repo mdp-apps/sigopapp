@@ -119,12 +119,12 @@ export const InternalMovCard = ({ movement }: InternalMovCardProps) => {
           {movement.details.map((detail, index) =>
             movement.details.length > 1 ? (
               <InternalMovDetailsAccordion
-                key={`${detail.operationName}${detail.customerName}`}
+                key={`${index}${detail.customerName}`}
                 detail={detail}
               />
             ) : (
               <InternalMovDetails
-                key={`${detail.operationName}${detail.customerName}`}
+                key={`${index}${detail.customerName}`}
                 detail={detail}
               />
             )

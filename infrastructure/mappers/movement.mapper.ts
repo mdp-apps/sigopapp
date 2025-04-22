@@ -55,7 +55,9 @@ export class MovementMapper {
         response.cantidad_verificada
       ).concat(" KG"),
       warehouseDestinyName: response.nombre_bodega_destino,
+      warehouseDestinyCode: `B${response.codigo_bodega_destino}`,
       warehouseName: response.nombre_bodega,
+      warehouseCode: `B${response.codigo_bodega}`,
     };
   }
 
