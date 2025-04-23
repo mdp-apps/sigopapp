@@ -45,6 +45,30 @@ describe("Probar hook useScreenOrientation", () => {
       ScreenOrientation.OrientationLock.LANDSCAPE
     );
   });
+
+  test("Debe bloquear la orientación en 'LANDSCAPE_RIGHT'", async () => {
+    const { result } = renderHook(() => useScreenOrientation());
+
+    await act(async () => {
+      await result.current.lockToLandscapeRight();
+    });
+
+    expect(ScreenOrientation.lockAsync).toHaveBeenCalledWith(
+      ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+    );
+  });
+
+  test("Debe bloquear la orientación en 'PORTRAIT_DOWN'", async () => {
+    const { result } = renderHook(() => useScreenOrientation());
+
+    await act(async () => {
+      await result.current.lockToPortraitDown();
+    });
+
+    expect(ScreenOrientation.lockAsync).toHaveBeenCalledWith(
+      ScreenOrientation.OrientationLock.PORTRAIT_DOWN
+    );
+  });
   
   test("Debe bloquear la orientación en 'PORTRAIT'", async () => {
     const { result } = renderHook(() => useScreenOrientation());

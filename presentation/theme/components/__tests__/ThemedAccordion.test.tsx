@@ -4,6 +4,29 @@ import { render, fireEvent, screen } from "@testing-library/react-native";
 
 import { ThemedAccordion } from "../ThemedAccordion";
 
+jest.mock("react-native-paper", () => {
+  const React = require("react");
+  const { View, Text } = require("react-native");
+
+  return {
+    List: {
+      Accordion: jest.fn(({ children, title, description,right, left, ...props }) => (
+        <View {...props}>
+          {right && right({})}
+          {left && left({})}
+          <Text>{title}</Text>
+          {description && <Text>{description}</Text>}
+          {children}
+        </View>
+      )),
+      Icon: jest.fn(({ testID, icon, color }) => (
+        <View testID={testID} icon={icon} color={color} />
+      )),
+    },
+    Card: jest.fn(({ children }) => <View>{children}</View>),
+  };
+});
+
 describe("Probar <ThemedAccordion>", () => {
   const title = "Lote 1";
   const description = "QROPMIX ACTI3 NPK (05-33-12) 25 KG";
@@ -35,7 +58,24 @@ describe("Probar <ThemedAccordion>", () => {
     expect(screen.getByText(contentText)).toBeTruthy();
   });
 
-  test.skip("Debe renderizar el ícono izquierdo si se proporciona la prop leftIcon", () => {
+  test("Debe renderizar el ícono derecho correctamente", () => {
+    render(
+      <ThemedAccordion title={title}>
+        <></>
+      </ThemedAccordion>
+    );
+
+    const rightIconElement = screen.getByTestId("accordion-right-icon");
+    expect(rightIconElement).toBeTruthy();
+    expect(rightIconElement.props.icon).toBe("chevron-down");
+
+    const titleElement = screen.getByText(title);
+    fireEvent.press(titleElement);
+
+    expect(rightIconElement.props.icon).toBe("chevron-up");
+  });
+
+  test("Debe renderizar el ícono izquierdo si se proporciona la prop leftIcon", () => {
     const leftIcon = { icon: "account", color: "blue" };
 
     render(
@@ -43,9 +83,10 @@ describe("Probar <ThemedAccordion>", () => {
         <></>
       </ThemedAccordion>
     );
-    screen.debug();
 
-    const leftIconElement = screen.queryByTestId("accordion-left-icon");
+    const leftIconElement = screen.getByTestId("accordion-left-icon");
     expect(leftIconElement).toBeTruthy();
+    expect(leftIconElement.props.icon).toBe(leftIcon.icon);
+    expect(leftIconElement.props.color).toBe(leftIcon.color);
   });
 });

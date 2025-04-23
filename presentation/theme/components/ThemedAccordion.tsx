@@ -50,12 +50,13 @@ export const ThemedAccordion = ({
       style={[styles.accordion, style]}
       titleNumberOfLines={2}
       {...(leftIcon ? leftProp : null)}
-      right={(props) => (
+      right={(props: any) => (
         <List.Icon
           {...props}
           icon={expanded ? "chevron-up" : "chevron-down"}
           color="black"
           style={{ marginRight: 5 }}
+          testID="accordion-right-icon"
         />
       )}
     >

@@ -18,6 +18,7 @@ export const ThemedImage = ({
   return (
     <View className="flex-1">
       <Image
+        testID="themed-image"
         className={[className].join(" ")}
         source={{ uri: url }}
         width={width}

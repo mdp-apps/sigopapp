@@ -166,15 +166,13 @@ const ObservacionesScreen = () => {
             </ThemedText>
           </ThemedButton>
 
-          {STAGE === "dev" && (
-            <ThemedButton
-              onPress={() => router.push("/camera")}
-              className="border border-light-primary bg-white rounded-lg !p-2.5"
-              variant="icon"
-              iconName={selectedImages.length > 0 ? "camera-retake" : "camera"}
-              iconColor={primaryColor}
-            />
-          )}
+          <ThemedButton
+            onPress={() => router.push("/camera")}
+            className="border border-light-primary bg-white rounded-lg !p-2.5"
+            variant="icon"
+            iconName={selectedImages.length > 0 ? "camera-retake" : "camera"}
+            iconColor={primaryColor}
+          />
         </View>
       </ThemedView>
 

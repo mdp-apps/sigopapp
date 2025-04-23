@@ -9,9 +9,9 @@ jest.mock("react-native-paper", () => {
   const { View, Text } = require("react-native");
 
   return {
-    Chip: jest.fn(({ children, iconSource, ...props }) => (
+    Chip: jest.fn(({ children, icon, ...props }) => (
       <View {...props}>
-        {iconSource ? <View testID="icon" /> : null}
+        {icon ? icon() : null}
         <Text>{children}</Text>
       </View>
     )),
@@ -36,4 +36,12 @@ describe("Probar <ThemedChip />", () => {
     const { queryByTestId } = render(<ThemedChip text="Chip" />);
     expect(queryByTestId("icon")).toBeNull();
   });
+
+   test("Debe renderizar el icono si se proporciona `iconSource`", () => {
+     const iconSource = "test-icon";
+
+     render(<ThemedChip text="Chip" iconSource={iconSource} />);
+
+     expect(screen.getByTestId("icon")).toBeTruthy();
+   });
 });

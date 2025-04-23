@@ -1,6 +1,8 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { AppState } from "react-native";
 import { router } from "expo-router";
+
+import { render } from "@testing-library/react-native";
 
 import { useLocationPermissionsStore } from "../../store";
 import { PermissionsCheckerProvider } from "../PermissionsCheckerProvider";
@@ -20,6 +22,8 @@ describe("Probar <PermissionsCheckerProvider />", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  const mockCheckLocationPermission = jest.fn();
 
   test("Debe redirigir a home si el permiso de localización es 'granted'", () => {
     (useLocationPermissionsStore as unknown as jest.Mock).mockReturnValue({
@@ -52,7 +56,6 @@ describe("Probar <PermissionsCheckerProvider />", () => {
   });
 
   test("Debe llamar a checkLocationPermission() al montarse", () => {
-    const mockCheckLocationPermission = jest.fn();
     (useLocationPermissionsStore as unknown as jest.Mock).mockReturnValue({
       locationStatus: PermissionStatus.UNDETERMINED,
       checkLocationPermission: mockCheckLocationPermission,
@@ -63,6 +66,32 @@ describe("Probar <PermissionsCheckerProvider />", () => {
         <></>
       </PermissionsCheckerProvider>
     );
+
+    expect(mockCheckLocationPermission).toHaveBeenCalled();
+  });
+
+  test("Debe llamar a checkLocationPermission() cuando el estado de la app cambia a 'active'", () => {
+    (useLocationPermissionsStore as unknown as jest.Mock).mockReturnValue({
+      locationStatus: PermissionStatus.UNDETERMINED,
+      checkLocationPermission: mockCheckLocationPermission,
+    });
+
+    const appStateChangeHandler = jest.fn();
+    jest
+      .spyOn(AppState, "addEventListener")
+      .mockImplementation((_, handler) => {
+        appStateChangeHandler.mockImplementation(handler);
+        return { remove: jest.fn() };
+      });
+
+    render(
+      <PermissionsCheckerProvider>
+        <></>
+      </PermissionsCheckerProvider>
+    );
+
+    // Simular cambio de estado de la app a "active"
+    appStateChangeHandler("active");
 
     expect(mockCheckLocationPermission).toHaveBeenCalled();
   });

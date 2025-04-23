@@ -11,7 +11,7 @@ interface ReqInfoProps {
 
 export const ReqInfo = ({ children, req }: ReqInfoProps) => {
   return (
-    <View className="gap-2 py-5 mb-6 mx-3">
+    <View className="gap-2 py-5 mb-3 mx-3">
       <View className="border-b border-gray-300 p-2">
         <ThemedText
           variant="h4"
