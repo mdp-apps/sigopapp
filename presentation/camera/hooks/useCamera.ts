@@ -51,7 +51,7 @@ export const useCamera = () => {
     const picture = await cameraRef.current.takePictureAsync({
       quality: 0.7,
     });
-    console.log(JSON.stringify(picture, null, 2));
+    // console.log(JSON.stringify(picture, null, 2));
 
     if (!picture?.uri) return;
 

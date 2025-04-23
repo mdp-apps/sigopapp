@@ -9,6 +9,7 @@ import { useReqByCode, useReqByPatent } from "@/presentation/req/hooks";
 import {
   useObservationMutation,
   useReqObservations,
+  useUploadObservationImgMutation,
 } from "@/presentation/observacion/hooks";
 
 import { NoDataCard } from "@/presentation/shared/components";
@@ -74,6 +75,7 @@ const ObservacionesScreen = () => {
     reqCode ? Number(reqCode) : reqCodeByPatent
   );
   const { createObservation } = useObservationMutation();
+  const {  uploadObservationImage } = useUploadObservationImgMutation();
 
   const handleModal = (logStatusReq: ObservationReq) => {
     setObservationModal(logStatusReq);
@@ -86,6 +88,13 @@ const ObservacionesScreen = () => {
       commment: values.observation,
       pathImg: selectedImages,
     });
+
+    uploadObservationImage.mutate({
+      fileImages: selectedImages,
+      reqCode: reqCode ? String(reqCode) : String(reqCodeByPatent),
+      fileNames: selectedImages,
+    });
+    
 
     reset({ observation: "" });
   };
@@ -221,7 +230,7 @@ const ObservacionesScreen = () => {
                   className="uppercase font-semibold !text-slate-700 mb-2"
                   adjustsFontSizeToFit
                 >
-                  Imágen de la observación
+                  Imagen de la observación
                 </ThemedText>
                 <View className="flex-1">
                   <Image

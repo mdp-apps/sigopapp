@@ -14,13 +14,15 @@ export const uploadReqObservationImageUseCase = async (
 ): Promise<string> => {
   try {
     const { file, requerimiento, filename } = body;
-
+    console.log(JSON.stringify(body, null, 2));
+    
     const formData = new FormData();
 
-    const response = await fetch(file);
-    const blob = await response.blob();
-
-    formData.append("file", blob, "image.jpg");
+    formData.append("file", {
+      uri: file,
+      name: filename,
+      type: "image/jpeg",
+    } as any);
 
     formData.append("requerimiento", requerimiento);
     formData.append("filename", filename);
