@@ -14,7 +14,6 @@ export const uploadReqObservationImageUseCase = async (
 ): Promise<string> => {
   try {
     const { file, requerimiento, filename } = body;
-    console.log(JSON.stringify(body, null, 2));
     
     const formData = new FormData();
 

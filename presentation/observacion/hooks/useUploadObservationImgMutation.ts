@@ -1,3 +1,4 @@
+import { useCameraStore } from "@/presentation/shared/store";
 
 import * as UseCases from "@/core/req/use-cases";
 
@@ -10,26 +11,27 @@ import { ImageAdapter } from "@/config/adapters";
 type UploadObsImageBody = {
   fileImages: string[];
   reqCode: string;
-  fileNames: string[];
-}
+};
 
 export const useUploadObservationImgMutation = () => {
+  const { clearImages } = useCameraStore();
 
- const uploadObservationImage = useMutation({
-   mutationFn: (data: UploadObsImageBody) => {
-     return UseCases.uploadReqObservationImageUseCase(sigopApiFetcher, {
-       file: data.fileImages[0],
-       requerimiento: data.reqCode,
-       filename: ImageAdapter.prepareImages(data.fileNames)[0],
-     });
-   },
-   onSuccess: (data) => {
-      console.log({ dataUpload: data });
-   },
-   onError: (error) => {
-     Alert.alert("Error", error.message);
-   },
- });
+  const uploadObservationImage = useMutation({
+    mutationFn: (data: UploadObsImageBody) => {
+      return UseCases.uploadReqObservationImageUseCase(sigopApiFetcher, {
+        file: data.fileImages.at(-1)!,
+        requerimiento: data.reqCode,
+        filename: ImageAdapter.prepareImages(data.fileImages).at(-1)!,
+      });
+    },
+    onSuccess: (data) => {
+      clearImages();
+      // console.log({ data });
+    },
+    onError: (error) => {
+      Alert.alert("Error", error.message);
+    },
+  });
 
   return {
     uploadObservationImage,

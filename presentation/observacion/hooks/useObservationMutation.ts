@@ -1,6 +1,5 @@
 import { Alert } from "react-native";
 import { useAuthStore } from "@/presentation/auth/store";
-import { useCameraStore } from "@/presentation/shared/store";
 
 import * as UseCases from "@/core/req/use-cases";
 
@@ -18,7 +17,6 @@ type CreateObsBody = {
 export const useObservationMutation = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
-  const { clearImages } = useCameraStore();
 
   const createObservation = useMutation({
     mutationFn: (data: CreateObsBody) => {
@@ -29,12 +27,11 @@ export const useObservationMutation = () => {
         cod_req: data.reqCode,
         comentario: data.commment,
         usuario: user?.code!,
-        ruta: imagesName && imagesName.length > 0 ? imagesName[0] : undefined,
+        ruta:
+          imagesName && imagesName.length > 0 ? imagesName.at(-1) : undefined,
       });
     },
     onSuccess: (data, variables) => {
-      clearImages();
-      
       if (data) {
         AlertNotifyAdapter.show({
           type: AlertType.SUCCESS,

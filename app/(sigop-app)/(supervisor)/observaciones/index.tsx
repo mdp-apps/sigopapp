@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ScrollView, SectionList, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SectionList, View } from "react-native";
 import { router, useGlobalSearchParams } from "expo-router";
 
 import { useCameraStore } from "@/presentation/shared/store";
@@ -17,6 +17,7 @@ import {
   ThemedButton,
   ThemedDataTable,
   ThemedHelperText,
+  ThemedImage,
   ThemedInput,
   ThemedLoader,
   ThemedModal,
@@ -34,8 +35,6 @@ import { STAGE } from "@/config/api/sigopApi";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ImageAdapter } from "@/config/adapters";
-import { Image } from "react-native";
 
 const ObservacionesScreen = () => {
   const [observationModal, setObservationModal] =
@@ -59,7 +58,7 @@ const ObservacionesScreen = () => {
   });
 
   const { reqCode, patent } = useGlobalSearchParams();
-  const { selectedImages } = useCameraStore();
+  const { selectedImages, clearImages } = useCameraStore();
 
   const {
     isVisible: isVisibleModal,
@@ -75,7 +74,11 @@ const ObservacionesScreen = () => {
     reqCode ? Number(reqCode) : reqCodeByPatent
   );
   const { createObservation } = useObservationMutation();
-  const {  uploadObservationImage } = useUploadObservationImgMutation();
+  const { uploadObservationImage } = useUploadObservationImgMutation();
+
+  useEffect(() => {
+    return () => clearImages();
+  }, []);
 
   const handleModal = (logStatusReq: ObservationReq) => {
     setObservationModal(logStatusReq);
@@ -89,12 +92,12 @@ const ObservacionesScreen = () => {
       pathImg: selectedImages,
     });
 
-    uploadObservationImage.mutate({
-      fileImages: selectedImages,
-      reqCode: reqCode ? String(reqCode) : String(reqCodeByPatent),
-      fileNames: selectedImages,
-    });
-    
+    if (selectedImages.length > 0) {
+      uploadObservationImage.mutate({
+        fileImages: selectedImages,
+        reqCode: reqCode ? String(reqCode) : String(reqCodeByPatent),
+      });
+    }
 
     reset({ observation: "" });
   };
@@ -117,10 +120,16 @@ const ObservacionesScreen = () => {
     );
   }
 
-
   return (
     <ThemedView keyboardAvoiding>
       <ReqInfo req={reqCode ? queryReqByCode.data! : queryReqByPatent.data!} />
+
+      {selectedImages.length > 0 && (
+        <ThemedImage
+          className="mx-auto rounded-xl border-2 border-gray-100"
+          url={selectedImages.at(-1)!}
+        />
+      )}
 
       <ThemedView className="flex-1 items-center gap-4" margin>
         <Controller
@@ -162,32 +171,34 @@ const ObservacionesScreen = () => {
               onPress={() => router.push("/camera")}
               className="border border-light-primary bg-white rounded-lg !p-2.5"
               variant="icon"
-              iconName="camera"
+              iconName={selectedImages.length > 0 ? "camera-retake" : "camera"}
               iconColor={primaryColor}
             />
           )}
         </View>
       </ThemedView>
 
-      <ThemedDataTable<ObservationReq>
-        handleRowPress={handleModal}
-        data={queryObservations.data ?? []}
-        columns={REQ_OBSERVATIONS_COLUMNS}
-        getRowKey={(item) => item.observationId}
-        headerStyle={{
-          borderBottomColor: grayColor,
-          marginBottom: 10,
-        }}
-        isLoading={queryObservations.isLoading}
-        textData="No hay observaciones para mostrar"
-        columnCellStyle={{
-          fontWeight: "700",
-          color: grayDarkColor,
-          textTransform: "uppercase",
-        }}
-        rowStyle={{ borderBottomColor: grayColor }}
-        cellStyle={{ fontWeight: "400", color: textColor }}
-      />
+      {selectedImages.length === 0 && (
+        <ThemedDataTable<ObservationReq>
+          handleRowPress={handleModal}
+          data={queryObservations.data ?? []}
+          columns={REQ_OBSERVATIONS_COLUMNS}
+          getRowKey={(item) => item.observationId}
+          headerStyle={{
+            borderBottomColor: grayColor,
+            marginBottom: 10,
+          }}
+          isLoading={queryObservations.isLoading}
+          textData="No hay observaciones para mostrar"
+          columnCellStyle={{
+            fontWeight: "700",
+            color: grayDarkColor,
+            textTransform: "uppercase",
+          }}
+          rowStyle={{ borderBottomColor: grayColor }}
+          cellStyle={{ fontWeight: "400", color: textColor }}
+        />
+      )}
 
       <ThemedModal isVisible={isVisibleModal} hideModal={hideModal}>
         <SectionList
@@ -232,12 +243,11 @@ const ObservacionesScreen = () => {
                 >
                   Imagen de la observación
                 </ThemedText>
-                <View className="flex-1">
-                  <Image
-                    source={{ uri: observationModal?.urlImg }}
-                    style={{ width: 300, height: 300 }}
-                  />
-                </View>
+
+                <ThemedImage
+                  className="rounded-lg"
+                  url={observationModal.urlImg}
+                />
               </>
             )
           }
