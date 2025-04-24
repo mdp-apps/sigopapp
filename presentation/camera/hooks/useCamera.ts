@@ -23,6 +23,7 @@ export const useCamera = () => {
     try {
       const { status: cameraPermissionStatus } =
         await requestCameraPermission();
+      
       if (cameraPermissionStatus !== "granted") {
         Alert.alert(
           "Lo siento",

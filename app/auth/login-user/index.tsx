@@ -90,6 +90,7 @@ const LoginSigopScreen = () => {
       )}
 
       <ThemedButton
+        testID="login-sigop-button"
         variant="rounded"
         onPress={handleSubmit(onSubmit)}
         text="INGRESAR"
