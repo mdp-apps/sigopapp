@@ -21,6 +21,7 @@ import {
   ThemedInput,
   ThemedLoader,
   ThemedModal,
+  ThemedSnackbar,
   ThemedText,
   ThemedView,
 } from "@/presentation/theme/components";
@@ -72,7 +73,8 @@ const ObservacionesScreen = () => {
   const { queryObservations } = useReqObservations(
     reqCode ? Number(reqCode) : reqCodeByPatent
   );
-  const { createObservation } = useObservationMutation();
+  const { createObservation, snackbar, dismissSnackbar } =
+    useObservationMutation();
   const { uploadObservationImage } = useUploadObservationImgMutation();
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const ObservacionesScreen = () => {
     setObservationModal(logStatusReq);
     showModal();
   };
-  
+
   const onSubmit = async (values: z.infer<typeof observationSchema>) => {
     if (selectedImages.length > 0) {
       uploadObservationImage.mutate({
@@ -173,6 +175,13 @@ const ObservacionesScreen = () => {
             iconColor={primaryColor}
           />
         </View>
+
+        <ThemedSnackbar
+          visible={snackbar.visible}
+          onDismiss={dismissSnackbar}
+          message={snackbar.message}
+          actionLabel="Cerrar"
+        />
       </ThemedView>
 
       {selectedImages.length === 0 && (

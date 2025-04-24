@@ -1,6 +1,8 @@
 import React from "react";
 import { Snackbar } from "react-native-paper";
 
+import { useThemeColor } from "../hooks";
+
 interface ThemedSnackbarProps {
   visible: boolean;
   onDismiss: () => void;
@@ -13,11 +15,13 @@ interface ThemedSnackbarProps {
 export const ThemedSnackbar = ({
   visible,
   onDismiss,
-  duration = 3000,
+  duration,
   message,
   actionLabel = "Aceptar",
   onActionPress,
 }: ThemedSnackbarProps) => {
+  const primaryColor = useThemeColor({}, "primary");
+
   return (
     <Snackbar
       visible={visible}
@@ -26,6 +30,9 @@ export const ThemedSnackbar = ({
       action={{
         label: actionLabel,
         onPress: onActionPress || (() => {}),
+      }}
+      style={{
+        backgroundColor: primaryColor,
       }}
     >
       {message}

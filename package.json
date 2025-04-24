@@ -26,6 +26,7 @@
       "core/**/*.{ts,tsx}",
       "presentation/**/*.{ts,tsx}",
       "!app/**/*.d.ts",
+      "!app/**/_layout.tsx",
       "!config/api/*.{ts,tsx}",
       "!config/**/index.ts",
       "!core/**/index.ts",

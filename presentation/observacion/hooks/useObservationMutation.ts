@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Alert } from "react-native";
 import { useAuthStore } from "@/presentation/auth/store";
 
@@ -15,8 +16,15 @@ type CreateObsBody = {
 };
 
 export const useObservationMutation = () => {
+  const [snackbar, setSnackbar] = useState<{
+    visible: boolean;
+    message: string;
+    type: "success" | "error";
+  }>({ visible: false, message: "", type: "success" });
+
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  
 
   const createObservation = useMutation({
     mutationFn: (data: CreateObsBody) => {
@@ -32,14 +40,12 @@ export const useObservationMutation = () => {
       });
     },
     onSuccess: (data, variables) => {
-
       if (data) {
-        AlertNotifyAdapter.show({
-          type: AlertType.SUCCESS,
-          title: "Comentario ingresado.",
-          textBody: "El comentario ha sido ingresado correctamente.",
-          button: "Salir",
-        });
+         setSnackbar({
+           visible: true,
+           message: "El comentario ha sido ingresado correctamente.",
+           type: "success",
+         });
 
         queryClient.invalidateQueries({
           queryKey: ["observations", variables.reqCode],
@@ -48,20 +54,28 @@ export const useObservationMutation = () => {
         return;
       }
 
-      AlertNotifyAdapter.show({
-        type: AlertType.DANGER,
-        title: data,
-        textBody:
-          "El comentario no ha sido ingresado, hubo un error en el servidor.",
-        button: "ACEPTAR",
+      setSnackbar({
+        visible: true,
+        message: "El comentario no ha sido ingresado, hubo un error en el servidor.",
+        type: "error",
       });
     },
     onError: (error) => {
-      Alert.alert("Error", error.message);
+      setSnackbar({
+        visible: true,
+        message: error.message || "Ocurrió un error inesperado.",
+        type: "error",
+      });
     },
   });
 
+   const dismissSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, visible: false }));
+  };
+
   return {
     createObservation,
+    snackbar,
+    dismissSnackbar,
   };
 };

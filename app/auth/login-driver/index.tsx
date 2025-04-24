@@ -89,6 +89,7 @@ const LoginConductorScreen = () => {
       )}
 
       <ThemedButton
+        testID="login-driver-button"
         variant="rounded"
         onPress={handleSubmit(onSubmit)}
         text="INGRESAR"

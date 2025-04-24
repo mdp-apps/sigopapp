@@ -25,6 +25,7 @@ const ProfileMenuScreen = () => {
         <View className="flex flex-row justify-evenly">
           <View className="flex flex-col items-center gap-1">
             <ThemedButton
+              testID="driver-button"
               variant="icon"
               onPress={() => selectProfile(UserProfile.driver)}
               className="rounded-full bg-light-primary"
@@ -39,6 +40,7 @@ const ProfileMenuScreen = () => {
 
           <View className="flex flex-col items-center gap-1">
             <ThemedButton
+              testID="supervisor-button"
               variant="icon"
               onPress={() => selectProfile(UserProfile.supervisor)}
               className="rounded-full bg-light-primary "
@@ -55,6 +57,7 @@ const ProfileMenuScreen = () => {
         <View className="flex flex-row justify-evenly">
           <View className="flex flex-col items-center gap-1">
             <ThemedButton
+              testID="planner-button"
               variant="icon"
               onPress={() => selectProfile(UserProfile.planner)}
               className="rounded-full bg-light-primary"
@@ -70,6 +73,7 @@ const ProfileMenuScreen = () => {
 
           <View className="flex flex-col items-center gap-1">
             <ThemedButton
+              testID="foreman-button"
               variant="icon"
               onPress={() => selectProfile(UserProfile.foreman)}
               className="rounded-full bg-light-primary"
@@ -83,22 +87,6 @@ const ProfileMenuScreen = () => {
             </ThemedText>
           </View>
         </View>
-
-        {STAGE === "dev" && (
-          <View className="flex flex-col items-center gap-1">
-            <ThemedButton
-              variant="icon"
-              onPress={() => selectProfile(UserProfile.customer)}
-              className="rounded-full bg-light-primary"
-              iconName="account-tie"
-              iconSize={60}
-              iconColor="white"
-            />
-            <ThemedText className="font-semibold text-md text-center text-light-primary">
-              Cliente
-            </ThemedText>
-          </View>
-        )}
       </View>
     </AuthBaseLayout>
   );
