@@ -30,7 +30,6 @@ import { observationSchema } from "@/presentation/shared/validations";
 import { ObservationReq } from "@/infrastructure/entities";
 import { SectionListMapper } from "@/infrastructure/mappers";
 import { REQ_OBSERVATIONS_COLUMNS } from "@/config/constants";
-import { STAGE } from "@/config/api/sigopApi";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -84,20 +83,20 @@ const ObservacionesScreen = () => {
     setObservationModal(logStatusReq);
     showModal();
   };
-
+  
   const onSubmit = async (values: z.infer<typeof observationSchema>) => {
-    createObservation.mutate({
-      reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
-      commment: values.observation,
-      pathImg: selectedImages,
-    });
-
     if (selectedImages.length > 0) {
       uploadObservationImage.mutate({
         fileImages: selectedImages,
         reqCode: reqCode ? String(reqCode) : String(reqCodeByPatent),
       });
     }
+
+    createObservation.mutate({
+      reqCode: reqCode ? Number(reqCode) : reqCodeByPatent,
+      commment: values.observation,
+      pathImg: selectedImages,
+    });
 
     reset({ observation: "" });
   };

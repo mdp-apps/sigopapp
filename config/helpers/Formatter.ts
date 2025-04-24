@@ -28,7 +28,11 @@ export class Formatter {
     const cleanedInput = text.replace(REGEX.cleanRut, "");
 
     if (cleanedInput.length > 1) {
-      return cleanedInput.slice(0, -1) + "-" + cleanedInput.slice(-1);
+      return (
+        cleanedInput.slice(0, -1).toLocaleUpperCase() +
+        "-" +
+        cleanedInput.slice(-1).toLocaleUpperCase()
+      );
     }
 
     return cleanedInput;

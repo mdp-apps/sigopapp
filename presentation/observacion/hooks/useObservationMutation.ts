@@ -32,6 +32,7 @@ export const useObservationMutation = () => {
       });
     },
     onSuccess: (data, variables) => {
+
       if (data) {
         AlertNotifyAdapter.show({
           type: AlertType.SUCCESS,

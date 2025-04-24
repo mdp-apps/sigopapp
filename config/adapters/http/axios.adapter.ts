@@ -30,10 +30,12 @@ export class AxiosAdapter implements HttpAdapter {
       return data;
     } catch (error) {
       const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as ErrorMessage;
-      console.log(errorMessage);
+       const errorMessage =
+         (serverError.response?.data as ErrorMessage)?.error ||
+         "Unknown error occurred";
+       console.log(errorMessage);
 
-      throw new Error(errorMessage.error);
+       throw new Error(errorMessage);
     }
   }
 
@@ -47,10 +49,12 @@ export class AxiosAdapter implements HttpAdapter {
       return data;
     } catch (error) {
       const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as ErrorMessage;
+      const errorMessage =
+        (serverError.response?.data as ErrorMessage)?.error ||
+        "Unknown error occurred";
       console.log(errorMessage);
 
-      throw new Error(errorMessage.error);
+      throw new Error(errorMessage);
     }
   }
 
@@ -64,10 +68,12 @@ export class AxiosAdapter implements HttpAdapter {
       return data;
     } catch (error) {
       const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as ErrorMessage;
+      const errorMessage =
+        (serverError.response?.data as ErrorMessage)?.error ||
+        "Unknown error occurred";
       console.log(errorMessage);
 
-      throw new Error(errorMessage.error);
+      throw new Error(errorMessage);
     }
   }
 
@@ -77,10 +83,12 @@ export class AxiosAdapter implements HttpAdapter {
       return data;
     } catch (error) {
       const serverError = error as AxiosError;
-      const errorMessage = serverError.response?.data as ErrorMessage;
+      const errorMessage =
+        (serverError.response?.data as ErrorMessage)?.error ||
+        "Unknown error occurred";
       console.log(errorMessage);
 
-      throw new Error(errorMessage.error);
+      throw new Error(errorMessage);
     }
   }
 }

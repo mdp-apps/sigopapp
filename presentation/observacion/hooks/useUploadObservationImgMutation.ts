@@ -25,8 +25,9 @@ export const useUploadObservationImgMutation = () => {
       });
     },
     onSuccess: (data) => {
-      clearImages();
-      // console.log({ data });
+      if (data === "OK") {
+       clearImages();
+      }
     },
     onError: (error) => {
       Alert.alert("Error", error.message);

@@ -11,6 +11,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "test:coverage": "jest --watchAll --coverage",
+    "coverage": "jest --coverage",
     "lint": "expo lint"
   },
   "jest": {
@@ -25,8 +26,10 @@
       "core/**/*.{ts,tsx}",
       "presentation/**/*.{ts,tsx}",
       "!app/**/*.d.ts",
+      "!config/api/*.{ts,tsx}",
       "!config/**/index.ts",
       "!core/**/index.ts",
+      "!presentation/**/*.web.ts",
       "!presentation/**/index.ts"
     ],
     "coverageDirectory": "coverage",

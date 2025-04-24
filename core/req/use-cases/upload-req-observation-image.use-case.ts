@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { HttpAdapter } from "@/config/adapters";
 
 
@@ -26,7 +25,7 @@ export const uploadReqObservationImageUseCase = async (
     formData.append("requerimiento", requerimiento);
     formData.append("filename", filename);
 
-    const uploadImage = await fetcher.post<AxiosResponse, FormData>(
+    const uploadImage = await fetcher.post<string, FormData>(
       `/requerimientos/observaciones/subirfoto/image`,
       formData,
       {
@@ -37,7 +36,7 @@ export const uploadReqObservationImageUseCase = async (
     );
 
 
-    return uploadImage.data;
+    return uploadImage;
   } catch (error) {
     throw new Error("Error al subir la imagen de la observación");
   }
