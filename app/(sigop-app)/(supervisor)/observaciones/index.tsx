@@ -181,8 +181,10 @@ const ObservacionesScreen = () => {
           onDismiss={dismissSnackbar}
           message={snackbar.message}
           actionLabel="Cerrar"
+          duration={5000}
         />
       </ThemedView>
+
 
       {selectedImages.length === 0 && (
         <ThemedDataTable<ObservationReq>

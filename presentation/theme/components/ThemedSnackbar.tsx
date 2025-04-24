@@ -20,7 +20,7 @@ export const ThemedSnackbar = ({
   actionLabel = "Aceptar",
   onActionPress,
 }: ThemedSnackbarProps) => {
-  const primaryColor = useThemeColor({}, "primary");
+  const darkGrayColor = useThemeColor({}, "darkGray");
 
   return (
     <Snackbar
@@ -32,7 +32,17 @@ export const ThemedSnackbar = ({
         onPress: onActionPress || (() => {}),
       }}
       style={{
-        backgroundColor: primaryColor,
+        backgroundColor: darkGrayColor,
+      }}
+      theme={{
+        colors: {
+          surface: darkGrayColor,
+          onSurface: "#fff",
+          accent: "#fff",
+
+          backdrop: "rgba(0, 0, 0, 0.5)",
+          
+        },
       }}
     >
       {message}

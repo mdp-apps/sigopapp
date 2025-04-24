@@ -82,7 +82,7 @@ export const useCamera = () => {
       quality: 0.5,
       aspect: [4, 3],
       allowsMultipleSelection: true,
-      selectionLimit: 5,
+      selectionLimit: 1,
     });
 
     if (result.canceled) return;
