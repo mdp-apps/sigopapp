@@ -6,7 +6,7 @@ import { useCameraStore } from "@/presentation/shared/store";
 
 import { router } from "expo-router";
 import * as MediaLibrary from "expo-media-library";
-import { CameraView } from "expo-camera";
+import { useCameraPermissions } from "expo-camera";
 
 // Mock de useCameraStore
 jest.mock("@/presentation/shared/store", () => ({
@@ -35,7 +35,7 @@ jest.mock("expo-media-library", () => ({
     { status: "undetermined" },
     jest.fn(() => Promise.resolve({ status: "granted" })),
   ]),
-  createAssetAsync: jest.fn(),
+  createAssetAsync: jest.fn(() => Promise.resolve()),
 }));
 
 // Mock de expo-image-picker
@@ -62,100 +62,248 @@ describe("Probar useCamera", () => {
     });
   });
 
-  test("Debe solicitar permisos de cámara y galería correctamente", async () => {
-    const { result } = renderHook(() => useCamera());
+  describe("Probar onRequestPermissions", () => {
+    test("Debe solicitar permisos de cámara y galería correctamente", async () => {
+      const { result } = renderHook(() => useCamera());
 
-    await act(async () => {
-      await result.current.onRequestPermissions();
+      await act(async () => {
+        await result.current.onRequestPermissions();
+      });
+
+      expect(Alert.alert).not.toHaveBeenCalled();
     });
 
-    expect(Alert.alert).not.toHaveBeenCalled();
-  });
-
-  test.skip("Debe mostrar una alerta si los permisos de cámara son denegados", async () => {
-    jest.mock("expo-camera", () => ({
-      useCameraPermissions: jest.fn(() => [
+    test("Debe mostrar una alerta si los permisos de cámara son denegados", async () => {
+      (useCameraPermissions as jest.Mock).mockReturnValueOnce([
         { status: "denied" },
         jest.fn(() => Promise.resolve({ status: "denied" })),
-      ]),
-    }));
+      ]);
 
-    const { result } = renderHook(() => useCamera());
+      const { result } = renderHook(() => useCamera());
 
-    await act(async () => {
-      await result.current.onRequestPermissions();
+      await act(async () => {
+        await result.current.onRequestPermissions();
+      });
+
+      expect(Alert.alert).toHaveBeenCalledWith(
+        "Lo siento",
+        "Necesitamos permiso para acceder a la cámara para tomar fotos."
+      );
     });
 
-    expect(Alert.alert).toHaveBeenCalledWith(
-      "Lo siento",
-      "Necesitamos permiso para acceder a la cámara para tomar fotos."
-    );
+    test("Debe mostrar una alerta si los permisos de galería son denegados", async () => {
+      (MediaLibrary.usePermissions as jest.Mock).mockReturnValueOnce([
+        { status: "denied" },
+        jest.fn(() => Promise.resolve({ status: "denied" })),
+      ]);
+
+      const { result } = renderHook(() => useCamera());
+
+      await act(async () => {
+        await result.current.onRequestPermissions();
+      });
+
+      expect(Alert.alert).toHaveBeenCalledWith(
+        "Lo siento",
+        "Necesitamos permiso para acceder a la galería para guardar las fotos tomadas."
+      );
+    });
+
+    test("Debe mostrar una alerta si ocurre un error al solicitar permisos", async () => {
+      (useCameraPermissions as jest.Mock).mockReturnValueOnce([
+        { status: "undetermined" },
+        jest.fn(() => Promise.reject(new Error("Error al solicitar permisos"))),
+      ]);
+
+      const { result } = renderHook(() => useCamera());
+
+      await act(async () => {
+        await result.current.onRequestPermissions();
+      });
+
+      expect(Alert.alert).toHaveBeenCalledWith(
+        "Error",
+        "Algo salió mal al solicitar los permisos."
+      );
+    });
   });
 
-  test.skip("Debe capturar una foto correctamente", async () => {
-    const mockTakePictureAsync = jest.fn(() =>
-      Promise.resolve({ uri: "mock-photo-uri" })
-    );
+  describe("Probar onShutterButtonPress", () => {
+    test("Debe capturar una foto correctamente", async () => {
+      const mockTakePictureAsync = jest.fn(() =>
+        Promise.resolve({ uri: "mock-photo-uri" })
+      );
 
-    (CameraView as unknown as jest.Mock).mockImplementation(() => ({
-      takePictureAsync: mockTakePictureAsync,
-    }));
+      // Mock de CameraView para incluir takePictureAsync
+      const mockCameraRef = {
+        takePictureAsync: mockTakePictureAsync,
+      };
 
-    const { result } = renderHook(() => useCamera());
+      const { result } = renderHook(() => useCamera());
 
-    await act(async () => {
-      await result.current.onShutterButtonPress();
+      act(() => {
+        (result.current.cameraRef as React.MutableRefObject<any>).current =
+          mockCameraRef;
+      });
+
+      await act(async () => {
+        await result.current.onShutterButtonPress();
+      });
+
+      expect(result.current.selectedImage).toBe("mock-photo-uri");
+      expect(mockTakePictureAsync).toHaveBeenCalled();
     });
 
-    expect(result.current.selectedImage).toBe("mock-photo-uri");
+    test("No debe capturar una foto si cameraRef es undefined", async () => {
+      const { result } = renderHook(() => useCamera());
+
+      await act(async () => {
+        await result.current.onShutterButtonPress();
+      });
+
+      expect(result.current.selectedImage).toBeUndefined();
+    });
+
+    test("No debe capturar una foto si no hay uri", async () => {
+      const mockTakePictureAsync = jest.fn(() =>
+        Promise.resolve({ uri: undefined })
+      );
+
+      const mockCameraRef = {
+        takePictureAsync: mockTakePictureAsync,
+      };
+
+      const { result } = renderHook(() => useCamera());
+
+      act(() => {
+        (result.current.cameraRef as React.MutableRefObject<any>).current =
+          mockCameraRef;
+      });
+
+      await act(async () => {
+        await result.current.onShutterButtonPress();
+      });
+
+      expect(result.current.selectedImage).toBeUndefined();
+    });
   });
 
-  test.skip("Debe guardar la foto en la galería y agregarla al store", async () => {
-    const { result } = renderHook(() => useCamera());
+  describe("Probar onPictureAccepted", () => {
+    test("Debe guardar la foto en la galería y agregarla al store", async () => {
+      // 1. Configura el mock de CameraView
+      const mockTakePictureAsync = jest.fn(() =>
+        Promise.resolve({ uri: "mock-photo-uri" })
+      );
+      const mockCameraRef = {
+        takePictureAsync: mockTakePictureAsync,
+      };
 
-    await act(async () => {
-      result.current.onPictureAccepted();
+      const { result } = renderHook(() => useCamera());
+
+      // 2. Simula la referencia de la cámara
+      act(() => {
+        (result.current.cameraRef as React.MutableRefObject<any>).current =
+          mockCameraRef;
+      });
+
+      // 3. Simula tomar una foto
+      await act(async () => {
+        await result.current.onShutterButtonPress();
+      });
+
+      // 4. Ahora ejecuta onPictureAccepted
+      await act(async () => {
+        await result.current.onPictureAccepted();
+      });
+
+      // Verificaciones
+      expect(MediaLibrary.createAssetAsync).toHaveBeenCalledWith(
+        "mock-photo-uri"
+      );
+      expect(mockAddSelectedImage).toHaveBeenCalledWith("mock-photo-uri");
+      expect(router.dismiss).toHaveBeenCalled();
     });
 
-    expect(MediaLibrary.createAssetAsync).toHaveBeenCalledWith("mock-photo-uri");
-    expect(mockAddSelectedImage).toHaveBeenCalledWith("mock-photo-uri");
-    expect(router.dismiss).toHaveBeenCalled();
+    test("Debe manejar el caso en que no hay imagen seleccionada", async () => {
+      const { result } = renderHook(() => useCamera());
+
+      await act(async () => {
+        await result.current.onPictureAccepted();
+      });
+
+      expect(MediaLibrary.createAssetAsync).not.toHaveBeenCalled();
+      expect(mockAddSelectedImage).not.toHaveBeenCalled();
+      expect(router.dismiss).not.toHaveBeenCalled();
+    });
   });
 
-  test.skip("Debe permitir seleccionar imágenes de la galería", async () => {
-    const { result } = renderHook(() => useCamera());
+  describe("Probar onPickImages", () => {
+    test("Debe permitir seleccionar imágenes de la galería", async () => {
+      const { result } = renderHook(() => useCamera());
 
-    await act(async () => {
-      await result.current.onPickImages();
+      await act(async () => {
+        await result.current.onPickImages();
+      });
+
+      expect(mockAddSelectedImage).toHaveBeenCalledWith("mock-image-uri");
+      expect(router.dismiss).toHaveBeenCalled();
     });
 
-    expect(mockAddSelectedImage).toHaveBeenCalledWith("mock-image-uri");
-    expect(router.dismiss).toHaveBeenCalled();
+    test("Debe manejar el caso de cancelación al seleccionar imágenes", async () => {
+      (
+        require("expo-image-picker").launchImageLibraryAsync as jest.Mock
+      ).mockReturnValueOnce(Promise.resolve({ canceled: true }));
+
+      const { result } = renderHook(() => useCamera());
+
+      await act(async () => {
+        await result.current.onPickImages();
+      });
+
+      expect(mockAddSelectedImage).not.toHaveBeenCalled();
+      expect(router.dismiss).not.toHaveBeenCalled();
+    });
   });
 
-  test.skip("Debe alternar entre las cámaras frontal y trasera", () => {
-    const { result } = renderHook(() => useCamera());
+  describe("Probar toggleCameraFacing", () => {
+    test("Debe alternar entre las cámaras frontal y trasera", () => {
+      const { result } = renderHook(() => useCamera());
 
-    act(() => {
-      result.current.toggleCameraFacing();
+      act(() => {
+        result.current.toggleCameraFacing();
+      });
+
+      expect(result.current.facing).toBe("front");
+
+      act(() => {
+        result.current.toggleCameraFacing();
+      });
+
+      expect(result.current.facing).toBe("back");
     });
-
-    expect(result.current.facing).toBe("front");
-
-    act(() => {
-      result.current.toggleCameraFacing();
-    });
-
-    expect(result.current.facing).toBe("back");
   });
 
-  test.skip("Debe cancelar y cerrar la cámara", () => {
-    const { result } = renderHook(() => useCamera());
+  describe("Probar onReturnCancel", () => {
+    test("Debe cancelar y cerrar la cámara", () => {
+      const { result } = renderHook(() => useCamera());
 
-    act(() => {
-      result.current.onReturnCancel();
+      act(() => {
+        result.current.onReturnCancel();
+      });
+
+      expect(router.dismiss).toHaveBeenCalled();
     });
+  });
 
-    expect(router.dismiss).toHaveBeenCalled();
+  describe("Probar onReturnCancel", () => {
+    test("Debe volver a tomar la foto", () => {
+      const { result } = renderHook(() => useCamera());
+
+      act(() => {
+        result.current.onRetakePhoto();
+      });
+
+      expect(result.current.selectedImage).toBeUndefined();
+    });
   });
 });

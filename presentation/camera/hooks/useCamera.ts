@@ -41,7 +41,7 @@ export const useCamera = () => {
         return;
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Alert.alert("Error", "Algo salió mal al solicitar los permisos.");
     }
   };
