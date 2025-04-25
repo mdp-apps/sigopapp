@@ -1,5 +1,9 @@
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
-import { server } from "mocks/handlers";
+
+import { setupServer } from 'msw/native'
+import { handlers } from './mocks/handlers'
+
+export const server = setupServer(...handlers);
 
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage);
 
