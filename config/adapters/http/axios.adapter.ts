@@ -33,7 +33,7 @@ export class AxiosAdapter implements HttpAdapter {
        const errorMessage =
          (serverError.response?.data as ErrorMessage)?.error ||
          "Unknown error occurred";
-       console.log(errorMessage);
+      //  console.log(errorMessage);
 
        throw new Error(errorMessage);
     }
@@ -52,7 +52,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage =
         (serverError.response?.data as ErrorMessage)?.error ||
         "Unknown error occurred";
-      console.log(errorMessage);
+      // console.log(errorMessage);
 
       throw new Error(errorMessage);
     }
@@ -71,7 +71,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage =
         (serverError.response?.data as ErrorMessage)?.error ||
         "Unknown error occurred";
-      console.log(errorMessage);
+      // console.log(errorMessage);
 
       throw new Error(errorMessage);
     }
@@ -86,7 +86,7 @@ export class AxiosAdapter implements HttpAdapter {
       const errorMessage =
         (serverError.response?.data as ErrorMessage)?.error ||
         "Unknown error occurred";
-      console.log(errorMessage);
+      // console.log(errorMessage);
 
       throw new Error(errorMessage);
     }
