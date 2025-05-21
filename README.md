@@ -1,7 +1,66 @@
 # Sigop App
-Aplicación móvil para gestionar movimientos de zona portuaria Muelles de Penco.
+Aplicación móvil para gestionar movimientos de zona portuaria Muelles de Penco, principalmente
+gestiones de productos como fertilizantes y mezclas de estos según la necesidad del cliente.
 Ya sean requerimientos como despachos y recepciones de productos, movimientos internos
 entre bodegas, etc.
+
+---
+
+## Funcionalidades por perfil
+
+<details>
+  <summary><strong>👷 Usuario Conductor</strong></summary>
+
+Este perfil reemplaza el antiguo sistema de tótem físico de autoatención, permitiendo a los conductores gestionar sus movimientos portuarios desde la app móvil.
+
+**Funciones disponibles:**
+
+- 🔐 Inicio de sesión con RUT del conductor.
+- 📋 Visualización de los requerimientos asignados para el turno actual (despachos o recepciones).
+- 🧾 Visualización de los productos o mezclas asociadas a cada requerimiento activo.
+- 📱 Generación de código QR dinámico con la patente y código del requerimiento actual, para levantar barrera de ingreso al puerto.
+  - ✅ Esta función está habilitada solo si el conductor se encuentra dentro del radio geográfico permitido.
+
+</details>
+
+<details>
+  <summary><strong>🏗️ Supervisor, Capataz y Planificador</strong></summary>
+
+Estos perfiles reemplazan el sistema de tótems de autoatención en las bodegas, permitiendo gestionar los requerimientos asociados a las operaciones de despacho o recepción de productos fertilizantes.
+
+**Funciones disponibles:**
+
+- 🔐 Inicio de sesión con correo electrónico y contraseña.
+- 🔎 Búsqueda de requerimientos mediante código o patente del camión.
+- 📄 Visualización del detalle del requerimiento:
+  - Tipo de requerimiento (despacho/recepción).
+  - Cliente, transportista, y conductor asignado.
+  - Si el requerimiento es una mezcla, muestra el desglose por producto con nombre y cantidad en kilogramos.
+- 🔁 Visualización de la trazabilidad del requerimiento:
+  - Historial de cambios de estado (pendiente, en curso, cerrado, etc.).
+  - Información de quién realizó el cambio y descripción del mismo.
+- 📦 Gestión de producción de paletizado:
+  - Visualización de lotes de mezcla por requerimiento.
+  - Identificación si el requerimiento lleva pallets.
+  - Registro de cantidad total de pallets y su peso.
+- 🧮 Modificación de sacos:
+  - Visualización y edición de la cantidad de sacos para mezclas en requerimientos de despacho envasado.
+  - Registro automático de los cambios realizados.
+- 🗒️ Ingreso de observaciones sobre requerimientos:
+  - Permite registrar problemas detectados durante la operación.
+  - Descripción del problema, con fecha y usuario que la registró.
+  - Posibilidad de tomar una fotografía desde la cámara o subirla desde la galería del dispositivo.
+- 🚚 Visualización de movimientos internos:
+  - Muestra los traslados de productos entre bodegas del puerto, correspondientes al turno y fecha actuales.
+  - Información general de traslados:
+    - Total planificado, trasladado y pendiente (por producto y por cliente).
+  - Información detallada de cada movimiento interno:
+    - Bodega de origen y destino.
+    - Cliente solicitante.
+    - Códigos internos de operación de origen y destino.
+    - Totales en KG planificados, trasladados y pendientes.
+
+</details>
 
 ---
 
