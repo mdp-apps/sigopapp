@@ -1,5 +1,7 @@
 # Sigop App
 Aplicación móvil para gestionar movimientos de zona portuaria Muelles de Penco.
+Ya sean requerimientos como despachos y recepciones de productos, movimientos internos
+entre bodegas, etc.
 
 ---
 
